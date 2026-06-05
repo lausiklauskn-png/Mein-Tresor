@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Mein-Tresor — Kalibrierung</title>
+<style>
+  :root{--ac:#6ee7d3;--gold:#f4b435}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#070a0c;color:#e6f2f1;font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;touch-action:none}
+  #bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+    padding:8px;background:rgba(10,18,20,.92);border-bottom:1px solid #1f3d42}
+  #bar button,#bar select{font:inherit;color:#e6f2f1;background:#11252a;border:1px solid #2b5b5e;border-radius:8px;padding:6px 10px;cursor:pointer}
+  #bar button.on{border-color:var(--ac);color:var(--ac)}
+  #bar .sp{flex:1}
+  #stage{position:fixed;inset:52px 0 0 0;overflow:hidden}
+  #img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;user-select:none;-webkit-user-drag:none}
+  #layer{position:absolute}
+  .h{position:absolute;transform:translate(-50%,-50%);cursor:grab;touch-action:none;display:flex;align-items:center;justify-content:center}
+  .h.wheel img{width:100%;height:100%;opacity:.78;-webkit-user-drag:none;pointer-events:none}
+  .h .dot{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px #000;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+  .h .ring{position:absolute;inset:0;border:2px solid var(--ac);border-radius:50%;pointer-events:none}
+  .h.sel .ring{border-color:var(--gold);box-shadow:0 0 12px var(--gold)}
+  .h .lab{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--ac);white-space:nowrap;text-shadow:0 1px 3px #000;pointer-events:none}
+  .corner{width:26px;height:26px}
+  #out{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(10,18,20,.96);border-top:1px solid #1f3d42;padding:8px}
+  #snippet{width:100%;height:74px;background:#06100f;color:#bfe9e1;border:1px solid #1f3d42;border-radius:8px;
+    font:12px/1.35 ui-monospace,Menlo,monospace;padding:8px;resize:vertical}
+  #out .row{display:flex;gap:8px;align-items:center;margin-top:6px}
+  #out button{font:inherit;color:#04201d;background:var(--ac);border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:700}
+  #sz{flex:1}
+  .hint{font-size:.8rem;color:#8fb3b1;margin:0 0 4px}
+  label{font-size:.82rem;color:#8fb3b1}
+  input[type=number]{width:3.2em;font:inherit;background:#11252a;color:#e6f2f1;border:1px solid #2b5b5e;border-radius:6px;padding:3px 5px}
+</style>
+</head>
+<body>
+<div id="bar">
+  <button data-mode="safe" class="on">Dreh-Safe (Räder)</button>
+  <button data-mode="hoch">Wand HOCH</button>
+  <button data-mode="quer">Wand QUER</button>
+  <span class="sp"></span>
+  <span id="wallcfg" style="display:none">
+    <label>Spalten <input id="cols" type="number" min="1" value="5"></label>
+    <label>Reihen <input id="rows" type="number" min="1" value="6"></label>
+  </span>
+</div>
+
+<div id="stage">
+  <img id="img" alt="" draggable="false"/>
+  <div id="layer"></div>
+</div>
+
+<div id="out">
+  <p class="hint" id="hint">Ziehe jedes Rad genau in die Mitte seiner Mulde. Tippe ein Rad an, dann mit dem Regler die Größe anpassen. Danach „Kopieren" und mir den Text schicken.</p>
+  <textarea id="snippet" readonly></textarea>
+  <div class="row">
+    <input id="sz" type="range" min="3" max="60" value="30" step="0.2"/>
+    <button id="copy">📋 Koordinaten kopieren</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var img=document.getElementById('img'), layer=document.getElementById('layer'), stage=document.getElementById('stage');
+  var snippet=document.getElementById('snippet'), sz=document.getElementById('sz'), hint=document.getElementById('hint');
+  var wallcfg=document.getElementById('wallcfg'), colsIn=document.getElementById('cols'), rowsIn=document.getElementById('rows');
+  var A='../assets/safe/';
+  var IMG={ safe:A+'safe-front.png', hoch:A+'tresorwand-hoch.png', quer:A+'tresorwand-quer.png' };
+  // Start-Werte (aus der App) — Räder
+  var WHEELS={ c:{x:.50,y:.52,d:.30,lab:'groß (Mitte)'}, tl:{x:.285,y:.29,d:.17,lab:'oben links'},
+               tr:{x:.68,y:.30,d:.17,lab:'oben rechts'}, br:{x:.66,y:.73,d:.17,lab:'unten rechts'} };
+  // Wand-Start (2-Punkt: Mitte erstes Fach oben-links, Mitte letztes Fach unten-rechts)
+  var WALL={ hoch:{cols:5,rows:6, a:{x:.13,y:.12}, b:{x:.87,y:.90}}, quer:{cols:8,rows:4, a:{x:.09,y:.16}, b:{x:.91,y:.86}} };
+  var mode='safe', sel=null, handles={};
+
+  function contentRect(){ var cw=img.clientWidth,ch=img.clientHeight,nw=img.naturalWidth||1,nh=img.naturalHeight||1;
+    var s=Math.min(cw/nw,ch/nh),w=nw*s,h=nh*s; return {left:(cw-w)/2,top:(ch-h)/2,width:w,height:h}; }
+  function fit(){ if(!img.complete||!img.naturalWidth) return false; var r=contentRect();
+    layer.style.left=r.left+'px';layer.style.top=r.top+'px';layer.style.width=r.width+'px';layer.style.height=r.height+'px'; return true; }
+  function W(){return layer.clientWidth;} function H(){return layer.clientHeight;}
+
+  function clearHandles(){ layer.innerHTML=''; handles={}; sel=null; }
+  function mkHandle(key,o,kind){
+    var el=document.createElement('div'); el.className='h '+(kind==='wheel'?'wheel':'corner'); el.dataset.key=key;
+    if(kind==='wheel'){ var im=document.createElement('img'); im.src=A+'drehrad.png'; el.appendChild(im); }
+    var ring=document.createElement('div'); ring.className='ring'; el.appendChild(ring);
+    var dot=document.createElement('div'); dot.className='dot'; el.appendChild(dot);
+    var lab=document.createElement('div'); lab.className='lab'; lab.textContent=o.lab||key; el.appendChild(lab);
+    layer.appendChild(el); handles[key]=el; bindDrag(el,key);
+    el.addEventListener('pointerdown',function(){ select(key); });
+    return el;
+  }
+  function select(key){ sel=key; for(var k in handles) handles[k].classList.toggle('sel',k===key);
+    if(mode==='safe'){ sz.value=(WHEELS[key].d*100).toFixed(1); } place(); }
+  function bindDrag(el,key){
+    var dragging=false;
+    el.addEventListener('pointerdown',function(e){ dragging=true; if(el.setPointerCapture)el.setPointerCapture(e.pointerId); el.style.cursor='grabbing'; e.preventDefault(); });
+    el.addEventListener('pointermove',function(e){ if(!dragging)return; var r=layer.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height; x=Math.max(0,Math.min(1,x)); y=Math.max(0,Math.min(1,y));
+      if(mode==='safe'){ WHEELS[key].x=x; WHEELS[key].y=y; } else { WALL[mode][key]={x:x,y:y}; }
+      place(); });
+    function up(){ dragging=false; el.style.cursor='grab'; }
+    el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+  }
+
+  function place(){
+    if(!fit()) return; var w=W(),h=H();
+    if(mode==='safe'){
+      for(var k in WHEELS){ var o=WHEELS[k], el=handles[k]; if(!el)continue; var d=o.d*w;
+        el.style.left=(o.x*w)+'px'; el.style.top=(o.y*h)+'px'; el.style.width=d+'px'; el.style.height=d+'px'; }
+    } else {
+      var cfg=WALL[mode];
+      ['a','b'].forEach(function(k){ var o=cfg[k], el=handles[k]; if(!el)return;
+        el.style.left=(o.x*w)+'px'; el.style.top=(o.y*h)+'px'; });
+    }
+    snippet.value=genSnippet();
+  }
+
+  function genSnippet(){
+    if(mode==='safe'){
+      function f(o){return '{x:'+o.x.toFixed(4)+', y:'+o.y.toFixed(4)+', d:'+o.d.toFixed(4)+'}';}
+      return 'WHEELS = { c:'+f(WHEELS.c)+', tl:'+f(WHEELS.tl)+', tr:'+f(WHEELS.tr)+', br:'+f(WHEELS.br)+' };';
+    }
+    var cfg=WALL[mode], cols=+colsIn.value, rows=+rowsIn.value;
+    // aus 2 Fach-Mitten -> Raster-Raender x0,x1,y0,y1
+    var spanX=(cfg.b.x-cfg.a.x)*cols/(cols-1||1), spanY=(cfg.b.y-cfg.a.y)*rows/(rows-1||1);
+    var x0=cfg.a.x-spanX/(cols*2), x1=cfg.b.x+spanX/(cols*2);
+    var y0=cfg.a.y-spanY/(rows*2), y1=cfg.b.y+spanY/(rows*2);
+    return 'LAYOUT.'+mode+' = { cols:'+cols+', rows:'+rows+', x0:'+x0.toFixed(4)+', x1:'+x1.toFixed(4)+', y0:'+y0.toFixed(4)+', y1:'+y1.toFixed(4)+' };';
+  }
+
+  function build(){
+    clearHandles();
+    img.src=IMG[mode];
+    if(mode==='safe'){
+      wallcfg.style.display='none'; sz.parentNode.style.display='flex';
+      hint.textContent='Ziehe jedes Rad genau in die Mitte seiner Mulde. Tippe ein Rad an, dann mit dem Regler die Größe anpassen. Danach „Kopieren".';
+      for(var k in WHEELS) mkHandle(k,WHEELS[k],'wheel');
+      select('c');
+    } else {
+      wallcfg.style.display=''; colsIn.value=WALL[mode].cols; rowsIn.value=WALL[mode].rows;
+      hint.textContent='Ziehe Punkt A in die MITTE des Fachs OBEN-LINKS und Punkt B in die MITTE des Fachs UNTEN-RECHTS. Spalten/Reihen oben prüfen. Danach „Kopieren".';
+      mkHandle('a',{lab:'A = Fach oben-links'},'corner');
+      mkHandle('b',{lab:'B = Fach unten-rechts'},'corner');
+    }
+    var t=setInterval(function(){ if(fit()){ place(); clearInterval(t); } },60);
+  }
+
+  document.querySelectorAll('#bar button[data-mode]').forEach(function(b){
+    b.addEventListener('click',function(){ document.querySelectorAll('#bar button[data-mode]').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); mode=b.dataset.mode; build(); });
+  });
+  sz.addEventListener('input',function(){ if(mode==='safe'&&sel){ WHEELS[sel].d=(+sz.value)/100; place(); } });
+  [colsIn,rowsIn].forEach(function(i){ i.addEventListener('input',function(){ if(mode!=='safe'){WALL[mode].cols=+colsIn.value;WALL[mode].rows=+rowsIn.value;place();} }); });
+  document.getElementById('copy').addEventListener('click',function(){
+    snippet.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard) navigator.clipboard.writeText(snippet.value).catch(function(){});
+    this.textContent = ok||navigator.clipboard ? '✓ Kopiert!' : '⌫ Text markiert — kopieren';
+    var self=this; setTimeout(function(){ self.textContent='📋 Koordinaten kopieren'; },1600);
+  });
+  window.addEventListener('resize',place);
+  window.addEventListener('orientationchange',function(){ setTimeout(place,200); });
+  img.addEventListener('load',function(){ place(); });
+  build();
+})();
+</script>
+</body>
+</html>
