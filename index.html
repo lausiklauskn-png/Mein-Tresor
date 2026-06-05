@@ -2807,45 +2807,46 @@
   if(andockClose && andock){ andockClose.addEventListener('click', function(){ if(andock.close) andock.close(); }); }
 })();
 </script>
-<!-- ===== Mein-Tresor — NEUE Schale (Dreh-Safe + Tresorraum). Additiv; ruft die bewiesene
-     Oeffnen-Logik (window.jtOpenBook) auf. Krypto-Kern unveraendert (byte-gleich). ===== -->
+<!-- ===== Mein-Tresor — NEUE Schale (Dreh-Safe + Tresorraum) — CSS-verankert (kein Verspringen) ===== -->
 <style>
   #mt-entry,#mt-room{position:fixed;inset:0;overflow:hidden;background:#070a0c;
+    display:flex;align-items:center;justify-content:center;
     font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
   #mt-entry{z-index:1300;touch-action:none}
   #mt-entry[hidden],#mt-room[hidden],#mt-toroom[hidden]{display:none}
   #mt-entry.mt-gone{opacity:0;transition:opacity 1.2s ease;pointer-events:none}
-  .mt-fit{position:absolute;inset:0}
-  #mt-safe,#mt-wall{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-    object-position:center;user-select:none;-webkit-user-drag:none}
-  #mt-wheels,#mt-grid{position:absolute}
+  #mt-entry-fit{position:relative;aspect-ratio:1/1;width:min(100vw,100vh);height:auto;flex:none}
+  #mt-wall-wrap{position:relative;aspect-ratio:var(--ar,1.25);
+    width:min(100vw, calc(100vh * var(--ar,1.25)));height:auto;flex:none}
+  #mt-safe,#mt-wall{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;
+    user-select:none;-webkit-user-drag:none}
   .mt-wheel{position:absolute;transform:translate(-50%,-50%);border:0;background:none;padding:0;
-    cursor:grab;touch-action:none}
+    cursor:grab;touch-action:none;aspect-ratio:1}
   .mt-wheel img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none;
     filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));transition:filter .3s ease}
   .mt-wheel.mt-done img{filter:drop-shadow(0 0 16px rgba(110,231,211,.95))}
-  #mt-entry-glow{position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  #mt-entry-glow{position:absolute;inset:-12%;pointer-events:none;opacity:0;mix-blend-mode:screen;
     background:radial-gradient(circle at 50% 52%, rgba(110,231,211,.55), rgba(110,231,211,0) 60%);
     transition:opacity .8s ease}
   #mt-entry.mt-opening #mt-entry-glow{opacity:1}
-  .mt-hint{position:absolute;left:0;right:0;bottom:56px;text-align:center;color:#bfe9e1;
-    font-size:.92rem;text-shadow:0 2px 8px #000;pointer-events:none;padding:0 16px}
-  .mt-skip{position:absolute;right:16px;bottom:16px;color:#cfeae6;background:rgba(20,40,44,.65);
-    border:1px solid #2b5b5e;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit}
+  .mt-hint{position:fixed;left:0;right:0;bottom:56px;text-align:center;color:#bfe9e1;
+    font-size:.92rem;text-shadow:0 2px 8px #000;pointer-events:none;padding:0 16px;z-index:2}
+  .mt-skip{position:fixed;right:16px;bottom:16px;color:#cfeae6;background:rgba(20,40,44,.65);
+    border:1px solid #2b5b5e;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit;z-index:2}
   .mt-skip:hover{border-color:#6ee7d3}
   #mt-room{z-index:800}
   .mt-fach{position:absolute;transform:translate(-50%,-50%);border:0;background:rgba(110,231,211,0);
     cursor:pointer;border-radius:7px;display:flex;align-items:flex-end;justify-content:center;
     outline:1px solid rgba(110,231,211,0);transition:outline-color .15s ease,background .15s ease}
   .mt-fach:hover,.mt-fach:focus{outline-color:rgba(110,231,211,.85);background:rgba(110,231,211,.10)}
-  .mt-fach .mt-num{font-size:.78rem;font-weight:700;color:#1a1206;background:#d9c38a;
-    border-radius:3px;padding:1px 6px;margin-bottom:7%;box-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none}
-  .mt-fach .mt-lock{position:absolute;top:6%;left:50%;transform:translateX(-50%);font-size:.95rem;
-    pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
+  .mt-fach .mt-num{font-size:clamp(.5rem,1.7vmin,.82rem);font-weight:700;color:#1a1206;background:#d9c38a;
+    border-radius:3px;padding:0 5px;margin-bottom:6%;box-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none}
+  .mt-fach .mt-lock{position:absolute;top:5%;left:50%;transform:translateX(-50%);
+    font-size:clamp(.6rem,1.9vmin,.98rem);pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
   #mt-room.mt-editnums .mt-fach{outline-color:rgba(244,180,53,.9);background:rgba(244,180,53,.10)}
-  #mt-room-bar{position:absolute;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);
-    display:flex;gap:8px;z-index:5}
-  #mt-room-bar button{font:inherit;color:#e6f2f1;background:rgba(17,37,42,.88);border:1px solid #2b5b5e;
+  #mt-room-bar{position:fixed;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;flex-wrap:wrap;justify-content:center;max-width:96vw}
+  #mt-room-bar button{font:inherit;color:#e6f2f1;background:rgba(17,37,42,.9);border:1px solid #2b5b5e;
     border-radius:8px;padding:7px 12px;cursor:pointer}
   #mt-room-bar button:hover{border-color:#6ee7d3}
   #mt-toroom{position:fixed;left:16px;bottom:16px;z-index:70;font:inherit;color:#e6f2f1;
@@ -2855,64 +2856,45 @@
 </style>
 
 <div id="mt-entry" aria-label="Dreh-Safe — Eingang zum Tresor">
-  <div class="mt-fit" id="mt-entry-fit">
+  <div id="mt-entry-fit">
     <img id="mt-safe" src="assets/safe/safe-front.png" alt="Futuristische Tresortür mit vier Drehrädern" draggable="false" />
-    <div id="mt-wheels">
-      <button class="mt-wheel" data-wheel="c"  type="button" aria-label="großes Drehrad (Mitte)"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
-      <button class="mt-wheel" data-wheel="tl" type="button" aria-label="Drehrad oben links"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
-      <button class="mt-wheel" data-wheel="tr" type="button" aria-label="Drehrad oben rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
-      <button class="mt-wheel" data-wheel="br" type="button" aria-label="Drehrad unten rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
-    </div>
+    <button class="mt-wheel" data-wheel="c"  type="button" aria-label="großes Drehrad (Mitte)"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="tl" type="button" aria-label="Drehrad oben links"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="tr" type="button" aria-label="Drehrad oben rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="br" type="button" aria-label="Drehrad unten rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
     <div id="mt-entry-glow"></div>
   </div>
-  <div class="mt-hint" id="mt-entry-hint">Alle vier Räder mit dem Finger drehen, um den Tresor zu öffnen</div>
+  <div class="mt-hint">Alle vier Räder mit dem Finger drehen, um den Tresor zu öffnen</div>
   <button class="mt-skip" id="mt-entry-skip" type="button">Eintreten →</button>
 </div>
 
 <div id="mt-room" hidden aria-label="Tresorraum mit Fächern">
-  <img id="mt-wall" src="assets/safe/tresorwand-hoch.png" alt="Tresorwand mit Schließfächern" draggable="false" />
-  <div id="mt-grid"></div>
+  <div id="mt-wall-wrap">
+    <img id="mt-wall" src="assets/safe/tresorwand-hoch.png" alt="Tresorwand mit Schließfächern" draggable="false" />
+    <div id="mt-grid"></div>
+  </div>
   <div id="mt-room-bar">
-    <button id="mt-room-numbers" type="button" title="Nummern bearbeiten">✎ Nummern</button>
-    <button id="mt-room-list" type="button" title="Zur Listen-Ansicht">☰ Liste</button>
-    <button id="mt-room-lock" type="button" title="Verriegeln (zurück zum Safe)">🔒 Verriegeln</button>
+    <button id="mt-room-numbers" type="button">✎ Nummern</button>
+    <button id="mt-room-list" type="button">☰ Liste</button>
+    <button id="mt-room-lock" type="button">🔒 Verriegeln</button>
   </div>
 </div>
-<button id="mt-toroom" type="button" hidden title="Zurück zum Tresorraum">🔐 Tresorraum</button>
+<button id="mt-toroom" type="button" hidden>🔐 Tresorraum</button>
 
 <script>
 (function(){
   var entry=document.getElementById('mt-entry'), room=document.getElementById('mt-room'),
-      toRoom=document.getElementById('mt-toroom');
+      toRoom=document.getElementById('mt-toroom'), wrap=document.getElementById('mt-wall-wrap');
   if(!entry||!room) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  function contentRect(img){
-    var cw=img.clientWidth, ch=img.clientHeight, nw=img.naturalWidth||1, nh=img.naturalHeight||1;
-    var s=Math.min(cw/nw, ch/nh), w=nw*s, h=nh*s;
-    return { left:(cw-w)/2, top:(ch-h)/2, width:w, height:h };
-  }
-  function fitLayer(img, layer){
-    if(!img.complete || !img.naturalWidth) return false;
-    var r=contentRect(img);
-    layer.style.left=r.left+'px'; layer.style.top=r.top+'px';
-    layer.style.width=r.width+'px'; layer.style.height=r.height+'px';
-    return true;
-  }
-
-  /* ===== EINGANG: Dreh-Safe (reine Inszenierung; KEINE echte Kombination) ===== */
-  var safe=document.getElementById('mt-safe'), wheelsLayer=document.getElementById('mt-wheels');
+  /* ===== EINGANG: Dreh-Safe — %-Koordinaten in festem Rahmen (verspringt nie) ===== */
   var WHEELS={ c:{x:.50,y:.52,d:.30}, tl:{x:.285,y:.29,d:.17}, tr:{x:.68,y:.30,d:.17}, br:{x:.66,y:.73,d:.17} };
   var wheelEls={}, rot={}, done={}, DONE_DEG=120;
   [].forEach.call(entry.querySelectorAll('.mt-wheel'), function(el){
     var k=el.getAttribute('data-wheel'); wheelEls[k]=el; rot[k]=0; done[k]=false;
+    var c=WHEELS[k]; el.style.left=(c.x*100)+'%'; el.style.top=(c.y*100)+'%'; el.style.width=(c.d*100)+'%';
   });
-  function placeWheels(){
-    if(!fitLayer(safe, wheelsLayer)) return;
-    var W=wheelsLayer.clientWidth, H=wheelsLayer.clientHeight;
-    for(var k in WHEELS){ var c=WHEELS[k], el=wheelEls[k]; if(!el) continue; var size=c.d*W;
-      el.style.left=(c.x*W)+'px'; el.style.top=(c.y*H)+'px'; el.style.width=size+'px'; el.style.height=size+'px'; }
-  }
   function angle(el,px,py){ var r=el.getBoundingClientRect(); return Math.atan2(py-(r.top+r.height/2), px-(r.left+r.width/2))*180/Math.PI; }
   function spin(k,delta){ rot[k]+=delta; wheelEls[k].querySelector('img').style.transform='rotate('+rot[k]+'deg)';
     if(!done[k] && Math.abs(rot[k])>=DONE_DEG){ done[k]=true; wheelEls[k].classList.add('mt-done'); checkAll(); } }
@@ -2938,54 +2920,41 @@
   }
   document.getElementById('mt-entry-skip').addEventListener('click', openSafe);
 
-  /* ===== RAUM: Tresorraum (gemalte Wand + nummerierte Klickflaechen) ===== */
+  /* ===== RAUM: Tresorraum — %-Koordinaten in festem Rahmen ===== */
   var wall=document.getElementById('mt-wall'), grid=document.getElementById('mt-grid');
   var LAYOUT={
-    hoch:{ img:'assets/safe/tresorwand-hoch.png', cols:5, rows:6, x0:.045, x1:.955, y0:.045, y1:.955 },
-    quer:{ img:'assets/safe/tresorwand-quer.png', cols:8, rows:4, x0:.035, x1:.965, y0:.050, y1:.950 }
+    hoch:{ img:'assets/safe/tresorwand-hoch.png', ar:1402/1122, cols:5, rows:6, x0:.045, x1:.955, y0:.045, y1:.955 },
+    quer:{ img:'assets/safe/tresorwand-quer.png', ar:1536/1024, cols:8, rows:4, x0:.035, x1:.965, y0:.050, y1:.950 }
   };
   var N=30, curMode=null, editNums=false;
   function nums(){ try{ return JSON.parse(localStorage.getItem('mt-fachnums')||'{}')||{}; }catch(e){ return {}; } }
   function saveNums(m){ try{ localStorage.setItem('mt-fachnums', JSON.stringify(m)); }catch(e){} }
-  function labelFor(n){ var m=nums(); var v=m['f-'+n]; return (v!=null && v!=='') ? v : ('0'+n).slice(-2); }
+  function labelFor(n){ var v=nums()['f-'+n]; return (v!=null && v!=='') ? v : ('0'+n).slice(-2); }
   function pickMode(){ return (window.innerWidth >= window.innerHeight) ? 'quer' : 'hoch'; }
   function buildGrid(){
-    var mode=pickMode(), L=LAYOUT[mode];
+    var mode=pickMode(), L=LAYOUT[mode]; curMode=mode;
     if(wall.getAttribute('src')!==L.img) wall.setAttribute('src', L.img);
-    curMode=mode; grid.innerHTML='';
-    var idx=0;
+    wrap.style.setProperty('--ar', L.ar);
+    grid.innerHTML='';
+    var gw=(L.x1-L.x0)/L.cols, gh=(L.y1-L.y0)/L.rows, idx=0;
     for(var r=0;r<L.rows;r++){ for(var c=0;c<L.cols;c++){
       idx++; if(idx>N) break;
       var n=idx, id='f-'+n;
       var b=document.createElement('button'); b.type='button'; b.className='mt-fach';
       b.setAttribute('data-id',id); b.setAttribute('aria-label','Fach '+labelFor(n));
-      b.dataset.col=c; b.dataset.row=r;
+      b.style.left=((L.x0+gw*(c+0.5))*100)+'%'; b.style.top=((L.y0+gh*(r+0.5))*100)+'%';
+      b.style.width=(gw*0.92*100)+'%'; b.style.height=(gh*0.92*100)+'%';
       var num=document.createElement('span'); num.className='mt-num'; num.textContent=labelFor(n); b.appendChild(num);
       if(window.jtBookLocked && window.jtBookLocked(id)){ var lk=document.createElement('span'); lk.className='mt-lock'; lk.textContent='🔒'; b.appendChild(lk); }
       b.addEventListener('click', onFach);
       grid.appendChild(b);
     }}
-    placeFaecher();
-  }
-  function placeFaecher(){
-    var L=LAYOUT[curMode||pickMode()];
-    if(!fitLayer(wall, grid)) return;
-    var W=grid.clientWidth, H=grid.clientHeight;
-    var gw=(L.x1-L.x0)/L.cols, gh=(L.y1-L.y0)/L.rows;
-    [].forEach.call(grid.querySelectorAll('.mt-fach'), function(b){
-      var c=+b.dataset.col, r=+b.dataset.row;
-      b.style.left=((L.x0+gw*(c+0.5))*W)+'px'; b.style.top=((L.y0+gh*(r+0.5))*H)+'px';
-      b.style.width=(gw*W*0.92)+'px'; b.style.height=(gh*H*0.92)+'px';
-    });
   }
   function onFach(){
     var id=this.getAttribute('data-id'), n=id.replace('f-','');
-    if(editNums){
-      var nv=window.prompt('Nummer/Name für dieses Fach:', labelFor(n));
-      if(nv!=null){ var m=nums(); m[id]=nv.trim(); saveNums(m);
-        this.querySelector('.mt-num').textContent=labelFor(n); this.setAttribute('aria-label','Fach '+labelFor(n)); }
-      return;
-    }
+    if(editNums){ var nv=window.prompt('Nummer/Name für dieses Fach:', labelFor(n));
+      if(nv!=null){ var m=nums(); m[id]=nv.trim(); saveNums(m); this.querySelector('.mt-num').textContent=labelFor(n); this.setAttribute('aria-label','Fach '+labelFor(n)); }
+      return; }
     if(window.jtOpenBook) window.jtOpenBook({ id:id, label:'Fach '+labelFor(n), el:this });
   }
   function refreshLocks(){
@@ -3000,37 +2969,22 @@
     editNums=!editNums; room.classList.toggle('mt-editnums', editNums);
     this.textContent = editNums ? '✓ Fertig' : '✎ Nummern';
   });
-  document.getElementById('mt-room-list').addEventListener('click', function(){
-    room.setAttribute('hidden',''); toRoom.removeAttribute('hidden');
-  });
-  toRoom.addEventListener('click', function(){ toRoom.setAttribute('hidden',''); room.removeAttribute('hidden'); requestAnimationFrame(placeFaecher); });
+  document.getElementById('mt-room-list').addEventListener('click', function(){ room.setAttribute('hidden',''); toRoom.removeAttribute('hidden'); });
+  toRoom.addEventListener('click', function(){ toRoom.setAttribute('hidden',''); room.removeAttribute('hidden'); });
   document.getElementById('mt-room-lock').addEventListener('click', function(){
     room.setAttribute('hidden',''); opened=false;
     for(var k in done){ done[k]=false; rot[k]=0; wheelEls[k].classList.remove('mt-done'); wheelEls[k].querySelector('img').style.transform='rotate(0deg)'; }
     entry.classList.remove('mt-opening','mt-gone'); entry.removeAttribute('hidden');
-    requestAnimationFrame(placeWheels);
   });
-
-  function showRoom(){
-    room.removeAttribute('hidden');
-    if(wall.complete && wall.naturalWidth) buildGrid();
-    else { wall.addEventListener('load', buildGrid, {once:true}); buildGrid(); }
-  }
+  function showRoom(){ room.removeAttribute('hidden'); if(pickMode()!==curMode) buildGrid(); }
 
   var bookdemo=document.getElementById('bookdemo');
   if(bookdemo && window.MutationObserver){
-    new MutationObserver(function(){ if(bookdemo.hasAttribute('hidden') || bookdemo.style.display==='none') refreshLocks(); })
+    new MutationObserver(function(){ if(bookdemo.hasAttribute('hidden')||bookdemo.style.display==='none') refreshLocks(); })
       .observe(bookdemo, {attributes:true, attributeFilter:['hidden','style']});
   }
-
-  function relayout(){
-    if(!entry.hasAttribute('hidden')) placeWheels();
-    if(!room.hasAttribute('hidden')){ if(pickMode()!==curMode) buildGrid(); else placeFaecher(); }
-  }
-  window.addEventListener('resize', relayout);
-  window.addEventListener('orientationchange', function(){ setTimeout(relayout,200); });
-  if(safe.complete && safe.naturalWidth) placeWheels(); else safe.addEventListener('load', placeWheels, {once:true});
-
+  window.addEventListener('resize', function(){ if(!room.hasAttribute('hidden') && pickMode()!==curMode) buildGrid(); });
+  buildGrid();
   try{ if(sessionStorage.getItem(GATE)==='1'){ opened=true; entry.setAttribute('hidden',''); showRoom(); } }catch(e){}
 })();
 </script>
