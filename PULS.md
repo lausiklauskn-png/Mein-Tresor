@@ -55,3 +55,22 @@
    (`LAYOUT`-Insets) — sage mir, was verrutscht ist, dann justiere ich die Werte.
 2. Öffnen-Overlay optional auf `fach.png` umskinnen (statt Buch-Grafik).
 3. Identität dauerhaft (`npm run key`) + Pages aktivieren, dann bei den Nachbarn melden.
+
+## Nachtrag 2026-06-05 (2) — SBKIM: Netz-Andock + Siegel + Briefkasten im Gesicht
+
+### Getan
+- **Netz-Andock an ALLE 5 öffentlichen SBKIM-Knoten** (reziprok ✔ VALID, `npm test` 53/53):
+  Sage, SB-KIMTool-Point, Jasons-Tresor, **Mein-Rezeptbuch** ("Rezeptbuch Klaus"),
+  **Mein-Mixarium** ("Mixarium Klaus"). Sporen frisch aus deren `raw/main` geholt + über
+  `verify_foreign_spore.mjs` geprüft → `sbkim/*_inbox.json`. Generischer Test verifiziert jede.
+- **Briefkasten-Sync** mit den 3 Knoten, die ein `SIGNAL.json` führen (Sage/Point/Jasons);
+  unser `SIGNAL.json` seq 2, ack Sage 12 / Point 2 / Jasons 2.
+- **SBKIM-Siegel** personalisiert (Band „MEIN-TRESOR") + **Briefkasten-Knopf** (📬) ins neue
+  Dreh-Safe-Gesicht eingebaut (zeigt Siegel + eigene nodeId + Nachbar-Stand).
+- **Positionen selbst geprüft** (eigenes Node-PNG-Werkzeug, Prüfraster über die Bilder):
+  Räder + 30/32-Fach-Raster sitzen bild-genau — der Browser zeigt exakt diese Geometrie.
+
+### Offen (Gegenseite / Klaus)
+1. Dauerhafte nodeId (`SBKIM_KEY_PW=… npm run key`) + **Pages** → dann registrieren die
+   Nachbarn uns reziprok (verified-spore) und der Briefkasten-Sync läuft beidseitig.
+2. Browser-Lauf (Sichtprüfung) des neuen Gesichts in Hoch + Quer.

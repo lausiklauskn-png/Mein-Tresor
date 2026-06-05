@@ -3035,5 +3035,35 @@
 })();
 </script>
 
+<!-- ===== Mein-Tresor — SBKIM-Briefkasten + Siegel im neuen Gesicht (additiv) ===== -->
+<script>
+(function(){
+  var bar=document.getElementById('mt-room-bar'); if(!bar) return;
+  var mail=document.createElement('button'); mail.type='button'; mail.id='mt-room-mail';
+  mail.title='SBKIM-Briefkasten & Siegel'; mail.textContent='📬 Briefkasten';
+  bar.insertBefore(mail, bar.firstChild);
+
+  // SBKIM-Siegel + eigene Identitaet einmalig in den geerbten Briefkasten-Dialog setzen.
+  var dlg=document.getElementById('sbkim-mailbox-dialog');
+  if(dlg && !document.getElementById('mt-seal-head')){
+    var head=document.createElement('div'); head.id='mt-seal-head';
+    head.style.cssText='text-align:center;margin:0 0 .7em';
+    head.innerHTML='<img src="assets/sbkim-siegel-wappen.svg" alt="SBKIM-Siegel — Mein-Tresor" decoding="async" '+
+      'style="width:118px;height:118px;display:block;margin:0 auto .4em"/>'+
+      '<div style="font-weight:600;color:#6ee7d3">Mein-Tresor — SBKIM-Endknoten</div>'+
+      '<div id="mt-seal-id" style="font-size:.72rem;color:#8fb3b1;word-break:break-all">Identität wird gelesen …</div>';
+    dlg.insertBefore(head, dlg.firstChild);
+    fetch('sbkim/spore.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(s){
+      var el=document.getElementById('mt-seal-id'); if(!el) return;
+      el.textContent='nodeId '+(s.id||'?')+(s._demo ? '  ·  Identität noch flüchtig (Demo, wartet auf Schlüssel)' : '  ·  verified-spore ✔');
+    }).catch(function(){ var el=document.getElementById('mt-seal-id'); if(el) el.textContent='Identität: sbkim/spore.json (lokal)'; });
+  }
+  mail.addEventListener('click', function(){
+    if(typeof window.sbkimMailboxCheck==='function') window.sbkimMailboxCheck(false);
+    else if(dlg && dlg.showModal) dlg.showModal();
+  });
+})();
+</script>
+
 </body>
 </html>

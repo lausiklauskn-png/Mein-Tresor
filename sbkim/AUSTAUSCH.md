@@ -41,3 +41,5 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
 ## Verlauf
 
 - **2026-06-05** — Postfach angelegt; Sage `SIGNAL.json` seq 12 gelesen + quittiert.
+- **2026-06-05** — Sage-Spore reziprok geprueft → **✔ VALID** (`sbkim/sage_inbox.json`,
+  nodeId `nysOZE…tJkYfA`, im `npm test`). Andock von unserer Seite steht.
