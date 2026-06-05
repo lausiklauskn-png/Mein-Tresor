@@ -17,16 +17,71 @@
     "geplant": "Benannt, noch nicht gebaut."
   },
   "komponenten": [
-    { "name": "Tresor/Bibliothek-Kern (JasonLib) in index.html (+ Spiegel jasons-bibliothek/index.html)", "status": "real-headless-bewiesen", "echt": true, "beleg": "test/jason_lib.test.js, datei.test.js, decoy.test.js, shamir.test.js, gesamtsicherung.test.js (npm test 51/51 gruen): Kern zwischen Markern aus der ausgelieferten Datei geschnitten und headless geprueft.", "hinweis": "1:1 byte-gleich aus Jasons-Tresor kopiert. Bibliothek (laden/benennen/ordnen/suchen/exportieren/einlesen), Tresor (AES-256-GCM/PBKDF2-SHA256 600k, WebCrypto), Honigtopf/Tarnfach (rec.decoy), Shamir 3-von-5 (GF(256)), Gesamt-Sicherung. Klaus' Browser-Lauf fuer Mein-Tresor steht aus." },
-    { "name": "Eigene SBKIM-Identitaet: signierte Ed25519-Spore (sbkim/spore.json)", "status": "provisorisch", "echt": true, "beleg": "test/andock.test.js (gruen): eigene Spore ✔ VALID, id=base64url(SHA256(roher Pubkey)), 9 Pflichtfelder, Manipulation faellt durch. node scripts/verify_foreign_spore.mjs sbkim/spore.json -> ✔ VALID.", "hinweis": "nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. nodeId derzeit FLUECHTIG (kein node_key.enc.json) + _demo domainVector. Dauerhaft erst nach 'npm run key' (Klaus' Passwort)." },
-    { "name": "Andock-/Schluessel-Skripte (generate_spore / verify_foreign_spore / make_node_key / open_node_key)", "status": "real-headless-bewiesen", "echt": true, "beleg": "test/node_key.test.js + andock.test.js gruen.", "hinweis": "1:1 aus Jasons-Tresor; nur die KONFIG (oeffentliche Identitaet) in generate_spore.mjs angepasst. Krypto-Kern unveraendert." },
-    { "name": "Reziproke Verifikation der Nachbarn (sbkim/sage_inbox.json, point_inbox.json)", "status": "real-headless-bewiesen", "echt": true, "beleg": "test/andock.test.js: Sages Spore ✔ VALID (nodeName 'Sage'), SB-KIMTool-Points Spore ✔ VALID (nodeName 'SB-KIMTool-Point').", "hinweis": "Oeffentliche Spore-Snapshots der Nachbarn. OFFEN: Mein-Tresor bei Sage + SB-KIMTool-Point + Jasons-Tresor melden, damit die uns reziprok als Endknoten registrieren (braucht zuerst dauerhafte nodeId + Pages)." },
-    { "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)", "status": "real-browser-tauglich", "echt": true, "hinweis": "self 'Mein-Tresor'; Peers Sage-Protokol, SB-KIMTool-Point, Jasons-Tresor (deren raw SIGNAL.json). Badge bei peer.seq > eigenem ack. Browser-Lauf steht aus." },
-    { "name": "Briefkasten-Waechter (.github/sbkim-watch.mjs + workflow, Cron 17 7 * * *)", "status": "real-headless-bewiesen", "echt": true, "beleg": "node .github/sbkim-watch.mjs laeuft und liest die Nachbarn-SIGNALe; meldet Ungelesenes, aendert nichts automatisch.", "hinweis": "SELF 'Mein-Tresor', PEERS Sage/SB-KIMTool-Point/Jasons-Tresor. 1:1 Mechanik aus Jasons-Tresor, nur CONFIG angepasst." },
-    { "name": "domainVector (semantisches Embedding)", "status": "demo-markiert", "echt": false, "hinweis": "Deterministischer Stub, _demo:[domainVector] gesetzt. Echtes 384-dim-Embedding (Xenova/multilingual-e5-small) via Sage Modul 03 im Browser -> sbkim/domainVector.real.json; bis dahin KEIN echter Match (>=0.80). ANDOCK §5." },
-    { "name": "Schale: futuristischer Dreh-Safe-Eingang + 20-Faecher-Tresorraum (das NEUE Gesicht)", "status": "geplant", "echt": false, "hinweis": "Noch nicht gebaut. Wartet auf Klaus' 4 echte Bilder (Safe-Front, Drehrad, Tresorwand, ein Fach) + Plan-vor-Code. Aktueller Platzhalter = uebernommene Jasons-Tresor-Schale (Buch/Regal/Tuer-Schwelle). Effekte (buch-energie, licht-blitz, mix-blend:screen, prefers-reduced-motion, sessionStorage-Gate) werden wiederverwendet." },
-    { "name": "Dauerhafter Schluessel-Tresor (sbkim/node_key.enc.json)", "status": "wartet-auf-klaus", "echt": false, "hinweis": "Existiert NOCH NICHT (Jasons-Tresor-Secret bewusst NICHT mitkopiert). Klaus legt ihn EINMAL an: SBKIM_KEY_PW='<Passwort>' npm run key -> dauerhafte nodeId, dann Spore neu signieren. Passwort/privater Schluessel NIE ins Repo (docs/SCHLUESSEL.md)." },
-    { "name": "GitHub Pages (Veroeffentlichung der Spore + App)", "status": "wartet-auf-klaus", "echt": false, "hinweis": "Pages (main/root) noch zu aktivieren, damit endpoint + sporeUrl https://lausiklauskn-png.github.io/Mein-Tresor/ abrufbar sind." }
+    {
+      "name": "Tresor/Bibliothek-Kern (JasonLib) in index.html (+ Spiegel jasons-bibliothek/index.html)",
+      "status": "real-headless-bewiesen",
+      "echt": true,
+      "beleg": "test/jason_lib.test.js, datei.test.js, decoy.test.js, shamir.test.js, gesamtsicherung.test.js (npm test 51/51 gruen): Kern zwischen Markern aus der ausgelieferten Datei geschnitten und headless geprueft.",
+      "hinweis": "1:1 byte-gleich aus Jasons-Tresor kopiert. Bibliothek (laden/benennen/ordnen/suchen/exportieren/einlesen), Tresor (AES-256-GCM/PBKDF2-SHA256 600k, WebCrypto), Honigtopf/Tarnfach (rec.decoy), Shamir 3-von-5 (GF(256)), Gesamt-Sicherung. Klaus' Browser-Lauf fuer Mein-Tresor steht aus."
+    },
+    {
+      "name": "Eigene SBKIM-Identitaet: signierte Ed25519-Spore (sbkim/spore.json)",
+      "status": "provisorisch",
+      "echt": true,
+      "beleg": "test/andock.test.js (gruen): eigene Spore ✔ VALID, id=base64url(SHA256(roher Pubkey)), 9 Pflichtfelder, Manipulation faellt durch. node scripts/verify_foreign_spore.mjs sbkim/spore.json -> ✔ VALID.",
+      "hinweis": "nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. nodeId derzeit FLUECHTIG (kein node_key.enc.json) + _demo domainVector. Dauerhaft erst nach 'npm run key' (Klaus' Passwort)."
+    },
+    {
+      "name": "Andock-/Schluessel-Skripte (generate_spore / verify_foreign_spore / make_node_key / open_node_key)",
+      "status": "real-headless-bewiesen",
+      "echt": true,
+      "beleg": "test/node_key.test.js + andock.test.js gruen.",
+      "hinweis": "1:1 aus Jasons-Tresor; nur die KONFIG (oeffentliche Identitaet) in generate_spore.mjs angepasst. Krypto-Kern unveraendert."
+    },
+    {
+      "name": "Reziproke Verifikation der Nachbarn (sbkim/sage_inbox.json, point_inbox.json)",
+      "status": "real-headless-bewiesen",
+      "echt": true,
+      "beleg": "test/andock.test.js: Sages Spore ✔ VALID (nodeName 'Sage'), SB-KIMTool-Points Spore ✔ VALID (nodeName 'SB-KIMTool-Point').",
+      "hinweis": "Oeffentliche Spore-Snapshots der Nachbarn. OFFEN: Mein-Tresor bei Sage + SB-KIMTool-Point + Jasons-Tresor melden, damit die uns reziprok als Endknoten registrieren (braucht zuerst dauerhafte nodeId + Pages)."
+    },
+    {
+      "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",
+      "status": "real-browser-tauglich",
+      "echt": true,
+      "hinweis": "self 'Mein-Tresor'; Peers Sage-Protokol, SB-KIMTool-Point, Jasons-Tresor (deren raw SIGNAL.json). Badge bei peer.seq > eigenem ack. Browser-Lauf steht aus."
+    },
+    {
+      "name": "Briefkasten-Waechter (.github/sbkim-watch.mjs + workflow, Cron 17 7 * * *)",
+      "status": "real-headless-bewiesen",
+      "echt": true,
+      "beleg": "node .github/sbkim-watch.mjs laeuft und liest die Nachbarn-SIGNALe; meldet Ungelesenes, aendert nichts automatisch.",
+      "hinweis": "SELF 'Mein-Tresor', PEERS Sage/SB-KIMTool-Point/Jasons-Tresor. 1:1 Mechanik aus Jasons-Tresor, nur CONFIG angepasst."
+    },
+    {
+      "name": "domainVector (semantisches Embedding)",
+      "status": "demo-markiert",
+      "echt": false,
+      "hinweis": "Deterministischer Stub, _demo:[domainVector] gesetzt. Echtes 384-dim-Embedding (Xenova/multilingual-e5-small) via Sage Modul 03 im Browser -> sbkim/domainVector.real.json; bis dahin KEIN echter Match (>=0.80). ANDOCK §5."
+    },
+    {
+      "name": "Schale: Dreh-Safe-Eingang + Tresorraum (30 Faecher) — das NEUE Gesicht",
+      "status": "real-browser-tauglich",
+      "echt": true,
+      "hinweis": "GEBAUT (additiv, Kern byte-gleich): Eingang = safe-front.png + 4 Drehraeder (drehrad.png) an den Vertiefungen, per Pointer drehen >120 Grad -> oeffnet in den Raum (reine Inszenierung, keine echte Kombination). Raum = gemalte Schliessfachwand (tresorwand-hoch 5x6 / -quer 8x4), 30 nummerierte Klickflaechen (01..30, editierbar via mt-fachnums) ueber die gemalten Faecher; Klick -> window.jtOpenBook (bewiesenes Oeffnen: Passwort/Honigtopf/Shamir/Dateien/Sicherung). 🔒-Badge via jtBookLocked. Alte Schwelle/Regal nur ausgeblendet, Skripte unberuehrt. BROWSER-UNGEPRUEFT -- wartet auf Klaus' Browser-Lauf (Pixel-Feinschliff der Rad-/Fach-Positionen erwartet). Offen: Oeffnen-Overlay spaeter auf fach.png umskinnen."
+    },
+    {
+      "name": "Dauerhafter Schluessel-Tresor (sbkim/node_key.enc.json)",
+      "status": "wartet-auf-klaus",
+      "echt": false,
+      "hinweis": "Existiert NOCH NICHT (Jasons-Tresor-Secret bewusst NICHT mitkopiert). Klaus legt ihn EINMAL an: SBKIM_KEY_PW='<Passwort>' npm run key -> dauerhafte nodeId, dann Spore neu signieren. Passwort/privater Schluessel NIE ins Repo (docs/SCHLUESSEL.md)."
+    },
+    {
+      "name": "GitHub Pages (Veroeffentlichung der Spore + App)",
+      "status": "wartet-auf-klaus",
+      "echt": false,
+      "hinweis": "Pages (main/root) noch zu aktivieren, damit endpoint + sporeUrl https://lausiklauskn-png.github.io/Mein-Tresor/ abrufbar sind."
+    }
   ],
-  "real_anteil_geschaetzt": "ca. 45% (headless-bewiesener Tresor/Bibliothek-Kern byte-gleich aus Jasons-Tresor [51/51 Tests], echte signierte Spore ✔ VALID, Briefkasten/Watch eingerichtet). OFFEN/ehrlich: Identitaet noch FLUECHTIG [kein node_key.enc.json], domainVector Demo, Pages nicht aktiv, Mein-Tresor bei den Nachbarn noch nicht registriert, und das eigentliche NEUE Gesicht [Dreh-Safe + 20 Faecher] ist noch nicht gebaut [Platzhalter = Jasons-Tresor-Schale]; Klaus' Browser-Lauf steht aus."
+  "real_anteil_geschaetzt": "ca. 55% (headless-bewiesener Tresor/Bibliothek-Kern byte-gleich aus Jasons-Tresor [51/51 Tests], echte signierte Spore ✔ VALID, Briefkasten/Watch; das NEUE Gesicht [Dreh-Safe + 30-Faecher-Raum] ist GEBAUT und ruft die bewiesene Oeffnen-Logik). OFFEN/ehrlich: Schale BROWSER-UNGEPRUEFT (Pixel-Feinschliff erwartet); Identitaet noch FLUECHTIG [kein node_key.enc.json]; domainVector Demo; Pages nicht aktiv; bei den Nachbarn noch nicht registriert."
 }
