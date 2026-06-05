@@ -35,3 +35,23 @@
 2. **Identität dauerhaft machen + Pages** — danach bei Sage/SB-KIMTool-Point/Jasons-Tresor
    melden, damit sie uns reziprok als Endknoten registrieren.
 3. **Browser-Verifikation** in beiden Lagen (Klaus' Sichtprüfung) → status.json fortschreiben.
+
+## Nachtrag 2026-06-05 — Schale gebaut (Dreh-Safe + Tresorraum)
+
+### Getan
+- **Klaus' 5 echte Bilder** eingebaut (`assets/safe/`): `safe-front`, `drehrad` (transparent),
+  `tresorwand-hoch` (5×6), `tresorwand-quer` (~8×4), `fach` (transparent).
+- **Neues Gesicht additiv gebaut** (Kern unberührt, byte-gleich, `npm test` 51/51):
+  - **Dreh-Safe-Eingang:** Safe-Front + 4 Drehräder an den Vertiefungen; per Pointer drehen,
+    alle > 120° → Überblendung in den Raum. Bild-relativ verankert (fit-to-image), Hoch + Quer.
+  - **Tresorraum:** gemalte Schließfachwand (hoch/quer je nach Lage), 30 nummerierte
+    Klickflächen (01…30, editierbar) über die gemalten Fächer; Klick → `window.jtOpenBook`
+    (bewiesenes Öffnen: Passwort, Honigtopf/Tarnfach, Shamir, Dateien, Sicherung). 🔒-Badge.
+  - Alte Schwelle/Regal nur **ausgeblendet**, bewiesene Skripte **unberührt**.
+
+### Offen / nächste Schritte
+1. **Klaus' Browser-Lauf** (Hard-Reload Ctrl+Shift+R): Eingang drehen → Raum → Fach öffnen.
+   Erwartet wird **Pixel-Feinschliff** der Rad-Positionen (`WHEELS`) und des Fach-Rasters
+   (`LAYOUT`-Insets) — sage mir, was verrutscht ist, dann justiere ich die Werte.
+2. Öffnen-Overlay optional auf `fach.png` umskinnen (statt Buch-Grafik).
+3. Identität dauerhaft (`npm run key`) + Pages aktivieren, dann bei den Nachbarn melden.
