@@ -1,0 +1,17 @@
+{
+  "node": "Mein-Tresor",
+  "lastBuild": "2026-06-05",
+  "seq": 1,
+  "headline": "Bootstrap: Kern + Tests 1:1 aus Jasons-Tresor kopiert (Kern byte-gleich, npm test 51/51 gruen); eigene SBKIM-Spore ✔ VALID (noch fluechtig, wartet auf Klaus' Schluessel); Briefkasten + Watch eingerichtet. Schale (Dreh-Safe + 20 Faecher) folgt nach Klaus' Bildern.",
+  "mailboxes": {
+    "Sage-Protokol": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH.md",
+    "SB-KIMTool-Point": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-SBKIMTool.md",
+    "Jasons-Tresor": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-JasonsTresor.md"
+  },
+  "forNodes": ["*"],
+  "ack": { "Sage-Protokol": 12, "SB-KIMTool-Point": 2, "Jasons-Tresor": 2 },
+  "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
+  "history": [
+    { "seq": 1, "date": "2026-06-05", "headline": "Aushang angelegt (erster Bau). Nachbarn-Stand gelesen + quittiert: Sage seq 12, SB-KIMTool-Point seq 2, Jasons-Tresor seq 2." }
+  ]
+}

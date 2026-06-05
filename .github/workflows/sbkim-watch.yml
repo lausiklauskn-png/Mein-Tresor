@@ -1,0 +1,20 @@
+name: SBKIM Briefkasten-Waechter
+
+on:
+  schedule:
+    - cron: "17 7 * * *"   # taeglich 07:17 UTC, bewusst krumm
+  workflow_dispatch: {}      # manueller Knopf in der Actions-Tab
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Briefkasten pruefen (liest Nachbarn-SIGNAL, meldet Ungelesenes)
+        run: node .github/sbkim-watch.mjs
