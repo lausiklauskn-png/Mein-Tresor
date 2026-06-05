@@ -1,0 +1,7 @@
+node_modules/
+
+# Geheimnisse — kommen NIE ins Repo (Kein-PII / Kein-Secret-im-Code, docs/SCHLUESSEL.md)
+.env
+*.pem
+sbkim/node_key.plain*
+sbkim/*.key

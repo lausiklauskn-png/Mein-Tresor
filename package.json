@@ -1,0 +1,14 @@
+{
+  "name": "mein-tresor",
+  "version": "0.1.0",
+  "description": "Mein-Tresor: design-vereinfachte Schwester von Jasons-Tresor — futuristischer Dreh-Safe + 20-Faecher-Tresorraum, gleiche bewiesene Tresor-/Krypto-Logik, eigener SBKIM-Endknoten mit Identitaet, Briefkasten und Andock.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "key": "node scripts/make_node_key.mjs",
+    "demo": "node scripts/generate_spore.mjs",
+    "verify": "node scripts/verify_foreign_spore.mjs sbkim/spore.json"
+  },
+  "license": "UNLICENSED"
+}

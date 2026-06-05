@@ -1,0 +1,2809 @@
+<!doctype html>
+<!--
+  Jasons-Bibliothek — SBKIM Tool-Point
+  Version 0.1.0 (Scheibe 1) · 2026 · Quelle: SB-KIMTool-Point
+  Eine offline-taugliche Einzeldatei: beliebige .json laden, benennen, ordnen,
+  exportieren und wieder einlesen. Keine externen Abhaengigkeiten.
+  Scheibe 1 = ohne Passwort-Schutz (der Tresor/Verschluesselung folgt in Scheibe 2).
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mein-Tresor</title>
+<meta name="description" content="Deine Bibliothek fuer Dateien (alle Formate): laden, benennen, ordnen, exportieren, wieder einlesen. Offline." />
+<meta name="theme-color" content="#0b1416" />
+<meta name="color-scheme" content="dark" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Jasons-Bibliothek" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1416'/%3E%3Cpath d='M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z' fill='none' stroke='%232dd4bf' stroke-width='3'/%3E%3Cpath d='M24 26h14M24 32h14M24 38h9' stroke='%232dd4bf' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="manifest" href='data:application/manifest+json,{"name":"Jasons-Bibliothek","short_name":"Jasons","start_url":".","scope":".","display":"standalone","background_color":"%230b1416","theme_color":"%230b1416","lang":"de","icons":[{"src":"data:image/svg+xml,%253Csvg xmlns=%2527http://www.w3.org/2000/svg%2527 viewBox=%25270 0 64 64%2527%253E%253Crect width=%252764%2527 height=%252764%2527 rx=%252714%2527 fill=%2527%25230b1416%2527/%253E%253Cpath d=%2527M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z%2527 fill=%2527none%2527 stroke=%2527%25232dd4bf%2527 stroke-width=%25273%2527/%253E%253C/svg%253E","sizes":"any","type":"image/svg+xml"}]}' />
+<style>
+  :root{
+    --bg:#0b1416; --bg2:#0f1b1e; --card:#11252a; --card2:#0e1f23;
+    --ink:#e6f2f1; --muted:#8fb3b1; --line:#1f3d42;
+    --accent:#2dd4bf; --accent-ink:#04201d; --warn:#f0b429; --bad:#f87171;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:radial-gradient(1100px 600px at 80% -10%, #123 0%, transparent 60%), var(--bg);
+    color:var(--ink); padding:0 0 64px; -webkit-text-size-adjust:100%;
+  }
+  header{padding:22px 18px 10px; max-width:920px; margin:0 auto}
+  h1{margin:0; font-size:1.5rem; letter-spacing:.2px}
+  h1 .glyph{color:var(--accent)}
+  .sub{color:var(--muted); margin:4px 0 0; font-size:.95rem}
+  .chip{display:inline-block; font-size:.72rem; padding:2px 8px; border-radius:999px;
+    border:1px solid var(--line); color:var(--muted); background:var(--card2)}
+  .chip.warn{color:var(--warn); border-color:#5a4a17}
+  main{max-width:920px; margin:0 auto; padding:0 18px}
+  .bar{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0}
+  button, .btn, select, input[type=text], textarea{
+    font:inherit; color:var(--ink); background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:9px 12px;
+  }
+  button, .btn{cursor:pointer; transition:transform .08s ease, border-color .15s ease, background .15s ease}
+  button:hover, .btn:hover{border-color:var(--accent)}
+  button:active{transform:translateY(1px)}
+  .btn-primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600}
+  .btn-ghost{background:transparent}
+  .btn-bad:hover{border-color:var(--bad); color:var(--bad)}
+  .tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:10px 0 4px}
+  .tools input[type=text]{flex:1 1 200px; min-width:140px}
+  .count{color:var(--muted); font-size:.85rem; margin:6px 2px 12px}
+  .empty{border:1px dashed var(--line); border-radius:var(--radius); padding:28px 18px;
+    text-align:center; color:var(--muted); background:var(--card2)}
+  ul.list{list-style:none; padding:0; margin:0; display:grid; gap:10px}
+  li.item{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px}
+  .item-head{display:flex; justify-content:space-between; gap:10px; align-items:baseline; flex-wrap:wrap}
+  .item-name{font-weight:600; font-size:1.05rem}
+  .meta{color:var(--muted); font-size:.8rem; display:flex; gap:10px; flex-wrap:wrap; margin-top:4px}
+  .tags{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+  .tag{font-size:.72rem; padding:2px 8px; border-radius:999px; background:var(--card2);
+    border:1px solid var(--line); color:var(--accent)}
+  .cat{font-size:.72rem; padding:2px 8px; border-radius:6px; background:#0a2c2a;
+    border:1px solid #1c4a47; color:var(--accent)}
+  .item-actions{display:flex; gap:6px; flex-wrap:wrap; margin-top:12px}
+  .item-actions button{padding:6px 10px; font-size:.85rem}
+  pre.view{background:#06100f; border:1px solid var(--line); border-radius:10px; padding:12px;
+    overflow:auto; max-height:340px; font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; margin:10px 0 0}
+  dialog{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg2); color:var(--ink);
+    max-width:520px; width:92%; padding:18px}
+  dialog::backdrop{background:rgba(0,0,0,.6)}
+  .field{display:block; margin:10px 0}
+  .field span{display:block; font-size:.82rem; color:var(--muted); margin-bottom:4px}
+  .field input{width:100%}
+  .row-end{display:flex; justify-content:flex-end; gap:8px; margin-top:14px}
+  footer{max-width:920px; margin:26px auto 0; padding:0 18px; color:var(--muted); font-size:.82rem}
+  footer p{border-top:1px solid var(--line); padding-top:14px}
+  .ok{color:var(--accent)} .danger{color:var(--bad)}
+  .toast{position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+    background:var(--card); border:1px solid var(--accent); color:var(--ink);
+    padding:10px 16px; border-radius:10px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:50}
+  .toast.show{opacity:1}
+  .hidden{display:none}
+
+  /* ===== Schwelle (Erlebnis-Schale obendrauf; NICHT Teil des JasonLib-Kerns) =====
+     Theater ≠ Schloss: Tür/Schlüssel sind Begrüßung/Navigation. Das echte Schloss
+     bleibt Passwort + AES-256-GCM. Bilder liegen lokal (offline) in assets/erlebnis/. */
+  body.th-lock-scroll{overflow:hidden}
+  #threshold{position:fixed; inset:0; z-index:1000; background:#08081a;
+    overflow:hidden; transition:opacity 1.4s ease}
+  #threshold[hidden]{display:none}
+  #threshold.is-gone{opacity:0; pointer-events:none}
+  .th-stage{position:absolute; inset:0; cursor:pointer}
+  .th-door{position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center 45%; user-select:none; -webkit-user-drag:none;
+    transition:transform 4.2s cubic-bezier(.55,.04,.25,1), filter 4.2s ease}
+  /* Schlüssel-Pulsen — 1:1 aus der Sage-Einladung (.vp-key-pulse): rein additives türkises
+     Licht (mix-blend screen), das sanft atmet. Position auf unser Schlüsselloch zentriert;
+     dauerhaft leicht sichtbar als lebendiger Klick-Hinweis, heller bei Nähe (Werkstatt, kein Museum). */
+  .th-keyglow{position:absolute; left:50%; top:43%; z-index:2; pointer-events:none;
+    width:clamp(150px, 17vmin, 300px); aspect-ratio:1; border-radius:50%; mix-blend-mode:screen;
+    opacity:.5; transform:translate(-50%,-50%) scale(.82);
+    background:radial-gradient(circle, rgba(110,231,211,0.6) 0%, rgba(110,231,211,0.22) 42%, rgba(110,231,211,0) 70%);
+    animation:th-key-breath 2.4s ease-in-out infinite}
+  .th-stage:hover .th-keyglow{opacity:1}
+  @keyframes th-key-breath{0%,100%{transform:translate(-50%,-50%) scale(0.82)} 50%{transform:translate(-50%,-50%) scale(1.08)}}
+  #threshold.is-opening .th-keyglow{opacity:0; animation:none; transition:opacity .5s ease}
+  /* Schloss-Sequenz: 5 Frames liegen übereinander und blenden LANGSAM ineinander */
+  .th-lock-seq{position:absolute; inset:0; opacity:0; transform:scale(1.12);
+    transition:opacity 1s ease, transform 5s cubic-bezier(.55,.04,.25,1)}
+  .th-lock-seq img{position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center 45%; opacity:0; transition:opacity 1.2s ease;
+    user-select:none; -webkit-user-drag:none}
+  .th-lock-seq img.is-on{opacity:1}
+  .th-flash{position:absolute; inset:0; pointer-events:none; opacity:0;
+    background:radial-gradient(circle at 50% 46%, #fff 0%, #ffe6a8 16%, #f4b435 38%, transparent 72%)}
+  .th-flash.is-flash{animation:th-flash 2s ease-out forwards}
+  @keyframes th-flash{0%{opacity:0} 40%{opacity:1} 100%{opacity:0}}
+  /* transparenter Funken-Blitz (licht-blitz.webp), additiv über dem Gold-Frame */
+  .th-burst{position:absolute; left:50%; top:46%; width:74%; max-width:960px; height:auto;
+    transform:translate(-50%,-50%) scale(.3); opacity:0; pointer-events:none;
+    mix-blend-mode:screen; filter:drop-shadow(0 0 40px rgba(244,180,53,.55))}
+  .th-burst.is-flash{animation:th-burst 2.4s ease-out forwards}
+  @keyframes th-burst{
+    0%{opacity:0; transform:translate(-50%,-50%) scale(.3)}
+    32%{opacity:1; transform:translate(-50%,-50%) scale(1)}
+    100%{opacity:0; transform:translate(-50%,-50%) scale(1.75)}}
+  #threshold.is-opening .th-door{transform:scale(2.6); filter:brightness(1.12)}
+  #threshold.is-opening .th-lock-seq{opacity:1; transform:scale(1)}
+  /* Finaler Beat: Tür offen, Blick in die Bibliothek (langsames Hineingleiten) */
+  .th-open{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    object-position:center; opacity:0; transform:scale(1.05);
+    transition:opacity 1.8s ease, transform 3.5s ease; user-select:none; -webkit-user-drag:none}
+  #threshold.is-open-final .th-open{opacity:1; transform:scale(1.12)}
+  /* Kein Erklärtext (der Zeiger zeigt schon, dass man klickt) — nur ein dezenter Ausstieg */
+  .th-skip{position:absolute; right:16px; bottom:14px; z-index:2; color:#6f8c8a; font-size:.75rem;
+    text-decoration:underline; cursor:pointer; background:none; border:0; opacity:.5;
+    transition:opacity .3s ease}
+  .th-skip:hover{opacity:1; color:#bfd8d4}
+  #threshold.is-opening .th-skip{opacity:0; pointer-events:none; transition:opacity .5s ease}
+  @media (prefers-reduced-motion:reduce){
+    .th-door{transition:opacity .4s ease}
+    #threshold.is-opening .th-door{transform:none}
+    .th-flash.is-flash{animation:none}
+    .th-burst.is-flash{animation:none}
+    .th-keyglow{animation:none}
+  }
+
+  /* ===== Muster-Buch (Szene-2-Vorschau; kein Teil des JasonLib-Kerns) ===== */
+  #bookdemo[hidden]{display:none}
+  #bookdemo{position:fixed; inset:0; z-index:900; display:flex; align-items:center; justify-content:center; padding:20px}
+  .bd-backdrop{position:absolute; inset:0; background:rgba(4,6,12,.88)}
+  .bd-stage{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;
+    gap:16px; width:100%; max-width:560px}
+  .bd-book{position:relative; width:min(82vw,460px); aspect-ratio:3/2; cursor:pointer;
+    transition:filter .6s ease, transform .3s ease; outline:none}
+  .bd-book:hover{transform:translateY(-2px)}
+  .bd-book:focus-visible{outline:2px solid var(--accent); outline-offset:6px; border-radius:8px}
+  .bd-zu,.bd-auf{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+    user-select:none; -webkit-user-drag:none; transition:opacity .6s ease, transform .6s ease}
+  .bd-auf{opacity:0; transform:scale(.97)}
+  /* Buchname steht UNTER dem Schlüssel (vorher oben, vom Schlüssel verdeckt). */
+  .bd-title{position:absolute; top:auto; bottom:7%; left:6%; right:6%; text-align:center; color:#f6e6b6;
+    font-weight:700; font-size:1.05rem; letter-spacing:.3px; text-shadow:0 2px 10px rgba(0,0,0,.8);
+    transition:opacity .4s ease; pointer-events:none}
+  /* Hinweis-Zeile entfernt: das Formular sagt bereits „Passwort eingeben, um das Buch zu
+     öffnen" — der Buchname nimmt diesen Platz ein (keine doppelte Aussage mehr). */
+  .bd-hint{display:none}
+  /* Buch-Schlüssel: liegt auf dem Buch, atmet; beim Öffnen versinkt er INS Schlüsselloch
+     und verschwindet langsam (wie in der Sage), während das Buch aufgeht. */
+  .bd-key{position:absolute; left:50%; top:48%; height:78%; width:auto;
+    transform:translate(-50%,-50%) scale(1); transform-origin:center; pointer-events:none; z-index:4;
+    animation:bd-key-breath 2.6s ease-in-out infinite;
+    transition:opacity .9s ease, transform 1s cubic-bezier(.5,0,.3,1)}
+  @keyframes bd-key-breath{
+    0%,100%{filter:drop-shadow(0 0 5px rgba(110,231,211,0.45))}
+    50%{filter:drop-shadow(0 0 13px rgba(244,180,53,0.65))}}
+  #bookdemo.is-open .bd-key{opacity:0; transform:translate(-50%,-22%) scale(.66); animation:none}
+  /* Energie-Aufblitzen (gold↔blau Funken), additiv über dem Buch im Öffnen-Moment */
+  .bd-energy{position:absolute; left:50%; top:48%; width:142%; height:auto;
+    transform:translate(-50%,-50%) scale(.5); opacity:0; pointer-events:none; z-index:3;
+    mix-blend-mode:screen}
+  #bookdemo.is-open .bd-energy{animation:bd-energy-flare 1.6s ease-out forwards}
+  @keyframes bd-energy-flare{
+    0%{opacity:0; transform:translate(-50%,-50%) scale(.45)}
+    30%{opacity:.95; transform:translate(-50%,-50%) scale(1)}
+    100%{opacity:0; transform:translate(-50%,-50%) scale(1.35)}}
+  #bookdemo.is-open .bd-zu{opacity:0; transform:scale(1.02)}
+  #bookdemo.is-open .bd-auf{opacity:1; transform:scale(1)}
+  #bookdemo.is-open .bd-book{filter:drop-shadow(0 0 42px rgba(244,180,53,.55))}
+  #bookdemo.is-open .bd-title,#bookdemo.is-open .bd-hint{opacity:0}
+  .bd-content{width:min(88vw,500px); background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:0 16px; max-height:0; opacity:0; overflow:hidden;
+    transition:max-height .5s ease, opacity .5s ease, padding .5s ease}
+  #bookdemo.is-open .bd-content{max-height:min(72vh,560px); opacity:1; padding:16px; overflow:auto}
+  .bd-content h3{margin:.2em 0 .4em; color:var(--accent)}
+  .bd-rename-row{display:none; margin:0 0 10px}
+  #bookdemo.has-rename .bd-rename-row{display:block}
+  .bd-rename-row span{display:block; font-size:.78rem; color:var(--muted); margin-bottom:4px}
+  .bd-rename-row input{width:100%; font:inherit; color:var(--ink); background:#06100f;
+    border:1px solid var(--line); border-radius:10px; padding:9px 12px}
+  .bd-rename-row input:focus{outline:none; border-color:var(--accent)}
+  .bd-content p{margin:.3em 0; color:var(--muted); font-size:.92rem; line-height:1.5}
+  /* Buch-Tresor: echte Einträge + Aktionen im geöffneten Buch (nur im Speicher entschlüsselt) */
+  #bd-status{margin:.1em 0 .6em; color:var(--muted); font-size:.82rem}
+  .bd-empty{color:var(--muted); font-size:.86rem; font-style:italic; margin:.2em 0 .8em}
+  #bd-entries{list-style:none; margin:0 0 10px; padding:0; max-height:30vh; overflow:auto}
+  #bd-entries li{border:1px solid var(--line); border-radius:10px; padding:8px 10px; margin:0 0 8px; background:#06100f}
+  #bd-entries .bd-en-name{font-weight:600; color:var(--ink)}
+  #bd-entries .bd-en-meta{color:var(--muted); font-size:.78rem; margin-top:2px}
+  #bd-entries .bd-view{margin-top:6px; font:inherit; cursor:pointer; color:var(--ink);
+    background:rgba(17,37,42,.8); border:1px solid var(--line); border-radius:8px; padding:4px 10px}
+  #bd-entries .bd-view:hover{border-color:var(--accent)}
+  #bd-entries pre{white-space:pre-wrap; word-break:break-word; background:#040b0a; border:1px solid var(--line);
+    border-radius:8px; padding:8px; margin:8px 0 0; max-height:30vh; overflow:auto; font-size:.78rem; color:#bfe}
+  .bd-actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
+  .bd-actions button{font:inherit; cursor:pointer; color:var(--ink); background:rgba(17,37,42,.8);
+    border:1px solid var(--line); border-radius:9px; padding:8px 12px}
+  .bd-actions button:hover{border-color:var(--accent)}
+  .bd-actions .bd-lock{color:var(--accent-ink); background:var(--accent); border-color:var(--accent); font-weight:600}
+  /* Bücher-Übersicht in der Liste (= alle Regal-Bücher als anklickbarer Text) */
+  #vault-overview{margin:6px 0 10px}
+  .ov-h{font-size:1.02rem; color:var(--accent); margin:.6em 0 .4em; font-weight:700}
+  .ov-h2{margin-top:1.4em; border-top:1px solid var(--line); padding-top:1em}
+  .ov-sub{color:var(--muted); font-weight:400; font-size:.85rem}
+  .ov-empty{color:var(--muted); font-size:.9rem; font-style:italic; margin:.2em 0 .6em}
+  .ov-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+  .ov-item{display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    background:rgba(17,37,42,.45); border:1px solid var(--line); border-radius:10px; padding:7px 10px}
+  .ov-lock{opacity:.85}
+  .ov-lock-empty{opacity:.6; font-size:.74rem; font-weight:600; color:var(--muted)}
+  .ov-name-in{flex:2 1 140px; min-width:110px}
+  .ov-cat-in{flex:1 1 100px; min-width:80px}
+  .ov-name-in,.ov-cat-in{font:inherit; color:var(--ink); background:#06100f; border:1px solid var(--line); border-radius:8px; padding:6px 9px}
+  .ov-name-in:focus,.ov-cat-in:focus{outline:none; border-color:var(--accent)}
+  .ov-open2{font:inherit; cursor:pointer; color:var(--accent-ink); background:var(--accent); border:1px solid var(--accent); border-radius:8px; padding:6px 12px; font-weight:600}
+  .ov-del{font:inherit; cursor:pointer; color:#fff; background:#7a2230; border:1px solid #b1455a; border-radius:8px; padding:6px 9px}
+  .ov-del:hover{border-color:#ff8aa0}
+  .ov-new{margin-top:10px; margin-right:8px; font:inherit; cursor:pointer; color:var(--accent-ink); background:var(--accent); border:1px solid var(--accent); border-radius:9px; padding:8px 12px; font-weight:600}
+  .ov-new:hover{filter:brightness(1.06)}
+  .ov-del-all{margin-top:10px; font:inherit; cursor:pointer; color:#fff; background:#7a2230; border:1px solid #b1455a; border-radius:9px; padding:8px 12px; font-weight:600}
+  .ov-del-all:hover{border-color:#ff8aa0}
+  /* Gesamt-Sicherung (Super-Passwort) */
+  #supersave{margin:6px 0 4px}
+  .ss-note{color:var(--muted); font-size:.86rem; line-height:1.5; margin:.2em 0 .7em}
+  .ss-actions{display:flex; flex-wrap:wrap; gap:8px}
+  .ss-actions button{font:inherit; cursor:pointer; color:var(--ink); background:rgba(17,37,42,.8); border:1px solid var(--line); border-radius:9px; padding:8px 12px}
+  .ss-actions button:hover{border-color:var(--accent)}
+  #ss-create{color:var(--accent-ink); background:var(--accent); border-color:var(--accent); font-weight:600}
+  .ss-out{width:100%; margin-top:10px; font:inherit; color:var(--ink); background:#06100f; border:1px solid var(--line); border-radius:8px; padding:8px; resize:vertical; white-space:pre}
+  .ss-sync{margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .ss-sync button{font:inherit; cursor:pointer; color:var(--ink); background:rgba(17,37,42,.8); border:1px solid var(--line); border-radius:9px; padding:8px 12px}
+  .ss-sync button:hover{border-color:var(--accent)}
+  .ss-sync-status{color:var(--muted); font-size:.85rem}
+  /* TESTBUCH (nur zum Üben — vor Echtbetrieb entfernen): Test-Werkzeuge statt normalem Inhalt */
+  #bd-testtools{display:none}
+  #bookdemo.test-mode #bd-testtools{display:block}
+  #bookdemo.test-mode #bd-status, #bookdemo.test-mode #bd-empty,
+  #bookdemo.test-mode #bd-entries, #bookdemo.test-mode #bd-normal-actions{display:none}
+  .bd-test-note{margin:.1em 0 .8em; color:#f6e6b6; font-size:.9rem; line-height:1.5}
+  .bd-test-expl{margin:.9em 0 0; color:var(--muted); font-size:.84rem; line-height:1.55}
+  #bd-reset{color:#fff; background:#7a2230; border:1px solid #b1455a; border-radius:9px;
+    padding:9px 13px; font:inherit; font-weight:600; cursor:pointer}
+  #bd-reset:hover{border-color:#ff8aa0}
+  /* Code-Abfrage (nur im Regal-Buch-Modus sichtbar) */
+  .bd-code{display:none; flex-direction:column; align-items:center; gap:8px; width:min(88vw,420px);
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px}
+  #bookdemo.code-mode:not(.is-open) .bd-code{display:flex}
+  .bd-code label{color:var(--muted); font-size:.85rem}
+  .bd-code-row{display:flex; gap:8px; width:100%}
+  .bd-code-row input{flex:1; font:inherit; color:var(--ink); background:#06100f; border:1px solid var(--line);
+    border-radius:10px; padding:10px 12px; letter-spacing:.3em; text-align:center}
+  .bd-code-row input:focus{outline:none; border-color:var(--accent)}
+  .bd-code-go{font:inherit; font-weight:600; color:var(--accent-ink); background:var(--accent);
+    border:1px solid var(--accent); border-radius:10px; padding:10px 16px; cursor:pointer}
+  .bd-code-go:disabled{opacity:.4; cursor:default}
+  .bd-code-hint{color:var(--muted); font-size:.76rem; margin:2px 0 0}
+  .bd-code-lock{color:var(--bad); font-size:.82rem; margin:2px 0 0; font-weight:600}
+  .bd-code.shake{animation:bd-shake .4s}
+  @keyframes bd-shake{0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-7px)} 40%,80%{transform:translateX(7px)}}
+  /* im Code-Modus startet das Buch geschlossen; Klick aufs Buch öffnet NICHT (nur der Code) */
+  #bookdemo.code-mode .bd-book{cursor:default}
+  .bd-close{font:inherit; color:var(--ink); background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:9px 16px; cursor:pointer}
+  .bd-close:hover{border-color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){
+    .bd-zu,.bd-auf,.bd-content,.bd-title,.bd-hint{transition:opacity .3s ease}
+    .bd-key{animation:none}
+    #bookdemo.is-open .bd-energy{animation:none; opacity:0}
+  }
+
+  /* „Intro neu starten" — kleiner Schlüssel-Knopf (Funfakt). SVG-Platzhalter, bis der
+     freigestellte Schlüssel (Prompt 2, transparent) als Bild vorliegt. */
+  .key-fab{position:fixed; left:16px; bottom:14px; z-index:60; padding:0; border:0; background:none;
+    cursor:pointer; line-height:0; transition:transform .18s ease}
+  .key-fab:hover{transform:translateY(-2px) rotate(-6deg)}
+  .key-fab:active{transform:translateY(0) rotate(-6deg)}
+  .key-fab img{width:72px; height:auto; display:block; pointer-events:none; -webkit-user-drag:none;
+    filter:drop-shadow(0 3px 7px rgba(0,0,0,.5))}
+  /* Pulsen NUR bei Maus-Hover (sonst ruhig). */
+  .key-fab:hover img{animation:key-fab-breath 2.8s ease-in-out infinite}
+  @keyframes key-fab-breath{
+    0%,100%{filter:drop-shadow(0 3px 7px rgba(0,0,0,.5)) drop-shadow(0 0 5px rgba(110,231,211,.4))}
+    50%{filter:drop-shadow(0 3px 7px rgba(0,0,0,.5)) drop-shadow(0 0 16px rgba(244,180,53,.8))}}
+  @media (prefers-reduced-motion:reduce){
+    .key-fab:hover img{animation:none;
+      filter:drop-shadow(0 3px 7px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(110,231,211,.7))}}
+
+  /* ===== Regal-Ansicht (Szene 1): der Tresor als navigierbares Bücherregal-Safe ===== */
+  #regal{position:fixed; inset:0; z-index:40; background:#08081a; overflow:hidden}
+  #regal.is-hidden{display:none}
+  #regal-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center;
+    transition:opacity .45s ease}
+  #regal.switching #regal-bg{opacity:0}
+  /* Navigation nutzt die Fackeln IM Bild: Rand-Klickflächen mit Hover-Halo („da ist ein Link"). */
+  .regal-torch{position:absolute; top:0; bottom:0; width:16%; z-index:3; border:0; background:none;
+    cursor:pointer; padding:0}
+  .regal-torch.left{left:0} .regal-torch.right{right:0}
+  .regal-torch::before{content:""; position:absolute; top:50%; transform:translateY(-50%);
+    width:88%; height:50%; opacity:0; pointer-events:none; transition:opacity .35s ease;
+    background:radial-gradient(ellipse at center, rgba(110,231,211,.5) 0%, rgba(244,180,53,.3) 34%, transparent 70%)}
+  .regal-torch.left::before{left:0} .regal-torch.right::before{right:0}
+  .regal-torch:hover::before, .regal-torch:focus-visible::before{opacity:1}
+  .regal-torch:focus-visible{outline:none}
+  .regal-torch:disabled{cursor:default}
+  .regal-torch:disabled::before{display:none}
+  /* Bücher liegen in einrichtbaren Regalreihen: jede Reihe ein eigener Container,
+     den Klaus per „Regal einrichten" aufs Brett im Bild zieht (Position/Breite/Höhe),
+     lokal je Ebene gespeichert. Normal transparent — sichtbar nur im Einricht-Modus. */
+  #regal-books{position:absolute; z-index:2; pointer-events:none}   /* Größe/Lage per JS = exakt das angezeigte Bild-Rechteck (cover) → Bücher bild-relativ verankert */
+  #regal:not(.has-books) #regal-books{display:none}
+  .shelf-row{position:absolute; display:flex; justify-content:center; align-items:flex-end;
+    gap:1.4%; pointer-events:none}   /* Boden-Band: Position/Höhe/Verzerrung automatisch per JS;
+                                        Bücher stehen UNTEN auf dem Regalboden (an den Böden ausgerichtet) */
+  /* Einricht-Modus: Hintergrund dimmen, Bücher passiv; je Boden 2 Linien (oben gold, unten cyan) */
+  #regal.editing #regal-bg{filter:brightness(.45) saturate(.75)}
+  #regal.editing .regal-torch{pointer-events:none}   /* beim Einrichten keine versehentliche Navigation */
+  #regal.editing .shelf-row{pointer-events:auto;
+    box-shadow:inset 0 4px 0 #ffd86e, inset 0 -4px 0 #6ee7d3, 0 0 16px rgba(110,231,211,.45)}
+  #regal.editing .shelf-book{pointer-events:none; opacity:.5}
+  .rh{position:absolute; display:none; z-index:8; width:22px; height:22px; border-radius:50%;
+    background:#fff; border:2px solid #08131a; box-shadow:0 0 10px rgba(110,231,211,.95);
+    pointer-events:auto; cursor:grab}
+  #regal.editing .rh{display:block}
+  .rh-tl{left:-11px; top:-11px} .rh-tr{right:-11px; top:-11px}
+  .rh-bl{left:-11px; bottom:-11px} .rh-br{right:-11px; bottom:-11px}
+  /* Alle Bücher sind gleich (anonym), greifbar (ziehen=bewegen, oben/unten greifen=kippen)
+     und tragen ein Regal-Schild UNTERHALB — niemand sieht dem Buch an, was drin ist. */
+  .shelf-book{pointer-events:auto; position:relative; height:90%; border:0; background:none; cursor:grab;
+    padding:0; touch-action:none; filter:drop-shadow(0 6px 12px rgba(0,0,0,.55)); transition:filter .2s ease}
+  .shelf-book img{height:100%; width:auto; display:block; -webkit-user-drag:none; pointer-events:none; transform-origin:center bottom}
+  .shelf-book:hover, .shelf-book:focus-visible{outline:none;
+    filter:drop-shadow(0 10px 18px rgba(0,0,0,.6)) drop-shadow(0 0 14px rgba(110,231,211,.65))}
+  .book-dragging{cursor:grabbing !important; z-index:6; filter:drop-shadow(0 16px 26px rgba(0,0,0,.7)) drop-shadow(0 0 18px rgba(110,231,211,.8)) !important}
+  /* echtes Tresor-Buch (verschlossen, AES) trägt ein kleines Schloss — Deko-Bücher nicht */
+  .shelf-book.has-vault::after{content:"🔒"; position:absolute; top:1px; right:1px; font-size:13px;
+    line-height:1; filter:drop-shadow(0 0 3px #000); pointer-events:none}
+  /* TESTBUCH (nur zum Üben — vor Echtbetrieb entfernen): trägt ein 🧪 und öffnet die Test-Werkzeuge */
+  .shelf-book.is-testbook::before{content:"🧪"; position:absolute; top:1px; left:1px; font-size:13px;
+    line-height:1; filter:drop-shadow(0 0 3px #000); pointer-events:none}
+  /* Regal-Schild unter dem Buch: cyan/blaues Leuchten wie Ebene 2/3, Breite per JS eingepasst */
+  .sb-label{position:absolute; top:92%; left:50%; transform:translateX(-50%); margin-top:0;
+    width:150%; max-width:150%; display:block; text-align:center;
+    white-space:pre; letter-spacing:.04em; font-weight:700; pointer-events:none;
+    color:#d3fbf3; font-size:13px; line-height:1.1;
+    text-shadow:0 0 4px #6ee7d3, 0 0 10px rgba(110,231,211,.85), 0 0 18px rgba(59,130,246,.6), 0 1px 2px #000;
+    animation:sb-glow 3s ease-in-out infinite}
+  @keyframes sb-glow{
+    0%,100%{text-shadow:0 0 4px #6ee7d3, 0 0 9px rgba(110,231,211,.7), 0 0 16px rgba(59,130,246,.5), 0 1px 2px #000}
+    50%{text-shadow:0 0 6px #9af3e6, 0 0 14px rgba(110,231,211,.95), 0 0 26px rgba(59,130,246,.8), 0 1px 2px #000}}
+  @media (prefers-reduced-motion:reduce){ .sb-label{animation:none} }
+  #regal-caption{position:absolute; left:0; right:0; bottom:46px; text-align:center; color:#e8dcbf;
+    font-size:.92rem; letter-spacing:.05em; text-shadow:0 2px 8px #000; pointer-events:none; z-index:2}
+  /* Ebenen-Balken unten: alle Ansichten direkt wählbar (nur Ansichtswechsel — verändert KEINE Bücher).
+     Schmal & dezent halb-durchsichtig; verdeckt den Hintergrund nicht. */
+  #regal-levelbar{position:absolute; left:50%; bottom:8px; transform:translateX(-50%); z-index:4;
+    display:flex; gap:4px; flex-wrap:wrap; justify-content:center; max-width:94%;
+    background:rgba(8,8,26,.40); border:1px solid rgba(110,231,211,.22); border-radius:10px; padding:3px 5px}
+  #regal.editing #regal-levelbar{display:none}
+  .lvl-btn{font:inherit; font-size:.78rem; cursor:pointer; color:#e8f6f2; background:rgba(17,37,42,.38);
+    border:1px solid rgba(110,231,211,.20); border-radius:7px; padding:4px 10px; text-shadow:0 1px 2px #000;
+    transition:background .2s ease, border-color .2s ease}
+  .lvl-btn:hover{border-color:var(--accent); background:rgba(17,37,42,.7)}
+  .lvl-btn.active{color:var(--accent-ink); background:var(--accent); border-color:var(--accent); font-weight:600}
+  #regal-tolist{position:absolute; top:14px; right:14px; z-index:4; font:inherit; cursor:pointer; color:var(--ink);
+    background:rgba(17,37,42,.72); border:1px solid var(--line); border-radius:10px; padding:8px 12px}
+  #regal-tolist:hover{border-color:var(--accent)}
+  #regal-edit{position:absolute; top:14px; right:120px; z-index:4; font:inherit; cursor:pointer; color:var(--ink);
+    background:rgba(17,37,42,.72); border:1px solid var(--line); border-radius:10px; padding:8px 12px}
+  #regal-edit:hover{border-color:var(--accent)}
+  #tools-grip{cursor:move; user-select:none; font-weight:700; color:#08131a; background:#6ee7d3;
+    border-radius:8px; padding:6px 10px}
+  #regal-edit-tools{position:absolute; top:56px; right:14px; z-index:5; display:none; gap:8px; align-items:center;
+    flex-wrap:wrap; max-width:64%; background:rgba(8,8,26,.85); border:1px solid var(--line);
+    border-radius:10px; padding:8px 10px}
+  #regal-edit-tools button{font:inherit; cursor:pointer; color:var(--ink); background:rgba(17,37,42,.8);
+    border:1px solid var(--line); border-radius:8px; padding:6px 10px}
+  #regal-edit-tools button:hover{border-color:var(--accent)}
+  #row-hint{color:#bcd; font-size:.74rem; opacity:.85; flex-basis:100%}
+  @media (prefers-reduced-motion:reduce){ .regal-torch img{animation:none} #regal-bg{transition:opacity .2s} }
+
+  /* Einmaliger Bedien-Hinweis im Regal */
+  #regal-hint{position:absolute; left:50%; top:16px; transform:translateX(-50%); z-index:5; max-width:90%;
+    background:rgba(8,8,26,.72); border:1px solid var(--line); color:#e8dcbf; font-size:.82rem;
+    padding:8px 14px; border-radius:999px; text-align:center; pointer-events:none; transition:opacity .6s ease}
+  #regal-hint.gone{opacity:0}
+
+  /* ===== HUD: Wächter-Lampe · Siegel · Notfall (Panik) — Erlebnis-Schicht ===== */
+  #hud{position:fixed; top:12px; left:14px; z-index:55; display:flex; align-items:center; gap:10px}
+  #hud.is-hidden{display:none}
+  .hud-lamp{width:14px; height:14px; border-radius:50%; background:#2dd4bf;
+    box-shadow:0 0 10px rgba(45,212,191,.85); animation:hud-breath 3.2s ease-in-out infinite}
+  @keyframes hud-breath{0%,100%{opacity:.65} 50%{opacity:1}}
+  .hud-seal{display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%;
+    background:radial-gradient(circle at 50% 35%, #d9b25a, #7a5a1e); border:1px solid #caa24e;
+    font-size:.85rem; box-shadow:0 0 8px rgba(201,169,97,.5); cursor:help}
+  /* Notfall = messing-orange Lampe (wie die Ecken), blinkt sanft; beim Drücken/Öffnen rot wie Signallampe */
+  .hud-panik{position:relative; font:inherit; font-size:.8rem; font-weight:600; color:#ffe7b8;
+    background:linear-gradient(#2a1d0e,#181106); border:1px solid #c9882f; border-radius:10px;
+    padding:6px 12px 6px 28px; cursor:pointer; transition:background .25s, color .25s, border-color .25s, box-shadow .25s}
+  .hud-panik::before{content:""; position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    width:11px; height:11px; border-radius:50%; background:#f6a52a;
+    box-shadow:0 0 6px #f6a52a, 0 0 12px rgba(246,165,42,.7); animation:panik-blink 1.9s ease-in-out infinite}
+  .hud-panik:hover{border-color:#f0a83a; box-shadow:0 0 14px rgba(244,150,40,.5)}
+  .hud-panik:active, .hud-panik.armed{color:#ffd7d0; border-color:#e23b2e; background:linear-gradient(#34120c,#1f0905)}
+  .hud-panik:active::before, .hud-panik.armed::before{background:#ff3b30;
+    box-shadow:0 0 10px #ff3b30, 0 0 22px rgba(255,59,48,.95); animation:panik-blink-red .6s steps(1,end) infinite}
+  @keyframes panik-blink{0%,100%{opacity:.5} 50%{opacity:1}}
+  @keyframes panik-blink-red{0%,49%{opacity:1} 50%,100%{opacity:.25}}
+  /* SBKIM-Siegel (Modul 16) — Wappen 1:1 aus Sage-Protokol; Klick öffnet Andock */
+  #sbkim-siegel-badge{width:38px; height:38px; border-radius:50%; background:transparent; border:none;
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; overflow:visible; padding:0;
+    transition:filter .25s ease-out, transform .25s ease-out}
+  #sbkim-siegel-badge img{width:38px; height:38px; display:block; pointer-events:none}
+  #sbkim-siegel-badge:hover{filter:drop-shadow(0 0 8px rgba(201,169,97,.55)); transform:scale(1.06)}
+  #sbkim-siegel-badge:focus-visible{outline:2px solid #C9A961; outline-offset:3px}
+  #sbkim-siegel-badge.first-boot{animation:siegel-first-boot 600ms ease-out}
+  @keyframes siegel-first-boot{0%{transform:scale(.7); opacity:0}
+    60%{transform:scale(1.12); opacity:1; filter:drop-shadow(0 0 14px rgba(201,169,97,.55))}
+    100%{transform:scale(1); opacity:1}}
+  #andock{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg2); color:var(--ink);
+    max-width:470px; width:92%; padding:18px}
+  #andock::backdrop{background:rgba(0,0,0,.6)}
+  .andock-row{display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px solid var(--line); font-size:.9rem}
+  .andock-row span{color:var(--muted)}
+  .andock-row code, .andock-row a{color:var(--accent); font-family:ui-monospace,monospace; font-size:.8rem; word-break:break-all; text-align:right}
+  .andock-tool{display:inline-block; background:var(--accent); color:var(--accent-ink); border:1px solid var(--accent);
+    border-radius:10px; padding:9px 14px; font-weight:600; text-decoration:none}
+  .andock-tool:hover{filter:brightness(1.06)}
+  #panik{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg2); color:var(--ink);
+    max-width:430px; width:92%; padding:18px}
+  #panik::backdrop{background:rgba(0,0,0,.6)}
+  .panik-stufe{display:block; width:100%; text-align:left; margin:8px 0; padding:12px; border-radius:10px;
+    background:var(--card); border:1px solid var(--line); color:var(--ink); cursor:pointer; font:inherit}
+  .panik-stufe span{display:block; color:var(--muted); font-size:.8rem; margin-top:3px}
+  .panik-stufe.s1{border-color:#5a4a17}
+  .panik-stufe:hover:not(:disabled){border-color:var(--accent)}
+  .panik-stufe:disabled{opacity:.55; cursor:default}
+  .panik-stufe.s3{border-color:#5a2a17}
+  .panik-stufe.s3:hover:not(:disabled){border-color:#e2663b}
+  .panik-foot{display:flex; justify-content:space-between; gap:8px; margin-top:12px; flex-wrap:wrap}
+  .panik-membran{margin:.9em 0 0; color:var(--muted); font-size:.78rem; line-height:1.45}
+  @media (prefers-reduced-motion:reduce){ .hud-lamp,.hud-panik::before{animation:none} }
+</style>
+</head>
+<body>
+
+<!-- ===== Schwelle: Erlebnis-Schale obendrauf (kein Teil des JasonLib-Kerns) =====
+     Tür (tuer-zu) → Klick → Zoom aufs Schlüsselloch + Schloss-Nahaufnahme mit
+     pulsendem Türkis → warmer Lichtblitz → Bibliothek. Bilder lokal/offline. -->
+<div id="threshold" role="dialog" aria-label="Eingang zum Tresor">
+  <div class="th-stage" id="th-stage">
+    <img class="th-door" decoding="async" src="../assets/erlebnis/bilder/tuer-zu.webp"
+         alt="Verschlossene Tresortür mit glühendem Schlüsselloch" />
+    <!-- Schlüssel-Pulsen, 1:1 aus der Sage-Einladung (.vp-key-pulse) — lebendiger Klick-Hinweis -->
+    <div class="th-keyglow" aria-hidden="true"></div>
+    <div class="th-lock-seq" id="th-lock-seq" aria-hidden="true">
+      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-1.webp" alt="Das Schloss lädt sich auf" />
+      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-2.webp" alt="" />
+      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-3.webp" alt="" />
+      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-4.webp" alt="" />
+      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-5.webp" alt="Das Schloss öffnet sich, Gold flutet aus" />
+    </div>
+    <div class="th-flash" id="th-flash"></div>
+    <img class="th-burst" id="th-burst" decoding="async" aria-hidden="true" alt=""
+         src="../assets/erlebnis/bilder/licht-blitz.webp" />
+    <img class="th-open" decoding="async" src="../assets/erlebnis/bilder/tuer-offen.webp"
+         alt="Die Tür steht offen — Blick in die Bibliothek" />
+  </div>
+  <button class="th-skip" id="th-skip" type="button">überspringen</button>
+</div>
+
+<!-- ===== Regal-Ansicht (Szene 1): der Tresor als navigierbares Bücherregal-Safe.
+     Fackeln links/rechts = Navigation (rechte gespiegelt). Bücher folgen mit den Rücken. -->
+<div id="regal" aria-label="Tresor — Bücherregal">
+  <img id="regal-bg" alt="" decoding="async" src="../assets/erlebnis/bilder/regal-ebene1.webp" />
+  <!-- Bücher auf den frontalen Ebenen (Reihen per JS gefüllt; sichtbar via .has-books) -->
+  <div id="regal-books" aria-label="Bücher im Regal"></div>
+  <button id="regal-prev" class="regal-torch left" type="button" aria-label="eine Ansicht nach links"></button>
+  <button id="regal-next" class="regal-torch right" type="button" aria-label="eine Ansicht nach rechts"></button>
+  <div id="regal-caption" aria-live="polite"></div>
+  <div id="regal-levelbar" aria-label="Ebene direkt wählen">
+    <button type="button" class="lvl-btn" data-view="0">Eingang links</button>
+    <button type="button" class="lvl-btn" data-view="1">Ankunft</button>
+    <button type="button" class="lvl-btn" data-view="2">rechts</button>
+    <button type="button" class="lvl-btn" data-view="3">Übergang</button>
+    <button type="button" class="lvl-btn" data-view="4">Kern</button>
+  </div>
+  <div id="regal-hint">Mit dem Ebenen-Balken unten (oder den Fackeln ◀ ▶ / ←→) wechselst du die Ebenen · ein Buch anklicken zum Öffnen</div>
+  <button id="regal-tolist" type="button" title="Zur Bibliothek (Übersicht aller Bücher)">☰ Bibliothek</button>
+  <button id="regal-edit" type="button" title="Regale einrichten (Linien)">📐 Regale einrichten</button>
+  <div id="regal-edit-tools" aria-label="Regale einrichten">
+    <span id="tools-grip" title="Leiste verschieben">⠿ ziehen</span>
+    <button id="shelf-add" type="button">+ Boden</button>
+    <button id="shelf-del" type="button">− Boden</button>
+    <button id="shelf-reset" type="button">↺ Diese Ebene zurücksetzen</button>
+    <button id="shelf-export" type="button">⬇ Export (an Claude schicken)</button>
+    <button id="shelf-import" type="button">⬆ Import</button>
+    <span id="row-hint">Ziehe die 4 Endpunkte: obere Linie (gold) = Oberkante, untere Linie (cyan) = wo die Bücher stehen. Bücher füllen sich automatisch dazwischen.</span>
+  </div>
+</div>
+
+<header>
+  <button id="sbkim-mailbox-btn" type="button" onclick="sbkimMailboxCheck(false)"
+          title="Briefkasten der Nachbar-Knoten (Sage + SB-KIMTool-Point) jetzt prüfen"
+          style="position:relative;float:right;font:inherit;padding:.4em .8em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">
+    📬 Briefkasten
+    <span id="sbkim-mailbox-badge" hidden
+          style="position:absolute;top:-.5em;right:-.5em;min-width:1.4em;height:1.4em;padding:0 .3em;border-radius:.7em;background:#c0392b;color:#fff;font-size:.75em;line-height:1.4em;text-align:center"></span>
+  </button>
+  <h1><span class="glyph">▤</span> Jasons-Bibliothek</h1>
+  <p class="sub">Deine Bibliothek fuer Dateien (alle Formate) — laden, benennen, ordnen, exportieren, wieder einlesen.</p>
+  <p><span class="chip">offline</span> <span class="chip">Scheibe 2</span>
+     <span class="chip">🔒 Tresor: Passwort-Schutz</span></p>
+</header>
+
+<main>
+  <div class="bar">
+    <button id="btn-add" class="btn-primary">＋ Datei laden (alle Formate)</button>
+    <button id="btn-export-all" class="btn-ghost">⤓ Bibliothek sichern</button>
+    <button id="btn-export-enc" class="btn-ghost">🔒 Verschlüsselt sichern</button>
+    <button id="btn-import-lib" class="btn-ghost">⤒ Einlesen / Tresor öffnen</button>
+    <button id="btn-bookdemo" class="btn-ghost" title="Vorschau: wie ein Jason als Buch aussieht">📚 Muster-Buch</button>
+    <button id="btn-bookseq" class="btn-ghost" title="Die Buch-Öffnen-Sequenz automatisch ansehen">▶ Buchsequenz</button>
+    <button id="btn-regal" class="btn-ghost" title="Zur Regal-Ansicht (Tresor)">📚 Regal</button>
+    <input id="file-add" type="file" multiple class="hidden" />
+    <input id="file-import" type="file" accept=".json,application/json" class="hidden" />
+  </div>
+
+  <section id="vault-overview">
+    <h2 class="ov-h">📚 Deine Bücher im Tresor <span class="ov-sub">— Name &amp; Kategorie eintragen, öffnen, Inhalt leeren</span></h2>
+    <p class="ov-empty" id="ov-empty" hidden>Noch keine Bücher im Tresor. Lege im <b>Regal</b> ein Buch an: ein Buch öffnen → „＋ Jason laden" → „🔒 Verschließen".</p>
+    <ul class="ov-list" id="vault-list"></ul>
+    <button type="button" id="ov-new-book" class="ov-new">＋ Neues Buch</button>
+    <button type="button" id="ov-delete-all" class="ov-del-all" hidden>🗑 Gesamten Tresor-Inhalt löschen</button>
+  </section>
+
+  <section id="supersave">
+    <h2 class="ov-h ov-h2">🛡️ Gesamt-Sicherung (Super-Passwort)</h2>
+    <p class="ss-note">Eine einzige verschlüsselte Datei mit <b>allen Büchern</b> — damit du nach App-Löschung wieder an <b>alles</b> kommst. Die Bücher behalten zusätzlich ihr eigenes Passwort. Bewahre <b>Datei</b> und <b>Super-Passwort</b> (oder <b>3 von 5 Codes</b>) getrennt auf.</p>
+    <div class="ss-actions">
+      <button type="button" id="ss-create">⤓ Gesamt-Sicherung erstellen</button>
+      <button type="button" id="ss-restore">⤒ Gesamt-Sicherung einlesen</button>
+      <button type="button" id="ss-split">🗝️ Super-Passwort → 5 Codes (3 von 5)</button>
+      <button type="button" id="ss-combine">🧩 Super-Passwort aus 3 Codes</button>
+      <input id="ss-file" type="file" accept=".json,application/json" hidden />
+    </div>
+    <textarea id="ss-out" class="ss-out" rows="3" readonly hidden></textarea>
+    <div class="ss-sync" id="ss-sync" hidden>
+      <button type="button" id="ss-sync-btn">📂 Festen Ordner verbinden &amp; Auto-Sync aktivieren</button>
+      <button type="button" id="ss-sync-off" hidden>⏸ Auto-Sync pausieren</button>
+      <span class="ss-sync-status" id="ss-sync-status">Auto-Sync aus.</span>
+    </div>
+    <p class="ss-note" id="ss-sync-note" hidden>Auto-Sync in einen festen Ordner gibt es nur in <b>Chrome/Edge</b>. In anderen Browsern nutze „Gesamt-Sicherung erstellen/einlesen".</p>
+  </section>
+
+  <h2 class="ov-h ov-h2">🗂️ Freie Liste <span class="ov-sub">— einzelne Jasons, unabhängig vom Tresor</span></h2>
+
+  <div class="tools">
+    <input id="q" type="text" placeholder="Suchen (Name, Kategorie, Schlagwort) …" />
+    <select id="f-cat"><option value="">alle Kategorien</option></select>
+    <select id="f-tag"><option value="">alle Schlagworte</option></select>
+    <select id="f-sort">
+      <option value="updated-desc">zuletzt geaendert</option>
+      <option value="created-desc">zuletzt hinzugefuegt</option>
+      <option value="name-asc">Name A→Z</option>
+      <option value="name-desc">Name Z→A</option>
+    </select>
+  </div>
+  <div class="count" id="count"></div>
+
+  <div id="empty" class="empty hidden">
+    Noch nichts in der Bibliothek. Lade deine erste Datei mit <b>„＋ Datei laden"</b>.
+  </div>
+  <ul class="list" id="list"></ul>
+</main>
+
+<footer>
+  <p>
+    Gespeichert wird <b>in diesem Browser</b> (pro Geraet). Der Export als <code>.json</code>
+    ist deine echte, mitnehmbare Sicherung — zum Aufheben und Verschenken.
+    <b>🔒 Verschlüsselt sichern</b> schützt mit Passwort (AES-256-GCM / PBKDF2 600k — gleicher
+    Umschlag wie Modul 02). Zum Verschenken das Passwort <b>getrennt</b> mitteilen.
+    Passwort vergessen = Inhalt weg (kein Hintertürchen).
+  </p>
+</footer>
+
+<!-- Bearbeiten-Dialog -->
+<dialog id="dlg-edit">
+  <h3 style="margin:0 0 6px">Jason bearbeiten</h3>
+  <label class="field"><span>Name</span><input id="e-name" type="text" /></label>
+  <label class="field"><span>Kategorie</span><input id="e-cat" type="text" placeholder="z. B. Rezepte" /></label>
+  <label class="field"><span>Schlagworte (mit Komma trennen)</span><input id="e-tags" type="text" placeholder="z. B. test, wichtig" /></label>
+  <div class="row-end">
+    <button id="e-cancel" class="btn-ghost">Abbrechen</button>
+    <button id="e-save" class="btn-primary">Speichern</button>
+  </div>
+</dialog>
+
+<div id="toast" class="toast"></div>
+
+<!-- ===== Muster-Buch (Szene-2-Vorschau; kein Teil des JasonLib-Kerns) ===== -->
+<div id="bookdemo" hidden>
+  <div class="bd-backdrop" id="bd-backdrop"></div>
+  <div class="bd-stage" role="dialog" aria-label="Muster-Buch" aria-modal="true">
+    <div class="bd-book" id="bd-book" role="button" tabindex="0" aria-label="Buch öffnen oder schließen">
+      <img class="bd-zu" decoding="async" src="../assets/erlebnis/bilder/buch-zu.webp" alt="Verschlossenes Buch mit Schlüsselloch" />
+      <img class="bd-auf" decoding="async" src="../assets/erlebnis/bilder/buch-auf.webp" alt="Geöffnetes Buch, Goldlicht flutet heraus" />
+      <img class="bd-energy" decoding="async" aria-hidden="true" alt="" src="../assets/erlebnis/bilder/buch-energie.webp" />
+      <img class="bd-key" decoding="async" aria-hidden="true" alt="" src="../assets/erlebnis/bilder/buch-schluessel.webp" />
+      <span class="bd-title" id="bd-title">Mein erstes Jason</span>
+      <span class="bd-hint" id="bd-hint">mit dem Schlüssel öffnen</span>
+    </div>
+    <form class="bd-code" id="bd-code" autocomplete="off">
+      <label for="bd-code-input">Passwort eingeben, um das Buch zu öffnen</label>
+      <div class="bd-code-row">
+        <input id="bd-code-input" type="password" autocomplete="off" maxlength="128" aria-describedby="bd-code-hint" />
+        <button type="submit" class="bd-code-go">Öffnen</button>
+      </div>
+      <p class="bd-code-hint" id="bd-code-hint">Dein Passwort ist das echte Schloss (AES-256-GCM). Nach 2 Fehlversuchen kurze Sperre.</p>
+      <p class="bd-code-lock" id="bd-code-lock" hidden></p>
+      <button type="button" id="bd-recover-link" class="bd-link">Passwort vergessen? Aus 3 Teilen wiederherstellen</button>
+    </form>
+    <div class="bd-content" id="bd-content">
+      <h3 id="bd-content-title">Mein erstes Jason</h3>
+      <label class="bd-rename-row"><span>Beschriftung (leuchtet auf dem Buchrücken)</span>
+        <input id="bd-rename" type="text" maxlength="24" autocomplete="off" placeholder="Name auf dem Buch" /></label>
+      <p id="bd-status">Dieses Buch ist dein Tresor — der Inhalt wird mit deinem Passwort AES-256-verschlüsselt. „Offen" heißt: nur jetzt im Speicher entschlüsselt, nie im Klartext gespeichert.</p>
+      <p class="bd-empty" id="bd-empty" hidden>Noch leer. Lade eine <b>Datei</b> (beliebiges Format) und verschließe dann mit einem Passwort.</p>
+      <ul id="bd-entries"></ul>
+      <div class="bd-actions" id="bd-normal-actions">
+        <button type="button" id="bd-load">＋ Datei laden (alle Formate)</button>
+        <button type="button" id="bd-lock" class="bd-lock">🔒 Verschließen</button>
+        <button type="button" id="bd-gift">⤓ Verschenken / Sichern</button>
+        <button type="button" id="bd-split">🗝️ Passwort aufteilen (3 von 5)</button>
+        <button type="button" id="bd-decoy" title="Köder-Passwort: ein zweites Passwort zeigt eine harmlose Bibliothek statt deiner echten Daten">🪤 Tarnfach</button>
+      </div>
+      <input id="bd-file" type="file" multiple hidden />
+      <!-- TESTBUCH — nur zum Üben; vor dem Echtbetrieb diesen Block (+ Skript/CSS „TESTBUCH") entfernen -->
+      <div id="bd-testtools">
+        <p class="bd-test-note">🧪 <b>Testbuch — nur zum Üben.</b> Hier setzt du den ganzen Probelauf
+           mit einem Klick zurück. Vor dem Echtbetrieb wird dieses Testbuch wieder entfernt.</p>
+        <div class="bd-actions">
+          <button type="button" id="bd-reset">🧹 Probelauf zurücksetzen (alle Test-Bücher entriegeln)</button>
+          <button type="button" id="bd-sh-practice-split">🗝️ Shamir üben: aufteilen (3/5)</button>
+          <button type="button" id="bd-sh-practice-rec">🧩 Shamir üben: wiederherstellen</button>
+        </div>
+        <p class="bd-test-expl"><b>Angreifer spielen:</b> Öffne ein <i>anderes</i> verschlossenes Buch und
+           gib <b>2× ein falsches Passwort</b> ein — das Buch sperrt dann <b>1 Minute</b>. Das ist der heute
+           aktive Schutz. Die weiteren Schutzmechanismen (Verbergen · Löschen · Wächter) kommen in der
+           nächsten Sicherheits-Sitzung und werden dann hier sichtbar.</p>
+      </div>
+    </div>
+
+    <!-- Shamir 3-von-5: Passwort aufteilen / wiederherstellen. Echte Krypto liegt im
+         getesteten Kern (JasonLib.splitSecret / combineShares). Diese UI ist nur die Schale. -->
+    <div class="bd-shamir" id="bd-split-panel" hidden>
+      <h3>🗝️ Passwort in 5 Teile aufteilen — 3 von 5</h3>
+      <p class="bd-sh-intro">Jeder Teil unten ist ein Code. <b>Beliebige 3</b> davon stellen das Passwort
+        wieder her — 1 oder 2 Teile sind wertlos. Bewahre die 5 Teile an <b>verschiedenen Orten</b> auf
+        (Zettel, USB-Stick, Vertrauensperson …).</p>
+      <ol class="bd-sh-list" id="bd-sh-parts"></ol>
+      <p class="bd-sh-test" id="bd-sh-test"></p>
+      <p class="bd-sh-warn">Ehrliche Grenze: mehr zu verwahren — aber <b>weniger als 3 Teile = endgültig weg</b>.
+        Die Teile ersetzen dein Passwort nicht, sie sind ein zweiter Weg dorthin. Diese Codes erscheinen
+        nur jetzt auf dem Bildschirm; nichts davon wird gespeichert.</p>
+      <div class="bd-actions"><button type="button" id="bd-sh-done">Fertig</button></div>
+    </div>
+
+    <div class="bd-shamir" id="bd-recover-panel" hidden>
+      <h3>🧩 Passwort aus 3 Teilen wiederherstellen</h3>
+      <p class="bd-sh-intro">Füge <b>mindestens 3</b> der 5 Teil-Codes ein (je ein Feld). Leere Felder sind ok.
+        Ein verschriebenes Teil wird genau benannt.</p>
+      <div class="bd-sh-inputs" id="bd-sh-inputs"></div>
+      <p class="bd-sh-result" id="bd-sh-result" hidden></p>
+      <div class="bd-actions">
+        <button type="button" id="bd-rec-go" class="bd-lock">Wiederherstellen</button>
+        <button type="button" id="bd-rec-cancel">Zurück</button>
+      </div>
+    </div>
+
+    <button class="bd-close" id="bd-close" type="button">Schließen</button>
+  </div>
+</div>
+<style id="shamir-css">
+  #bookdemo .bd-link{ background:none; border:0; color:#6EE7D3; text-decoration:underline;
+    cursor:pointer; font-size:.9em; padding:.3em 0 0; }
+  #bookdemo .bd-shamir{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(560px,92vw); max-height:86vh; overflow:auto; z-index:60; text-align:left;
+    background:rgba(8,8,26,.98); border:1px solid rgba(110,231,211,.35); border-radius:14px;
+    padding:1.3em 1.5em; box-shadow:0 20px 60px rgba(0,0,0,.6); color:#f3eede; }
+  #bookdemo .bd-shamir h3{ margin:.1em 0 .55em; }
+  #bookdemo .bd-sh-intro,#bookdemo .bd-sh-warn,#bookdemo .bd-sh-test,#bookdemo .bd-sh-result{
+    font-size:.92em; line-height:1.45; margin:.4em 0; }
+  #bookdemo .bd-sh-warn{ opacity:.82; }
+  #bookdemo .bd-sh-test.ok,#bookdemo .bd-sh-result.ok{ color:#6EE7D3; }
+  #bookdemo .bd-sh-test.bad,#bookdemo .bd-sh-result.bad{ color:#ff9a9a; }
+  #bookdemo .bd-sh-list{ margin:.4em 0 .6em 1.25em; padding:0; }
+  #bookdemo .bd-sh-list li{ margin:.4em 0; }
+  #bookdemo .bd-sh-row{ display:flex; gap:.4em; align-items:center; margin:.25em 0; }
+  #bookdemo .bd-sh-code{ flex:1 1 auto; font-family:monospace; font-size:.82em; padding:.35em .4em;
+    background:rgba(0,0,0,.35); color:#f3eede; border:1px solid rgba(110,231,211,.25); border-radius:7px; }
+  #bookdemo .bd-sh-inputs textarea{ width:100%; box-sizing:border-box; font-family:monospace;
+    font-size:.82em; min-height:2.4em; margin:.22em 0; padding:.35em .4em; background:rgba(0,0,0,.35);
+    color:#f3eede; border:1px solid rgba(110,231,211,.25); border-radius:7px; resize:vertical; }
+</style>
+
+<!-- „Intro neu starten" — Schlüssel-Knopf (Funfakt). SVG-Platzhalter für den
+     freigestellten Schlüssel; tauschbar gegen ein transparentes PNG. -->
+<button id="btn-replay-intro" class="key-fab" type="button"
+        title="Intro & Tür nochmal ansehen" aria-label="Intro und Tür nochmal ansehen">
+  <img decoding="async" src="../assets/erlebnis/bilder/schluessel.webp" alt="Schlüssel — Intro nochmal ansehen" />
+</button>
+
+<!-- HUD: Wächter-Lampe · Siegel · Notfall (Panik) — Erlebnis-Schicht -->
+<div id="hud">
+  <span class="hud-lamp" title="Wächter: ruhig — keine Fremdzugriffe erkannt" aria-label="Wächter ruhig"></span>
+  <button id="sbkim-siegel-badge" type="button" title="SBKIM-Siegel — Andock zum Werkzeug öffnen" aria-label="SBKIM-Siegel — Andock öffnen">
+    <img src="../assets/sbkim-siegel-wappen.svg" alt="" decoding="async" />
+  </button>
+  <button id="hud-panik" class="hud-panik" type="button" title="Notfall — schnell verriegeln">🛑 Notfall</button>
+</div>
+
+<!-- SBKIM · Andock — Verbindung zum Werkzeug (wie im Sage-Protokoll) -->
+<dialog id="andock">
+  <h3 style="margin:0 0 6px">SBKIM · Andock</h3>
+  <p style="color:var(--muted); margin:.2em 0 1em; font-size:.9rem">Dieser Tresor ist ein bezeugter SBKIM-Endknoten am Sage-Protokoll.</p>
+  <div class="andock-row"><span>Endknoten</span><code>Mein-Tresor</code></div>
+  <div class="andock-row"><span>Endpunkt</span><a href="https://lausiklauskn-png.github.io/Mein-Tresor/" target="_blank" rel="noopener">…github.io/Mein-Tresor/ ↗</a></div>
+  <div class="andock-row"><span>nodeId</span><code>7F_zNopFgYLPCmEFhVlRUDnQVKk3y-RHNr139Z_3hCs</code></div>
+  <div class="andock-row"><span>Spore</span><a href="sbkim/spore.json" target="_blank" rel="noopener">sbkim/spore.json ↗</a></div>
+  <p style="margin:1.1em 0 0"><a class="andock-tool" href="https://lausiklauskn-png.github.io/SB-KIMTool-Point/" target="_blank" rel="noopener">SBKIM-Werkzeug öffnen ↗</a></p>
+  <p style="color:var(--muted); font-size:.78rem; margin:.9em 0 0">Siegel-Wappen + Andock-Verbindung sind 1:1 aus dem Sage-Protokoll. Die vollständige Bezeugungs-Prüfung (Modul-Chain) folgt in einer eigenen Sitzung.</p>
+  <div class="row-end" style="margin-top:12px"><button id="andock-close" class="btn-ghost" type="button">Schließen</button></div>
+</dialog>
+
+<dialog id="panik">
+  <h3 style="margin:0 0 6px">🛑 Notfall</h3>
+  <p style="color:var(--muted); margin:.2em 0 1em; font-size:.9rem">Was soll geschehen?</p>
+  <button class="panik-stufe s1" id="panik-1" type="button">
+    <b>Stufe 1 · Verriegeln</b><span>Sofort zurück zur verschlossenen Tür — umkehrbar (mit dem Schlüssel wieder hinein).</span>
+  </button>
+  <button class="panik-stufe s2" id="panik-2" type="button" disabled>
+    <b>Stufe 2 · Verbergen</b><span>Folgt als <b>Honigtopf/Köder</b> in einer eigenen Sitzung (glaubhafte Schein-Bibliothek). Bewusst noch nicht aktiv.</span>
+  </button>
+  <button class="panik-stufe s3" id="panik-3" type="button">
+    <b>Stufe 3 · Retten &amp; Löschen</b><span>Erst eine <b>Rettungs-Datei</b> sichern, dann die lokalen Bücher in <b>diesem Browser</b> löschen (Zwei-Schritt). Bereits exportierte Dateien bleiben.</span>
+  </button>
+  <div class="panik-foot">
+    <button id="panik-restore" class="btn-ghost" type="button" title="Eine zuvor gesicherte Rettungs-Datei wieder einlesen">↻ Rettung einlesen</button>
+    <button id="panik-cancel" class="btn-ghost" type="button">Abbrechen</button>
+  </div>
+  <input id="panik-restore-file" type="file" accept="application/json,.json" hidden />
+  <p class="panik-membran">🛡️ <b>Wächter (Membran 15):</b> ruhig — keine Fremdzugriffe erkannt. Diese Schicht <b>warnt nur</b> und zerstört nichts.</p>
+</dialog>
+
+<!-- ============================================================
+     KERN-LOGIK (browser- UND node-tauglich; vom headless Test
+     zwischen den Markern geprueft). Keine DOM-Abhaengigkeit hier.
+     ============================================================ -->
+<script>
+// JASONLIB-CORE-START
+(function (root) {
+  "use strict";
+  var SCHEMA = 1;
+
+  function genId() {
+    try { if (root.crypto && root.crypto.randomUUID) return root.crypto.randomUUID(); } catch (e) {}
+    return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+  }
+  function nowIso() { return new Date().toISOString(); }
+
+  function validateAndParse(text) {
+    if (typeof text !== "string" || text.trim() === "") return { ok: false, error: "leer" };
+    try { return { ok: true, value: JSON.parse(text) }; }
+    catch (e) { return { ok: false, error: String((e && e.message) || e) }; }
+  }
+
+  function byteSize(value) {
+    var s;
+    try { s = JSON.stringify(value); } catch (e) { s = ""; }
+    if (s == null) s = "";
+    try { return new TextEncoder().encode(s).length; } catch (e2) { return s.length; }
+  }
+
+  function normalizeTags(tags) {
+    if (typeof tags === "string") tags = tags.split(",");
+    if (!Array.isArray(tags)) return [];
+    var out = [];
+    for (var i = 0; i < tags.length; i++) {
+      var t = String(tags[i]).trim().toLowerCase();
+      if (t && out.indexOf(t) === -1) out.push(t);
+    }
+    return out;
+  }
+
+  function makeEntry(input) {
+    input = input || {};
+    var name = String(input.name || "").trim() || "Unbenannte Jason";
+    return {
+      schemaVersion: SCHEMA,
+      kind: "jason-eintrag",
+      id: input.id || genId(),
+      name: name,
+      tags: normalizeTags(input.tags),
+      category: String(input.category || "").trim(),
+      origin: input.origin ? String(input.origin) : "",
+      createdAt: input.createdAt || nowIso(),
+      updatedAt: nowIso(),
+      size: byteSize(input.payload),
+      payload: input.payload
+    };
+  }
+
+  function buildLibraryExport(entries) {
+    return {
+      schemaVersion: SCHEMA,
+      kind: "jason-bibliothek",
+      exportedAt: nowIso(),
+      count: entries.length,
+      eintraege: entries
+    };
+  }
+
+  function asEntry(obj, fallbackName) {
+    if (obj && obj.kind === "jason-eintrag" && Object.prototype.hasOwnProperty.call(obj, "payload")) {
+      return makeEntry({
+        id: obj.id, name: obj.name, tags: obj.tags, category: obj.category,
+        origin: obj.origin, createdAt: obj.createdAt, payload: obj.payload
+      });
+    }
+    return makeEntry({ name: fallbackName, payload: obj });
+  }
+
+  function parseLibraryImport(text, fallbackName) {
+    var p = validateAndParse(text);
+    if (!p.ok) return { ok: false, error: p.error, entries: [] };
+    var v = p.value, entries = [], i;
+    if (v && v.kind === "jason-bibliothek" && Array.isArray(v.eintraege)) {
+      for (i = 0; i < v.eintraege.length; i++) entries.push(asEntry(v.eintraege[i]));
+    } else if (v && v.kind === "jason-eintrag") {
+      entries.push(asEntry(v));
+    } else {
+      entries.push(asEntry(v, fallbackName));
+    }
+    return { ok: true, entries: entries, error: "" };
+  }
+
+  function mergeEntries(existing, incoming) {
+    var map = {}, order = [];
+    function put(e) {
+      if (!map[e.id]) order.push(e.id);
+      else if (String(e.updatedAt) < String(map[e.id].updatedAt)) return;
+      map[e.id] = e;
+    }
+    var i;
+    for (i = 0; i < existing.length; i++) put(existing[i]);
+    for (i = 0; i < incoming.length; i++) put(incoming[i]);
+    return order.map(function (id) { return map[id]; });
+  }
+
+  function filterSort(entries, opts) {
+    opts = opts || {};
+    var q = String(opts.query || "").trim().toLowerCase();
+    var cat = String(opts.category || "").trim().toLowerCase();
+    var tag = String(opts.tag || "").trim().toLowerCase();
+    var out = entries.filter(function (e) {
+      if (cat && String(e.category).toLowerCase() !== cat) return false;
+      if (tag && e.tags.indexOf(tag) === -1) return false;
+      if (q) {
+        var hay = (e.name + " " + e.category + " " + e.tags.join(" ")).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+    var sort = opts.sort || "updated-desc";
+    out.sort(function (a, b) {
+      if (sort === "name-asc") return a.name.localeCompare(b.name);
+      if (sort === "name-desc") return b.name.localeCompare(a.name);
+      if (sort === "created-asc") return String(a.createdAt).localeCompare(String(b.createdAt));
+      if (sort === "created-desc") return String(b.createdAt).localeCompare(String(a.createdAt));
+      if (sort === "updated-asc") return String(a.updatedAt).localeCompare(String(b.updatedAt));
+      return String(b.updatedAt).localeCompare(String(a.updatedAt));
+    });
+    return out;
+  }
+
+  function allCategories(entries) {
+    var s = [];
+    entries.forEach(function (e) { if (e.category && s.indexOf(e.category) === -1) s.push(e.category); });
+    return s.sort();
+  }
+  function allTags(entries) {
+    var s = [];
+    entries.forEach(function (e) { e.tags.forEach(function (t) { if (s.indexOf(t) === -1) s.push(t); }); });
+    return s.sort();
+  }
+
+  // ---- Tresor (Scheibe 2): Passwort-Verschluesselung. GLEICHER Umschlag wie
+  //      Modul 02 (sbkim-spore.js exportBackup) und sbkim/node_key.enc.json:
+  //      PBKDF2-SHA256 600k -> AES-GCM-256. Browser UND Node (>=20) tauglich.
+  var TRESOR_ITER = 600000;
+
+  function cryptoObj() {
+    var c = root.crypto || (typeof globalThis !== "undefined" ? globalThis.crypto : null);
+    if (!c || !c.subtle) throw new Error("WebCrypto nicht verfuegbar (crypto.subtle fehlt).");
+    return c;
+  }
+  function b64uFromBytes(bytes) {
+    var bin = "", i;
+    for (i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    var enc = root.btoa || (typeof globalThis !== "undefined" && globalThis.btoa) || null;
+    var b64 = enc ? enc(bin) : Buffer.from(bytes).toString("base64");
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function bytesFromB64u(s) {
+    var b64 = String(s).replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    var dec = root.atob || (typeof globalThis !== "undefined" && globalThis.atob) || null;
+    var bin = dec ? dec(b64) : Buffer.from(b64, "base64").toString("binary");
+    var out = new Uint8Array(bin.length), i;
+    for (i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  async function deriveAesKey(password, salt, iterations, usages) {
+    var c = cryptoObj();
+    var mat = await c.subtle.importKey("raw", new TextEncoder().encode(String(password)),
+      { name: "PBKDF2" }, false, ["deriveKey"]);
+    return await c.subtle.deriveKey(
+      { name: "PBKDF2", salt: salt, iterations: iterations, hash: "SHA-256" },
+      mat, { name: "AES-GCM", length: 256 }, false, usages);
+  }
+  async function encryptTresor(plainObj, password) {
+    if (typeof password !== "string" || password.length < 8) throw new Error("Passwort zu kurz (mind. 8 Zeichen).");
+    var c = cryptoObj();
+    var salt = c.getRandomValues(new Uint8Array(16));
+    var iv = c.getRandomValues(new Uint8Array(12));
+    var key = await deriveAesKey(password, salt, TRESOR_ITER, ["encrypt"]);
+    var pt = new TextEncoder().encode(JSON.stringify(plainObj));
+    var ctBuf = await c.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, pt);
+    return {
+      schemaVersion: SCHEMA, kind: "jason-tresor", version: 2,
+      kdf: { algorithm: "PBKDF2", hash: "SHA-256", iterations: TRESOR_ITER, salt: b64uFromBytes(salt) },
+      cipher: { algorithm: "AES-GCM-256", iv: b64uFromBytes(iv) },
+      ciphertext: b64uFromBytes(new Uint8Array(ctBuf))
+    };
+  }
+  async function decryptTresor(blob, password) {
+    var c = cryptoObj();
+    var salt = bytesFromB64u(blob.kdf.salt);
+    var iv = bytesFromB64u(blob.cipher.iv);
+    var ct = bytesFromB64u(blob.ciphertext);
+    var key = await deriveAesKey(password, salt, blob.kdf.iterations || TRESOR_ITER, ["decrypt"]);
+    var plainBuf = await c.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, ct); // wirft bei falschem PW/Manipulation
+    return JSON.parse(new TextDecoder().decode(plainBuf));
+  }
+  function isTresor(v) {
+    return !!(v && v.kdf && v.cipher && typeof v.ciphertext === "string" &&
+      v.kdf.algorithm === "PBKDF2" && /AES-GCM/.test(String(v.cipher.algorithm)));
+  }
+  // Buch-Tresor mit optionalem Tarnfach (Honigtopf): probiert zuerst den echten Umschlag,
+  // dann — falls vorhanden — das Tarnfach (decoy). Liefert {mode:'real'|'decoy', plain}.
+  // Echtes Passwort -> echte Daten; Koeder-Passwort -> harmlose Schein-Bibliothek.
+  // Wirft bei falschem Passwort/Manipulation (AES-GCM-Auth-Tag).
+  async function openVault(rec, password) {
+    if (!rec || !rec.tresor) throw new Error("Kein Tresor.");
+    try { return { mode: "real", plain: await decryptTresor(rec.tresor, password) }; }
+    catch (e) { /* echtes Passwort passt nicht -> evtl. Koeder-Passwort */ }
+    if (rec.decoy && isTresor(rec.decoy)) {
+      return { mode: "decoy", plain: await decryptTresor(rec.decoy, password) };
+    }
+    throw new Error("Falsches Passwort oder Tresor beschädigt.");
+  }
+  function tresorPayloadKind(plainObj) {
+    if (plainObj && plainObj.kind === "jason-bibliothek" && Array.isArray(plainObj.eintraege)) return "bibliothek";
+    if (plainObj && Array.isArray(plainObj.identities)) return "identitaeten";
+    return "roh";
+  }
+  function payloadToEntries(plainObj, fallbackName) {
+    var kind = tresorPayloadKind(plainObj), entries = [];
+    if (kind === "bibliothek") {
+      plainObj.eintraege.forEach(function (e) { entries.push(asEntry(e)); });
+    } else if (kind === "identitaeten") {
+      entries.push(makeEntry({
+        name: fallbackName || "SBKIM Schluessel-Backup",
+        category: "SBKIM-Schluessel", tags: "schluessel, identitaet", payload: plainObj
+      }));
+    } else {
+      entries.push(asEntry(plainObj, fallbackName));
+    }
+    return { kind: kind, entries: entries };
+  }
+
+  // ---- Shamir 3-von-5 (Geheimnis aufteilen): echte Mathematik ueber GF(256),
+  //      dasselbe Galois-Feld wie AES (irreduzibles Polynom 0x11b). Ein Geheimnis
+  //      (z. B. ein Buch-Passwort) wird in N=5 Teile zerlegt; BELIEBIGE K=3 stellen
+  //      es exakt wieder her (Lagrange-Interpolation bei x=0), 1-2 Teile sind
+  //      mathematisch wertlos. Jeder Teil traegt eine CRC32-Pruefziffer (erkennt
+  //      Tippfehler genau am Teil) und alle Teile gemeinsam einen SHA-256-Finger-
+  //      abdruck des Originals + eine zufaellige Split-ID (erkennt ein fremdes/
+  //      manipuliertes Teil beim Zusammensetzen). Offline, ohne Abhaengigkeit;
+  //      Zufall aus WebCrypto getRandomValues.
+  var SHAMIR_K = 3, SHAMIR_N = 5, SHAMIR_VER = 1, SHAMIR_TAG = "JT3v5", SHAMIR_MAXLEN = 1024;
+
+  // GF(256)-Tabellen (Generator 3, Polynom 0x11b). EXP doppelt lang -> kein Modulo.
+  var GF_EXP = new Uint8Array(512), GF_LOG = new Uint8Array(256);
+  (function buildGF() {
+    var x = 1, i;
+    for (i = 0; i < 255; i++) {
+      GF_EXP[i] = x; GF_LOG[x] = i;
+      var x2 = ((x << 1) & 0xff) ^ ((x & 0x80) ? 0x1b : 0); // x*2 (xtime)
+      x = (x2 ^ x) & 0xff;                                   // x*3 = x*2 XOR x
+    }
+    for (i = 255; i < 512; i++) GF_EXP[i] = GF_EXP[i - 255];
+  })();
+  function gfMul(a, b) { if (a === 0 || b === 0) return 0; return GF_EXP[GF_LOG[a] + GF_LOG[b]]; }
+  function gfDiv(a, b) { if (a === 0) return 0; return GF_EXP[GF_LOG[a] + 255 - GF_LOG[b]]; }
+
+  // CRC32 (IEEE) als Pruefziffer je Teil (erkennt Verschreiber, nicht kryptografisch).
+  var CRC_TABLE = (function () {
+    var t = new Uint32Array(256), c, n, k;
+    for (n = 0; n < 256; n++) {
+      c = n;
+      for (k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(bytes, len) {
+    var c = 0xFFFFFFFF, i, L = (len == null ? bytes.length : len);
+    for (i = 0; i < L; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  // Binaerformat je Teil: [ver,k,n,x, splitId(4), fp(4), shareY(L), crc32(4)] -> base64url.
+  function shamirEncodeShare(ver, k, n, x, splitId, fp, shareY) {
+    var L = shareY.length, head = 12, buf = new Uint8Array(head + L + 4);
+    buf[0] = ver; buf[1] = k; buf[2] = n; buf[3] = x;
+    buf.set(splitId, 4); buf.set(fp, 8); buf.set(shareY, head);
+    var crc = crc32(buf, head + L);
+    buf[head + L] = (crc >>> 24) & 0xff; buf[head + L + 1] = (crc >>> 16) & 0xff;
+    buf[head + L + 2] = (crc >>> 8) & 0xff; buf[head + L + 3] = crc & 0xff;
+    return SHAMIR_TAG + "-" + x + "-" + b64uFromBytes(buf);
+  }
+  function shamirParseShare(text) {
+    var m = /^JT3v5-(\d+)-([A-Za-z0-9_\-]+)$/.exec(String(text == null ? "" : text).trim());
+    if (!m) return { ok: false, error: "Kein gueltiger Teil-Code (erwartet JT3v5-…)." };
+    var idx = parseInt(m[1], 10), buf;
+    try { buf = bytesFromB64u(m[2]); } catch (e) { return { ok: false, error: "Teil " + idx + " ist unleserlich." }; }
+    if (buf.length < 12 + 1 + 4) return { ok: false, error: "Teil " + idx + " ist zu kurz/beschaedigt." };
+    var L = buf.length - 12 - 4;
+    var crcGiven = ((buf[12 + L] << 24) | (buf[12 + L + 1] << 16) | (buf[12 + L + 2] << 8) | buf[12 + L + 3]) >>> 0;
+    if (crcGiven !== crc32(buf, 12 + L)) return { ok: false, error: "Teil " + idx + " ist verschrieben/beschaedigt (Pruefziffer passt nicht)." };
+    if (buf[3] !== idx) return { ok: false, error: "Teil " + idx + " ist beschaedigt (Teil-Nummer passt nicht)." };
+    return { ok: true, ver: buf[0], k: buf[1], n: buf[2], x: buf[3],
+      splitId: buf.subarray(4, 8), fp: buf.subarray(8, 12), y: buf.subarray(12, 12 + L) };
+  }
+
+  // Geheimnis (String) -> { k, n, fingerprint, shares:[Text-Codes] }. Async wegen SHA-256.
+  async function splitSecret(secret) {
+    if (typeof secret !== "string" || secret.length === 0) throw new Error("Geheimnis (Passwort) fehlt.");
+    var bytes = new TextEncoder().encode(secret);
+    if (bytes.length > SHAMIR_MAXLEN) throw new Error("Geheimnis zu lang (max " + SHAMIR_MAXLEN + " Bytes).");
+    var c = cryptoObj(), k = SHAMIR_K, n = SHAMIR_N, L = bytes.length;
+    var fp = new Uint8Array(await c.subtle.digest("SHA-256", bytes)).subarray(0, 4);
+    var splitId = c.getRandomValues(new Uint8Array(4));
+    var xs = [], shares = [], s, pos, ci, si, d;
+    for (s = 0; s < n; s++) { xs.push(s + 1); shares.push(new Uint8Array(L)); }
+    for (pos = 0; pos < L; pos++) {
+      var coeffs = new Uint8Array(k);
+      coeffs[0] = bytes[pos];
+      var rnd = c.getRandomValues(new Uint8Array(k - 1));
+      for (ci = 1; ci < k; ci++) coeffs[ci] = rnd[ci - 1];
+      while (coeffs[k - 1] === 0) coeffs[k - 1] = c.getRandomValues(new Uint8Array(1))[0]; // Grad genau k-1
+      for (si = 0; si < n; si++) {
+        var xv = xs[si], y = 0, p = 1;
+        for (d = 0; d < k; d++) { y ^= gfMul(coeffs[d], p); p = gfMul(p, xv); }
+        shares[si][pos] = y;
+      }
+    }
+    var out = [];
+    for (s = 0; s < n; s++) out.push(shamirEncodeShare(SHAMIR_VER, k, n, xs[s], splitId, fp, shares[s]));
+    return { tag: SHAMIR_TAG, k: k, n: n, fingerprint: b64uFromBytes(fp), shares: out };
+  }
+
+  // Beliebige >=K Teil-Codes -> das urspruengliche Geheimnis (String). Async wegen SHA-256.
+  async function combineShares(texts) {
+    if (!Array.isArray(texts)) throw new Error("Liste von Teil-Codes erwartet.");
+    var parsed = [], i, p;
+    for (i = 0; i < texts.length; i++) {
+      if (texts[i] == null || String(texts[i]).trim() === "") continue;
+      p = shamirParseShare(texts[i]);
+      if (!p.ok) throw new Error(p.error);
+      parsed.push(p);
+    }
+    if (parsed.length === 0) throw new Error("Keine Teile angegeben.");
+    var k = parsed[0].k, n = parsed[0].n, L0 = parsed[0].y.length;
+    var id0 = b64uFromBytes(parsed[0].splitId), fp0 = b64uFromBytes(parsed[0].fp), seen = {};
+    for (i = 0; i < parsed.length; i++) {
+      if (parsed[i].k !== k || parsed[i].n !== n || parsed[i].y.length !== L0 ||
+          b64uFromBytes(parsed[i].splitId) !== id0 || b64uFromBytes(parsed[i].fp) !== fp0)
+        throw new Error("Diese Teile gehoeren nicht zum selben Geheimnis.");
+      if (seen[parsed[i].x]) throw new Error("Teil " + parsed[i].x + " ist doppelt vorhanden.");
+      seen[parsed[i].x] = true;
+    }
+    if (parsed.length < k) throw new Error("Zu wenige Teile: " + parsed.length + " von " + k + " noetig (1-2 Teile sind wertlos).");
+    var use = parsed.slice(0, k), secret = new Uint8Array(L0), pos, a, b;
+    for (pos = 0; pos < L0; pos++) {
+      var val = 0;
+      for (a = 0; a < k; a++) {
+        var num = 1, den = 1;
+        for (b = 0; b < k; b++) {
+          if (b === a) continue;
+          num = gfMul(num, use[b].x);             // prod_{b!=a} x_b
+          den = gfMul(den, use[a].x ^ use[b].x);  // prod_{b!=a} (x_a - x_b)   (in GF: - == XOR)
+        }
+        val ^= gfMul(use[a].y[pos], gfDiv(num, den));
+      }
+      secret[pos] = val;
+    }
+    var c = cryptoObj();
+    var fp = b64uFromBytes(new Uint8Array(await c.subtle.digest("SHA-256", secret)).subarray(0, 4));
+    if (fp !== fp0) throw new Error("Wiederherstellung fehlgeschlagen: Teile passen rechnerisch nicht zum Original (manipuliert?).");
+    return new TextDecoder().decode(secret);
+  }
+
+  var api = {
+    SCHEMA: SCHEMA, genId: genId, nowIso: nowIso, validateAndParse: validateAndParse,
+    byteSize: byteSize, normalizeTags: normalizeTags, makeEntry: makeEntry,
+    buildLibraryExport: buildLibraryExport, parseLibraryImport: parseLibraryImport,
+    mergeEntries: mergeEntries, filterSort: filterSort,
+    allCategories: allCategories, allTags: allTags,
+    encryptTresor: encryptTresor, decryptTresor: decryptTresor, isTresor: isTresor,
+    openVault: openVault,
+    tresorPayloadKind: tresorPayloadKind, payloadToEntries: payloadToEntries,
+    splitSecret: splitSecret, combineShares: combineShares,
+    shamirInfo: { k: SHAMIR_K, n: SHAMIR_N, tag: SHAMIR_TAG, maxLen: SHAMIR_MAXLEN },
+    parseShare: shamirParseShare, _gfMul: gfMul, _gfDiv: gfDiv
+  };
+  root.JasonLib = api;
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+})(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this));
+// JASONLIB-CORE-END
+</script>
+
+<!-- ============================================================
+     OBERFLAECHE (nur Browser): Knoepfe, Liste, Speicher.
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var L = window.JasonLib;
+  var KEY = "jasons-bibliothek-v1";
+  var entries = load();
+  var editingId = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return [];
+      var v = JSON.parse(raw);
+      return Array.isArray(v) ? v : [];
+    } catch (e) { return []; }
+  }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(entries)); }
+    catch (e) { toast("Speichern fehlgeschlagen (Browser-Speicher voll?)", true); }
+  }
+
+  function toast(msg, bad) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.style.borderColor = bad ? "var(--bad)" : "var(--accent)";
+    t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove("show"); }, 2400);
+  }
+
+  function fmtSize(n) {
+    if (n == null) return "";
+    if (n < 1024) return n + " B";
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB";
+    return (n / 1024 / 1024).toFixed(1) + " MB";
+  }
+  function fmtDate(iso) {
+    try { return new Date(iso).toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" }); }
+    catch (e) { return iso; }
+  }
+
+  function download(filename, obj) {
+    var blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function safeName(name) {
+    return (String(name || "jason").replace(/[^a-z0-9-_]+/gi, "_").replace(/^_+|_+$/g, "") || "jason");
+  }
+
+  function readFile(file, cb) {
+    var r = new FileReader();
+    r.onload = function () { cb(null, String(r.result)); };
+    r.onerror = function () { cb(r.error || new Error("Lesefehler")); };
+    r.readAsText(file);
+  }
+
+  // ---- Render ----
+  function fillSelect(sel, values, keep) {
+    var first = sel.options[0];
+    sel.innerHTML = "";
+    sel.appendChild(first);
+    values.forEach(function (v) {
+      var o = document.createElement("option");
+      o.value = v; o.textContent = v;
+      sel.appendChild(o);
+    });
+    if (keep && values.indexOf(keep) !== -1) sel.value = keep;
+  }
+
+  function render() {
+    fillSelect($("f-cat"), L.allCategories(entries), $("f-cat").value);
+    fillSelect($("f-tag"), L.allTags(entries), $("f-tag").value);
+
+    var shown = L.filterSort(entries, {
+      query: $("q").value, category: $("f-cat").value,
+      tag: $("f-tag").value, sort: $("f-sort").value
+    });
+
+    var list = $("list");
+    list.innerHTML = "";
+    $("empty").classList.toggle("hidden", entries.length !== 0);
+    $("count").textContent = entries.length === 0 ? ""
+      : (shown.length + " von " + entries.length + " angezeigt");
+
+    shown.forEach(function (e) {
+      var li = document.createElement("li");
+      li.className = "item";
+
+      var head = document.createElement("div");
+      head.className = "item-head";
+      var nm = document.createElement("div");
+      nm.className = "item-name"; nm.textContent = e.name;
+      head.appendChild(nm);
+      if (e.category) {
+        var c = document.createElement("span");
+        c.className = "cat"; c.textContent = e.category;
+        head.appendChild(c);
+      }
+      li.appendChild(head);
+
+      var meta = document.createElement("div");
+      meta.className = "meta";
+      meta.appendChild(span(fmtSize(e.size)));
+      meta.appendChild(span("hinzugefuegt " + fmtDate(e.createdAt)));
+      if (e.origin) meta.appendChild(span("aus " + e.origin));
+      li.appendChild(meta);
+
+      if (e.tags && e.tags.length) {
+        var tg = document.createElement("div");
+        tg.className = "tags";
+        e.tags.forEach(function (t) {
+          var s = document.createElement("span");
+          s.className = "tag"; s.textContent = t;
+          tg.appendChild(s);
+        });
+        li.appendChild(tg);
+      }
+
+      var act = document.createElement("div");
+      act.className = "item-actions";
+      var isFile = e.payload && e.payload.kind === "jt-datei" && typeof e.payload.data === "string";
+      if (isFile) {
+        act.appendChild(btn("⤓ Herunterladen", function () {
+          var a = document.createElement("a"); a.href = e.payload.data; a.download = e.payload.filename || e.name || "datei";
+          document.body.appendChild(a); a.click(); a.remove();
+        }));
+      } else {
+        act.appendChild(btn("Ansehen", function () { toggleView(li, e); }));
+        act.appendChild(btn("Bearbeiten", function () { openEdit(e); }));
+      }
+      act.appendChild(btn("Exportieren", function () { exportOne(e); }));
+      act.appendChild(btn("Verschenken 🔒", function () { giftEncrypted(e); }));
+      act.appendChild(btn("Loeschen", function () { removeOne(e); }, "btn-bad"));
+      li.appendChild(act);
+
+      list.appendChild(li);
+    });
+  }
+  function span(txt) { var s = document.createElement("span"); s.textContent = txt; return s; }
+  function btn(txt, fn, cls) {
+    var b = document.createElement("button");
+    b.textContent = txt; if (cls) b.className = cls;
+    b.addEventListener("click", fn); return b;
+  }
+
+  function toggleView(li, e) {
+    var existing = li.querySelector("pre.view");
+    if (existing) { existing.remove(); return; }
+    var pre = document.createElement("pre");
+    pre.className = "view";
+    pre.textContent = JSON.stringify(e.payload, null, 2);
+    li.appendChild(pre);
+  }
+
+  // ---- Actions ----
+  // Jede Datei: JSON wie bisher (Bibliothek/Tresor), alles andere als verschlüsselbarer
+  // Datei-Eintrag (DataURL/Base64) — wird beim „Verschlüsselt sichern" mitverschlüsselt.
+  function ingestRawFile(file) {
+    if (file.size > 2 * 1024 * 1024) {
+      var mb = (file.size / 1048576).toFixed(1) + " MB";
+      if (window.showSaveFilePicker && window.jtSaveFileExtern) {
+        if (confirm("„" + file.name + "\" ist " + mb + " groß.\n\nGroße Dateien sprengen den Browser-Speicher. Stattdessen VERSCHLÜSSELT in einen externen Ordner speichern?\n\nOK = extern verschlüsselt · Abbrechen = doch in den Browser laden")) {
+          window.jtSaveFileExtern(file); return;
+        }
+        if (!confirm("Trotzdem in den Browser-Speicher laden?")) return;
+      } else {
+        if (!confirm("„" + file.name + "\" ist " + mb + " groß. Externes Speichern geht nur in Chrome/Edge. Trotzdem laden?")) return;
+      }
+    }
+    var r = new FileReader();
+    r.onload = function () {
+      var entry = L.makeEntry({ name: file.name, category: "", origin: file.name, payload: {
+        kind: "jt-datei", filename: file.name, mimeType: file.type || "application/octet-stream",
+        size: file.size, encoding: "dataurl", data: String(r.result) } });
+      entries = L.mergeEntries(entries, [entry]);
+      persist(); render();
+      toast("Datei geladen: " + file.name);
+    };
+    r.onerror = function () { toast("„" + file.name + "\" konnte nicht gelesen werden", true); };
+    r.readAsDataURL(file);
+  }
+  function ingestFile(file) {
+    if (!/\.json$/i.test(file.name)) { ingestRawFile(file); return; }   // nicht-JSON -> als Datei
+    readFile(file, function (err, text) {
+      if (err) { toast("Datei konnte nicht gelesen werden", true); return; }
+      var p = L.validateAndParse(text);
+      if (!p.ok) { ingestRawFile(file); return; }   // .json, aber kein gültiges JSON -> als Datei
+      var base = file.name.replace(/\.json$/i, "");
+      if (L.isTresor(p.value)) {
+        var pw = window.prompt("Passwort fuer diesen Tresor:");
+        if (pw == null) return;
+        L.decryptTresor(p.value, pw).then(function (plain) {
+          var r = L.payloadToEntries(plain, base);
+          entries = L.mergeEntries(entries, r.entries);
+          persist(); render();
+          toast("Tresor geoeffnet: " + r.entries.length + " Eintrag(e)" +
+            (r.kind === "identitaeten" ? " — SBKIM Schluessel-Backup" : ""));
+        }).catch(function () { toast("Falsches Passwort oder Tresor beschaedigt.", true); });
+        return;
+      }
+      var r = L.parseLibraryImport(text, base);
+      var isWrapped = p.value && (p.value.kind === "jason-bibliothek" || p.value.kind === "jason-eintrag");
+      if (r.entries.length === 1 && !isWrapped) r.entries[0].origin = file.name; // rohe Datei: Herkunft merken
+      entries = L.mergeEntries(entries, r.entries);
+      persist(); render();
+      toast("Eingelesen: " + r.entries.length + " (Bibliothek jetzt " + entries.length + ")");
+    });
+  }
+
+  function exportEncrypted() {
+    if (entries.length === 0) { toast("Bibliothek ist leer", true); return; }
+    var pw = window.prompt("Passwort zum Verschluesseln (mind. 8 Zeichen):");
+    if (pw == null) return;
+    L.encryptTresor(L.buildLibraryExport(entries), pw).then(function (blob) {
+      download("jasons-tresor_" + new Date().toISOString().slice(0, 10) + ".json", blob);
+      toast("Verschluesselt gesichert (" + entries.length + " Eintraege)");
+    }).catch(function (e) { toast(String((e && e.message) || e), true); });
+  }
+
+  function giftEncrypted(e) {
+    var pw = window.prompt("Passwort fuer „" + e.name + "“ (mind. 8 Zeichen):");
+    if (pw == null) return;
+    L.encryptTresor(L.buildLibraryExport([e]), pw).then(function (blob) {
+      download(safeName(e.name) + ".tresor.json", blob);
+      toast("„" + e.name + "“ verschluesselt — Passwort getrennt weitergeben");
+    }).catch(function (err) { toast(String((err && err.message) || err), true); });
+  }
+
+  function exportOne(e) {
+    download(safeName(e.name) + ".json", e.payload);
+    toast("„" + e.name + "“ exportiert");
+  }
+
+  function removeOne(e) {
+    if (!confirm("„" + e.name + "“ wirklich aus der Bibliothek loeschen?\n(Der Browser-Eintrag wird entfernt; bereits exportierte Dateien bleiben.)")) return;
+    entries = entries.filter(function (x) { return x.id !== e.id; });
+    persist(); render();
+    toast("Geloescht");
+  }
+
+  function exportAll() {
+    if (entries.length === 0) { toast("Bibliothek ist leer", true); return; }
+    download("jasons-bibliothek_" + new Date().toISOString().slice(0, 10) + ".json",
+      L.buildLibraryExport(entries));
+    toast("Bibliothek gesichert (" + entries.length + " Eintraege)");
+  }
+
+  // ---- Edit dialog ----
+  function openEdit(e) {
+    editingId = e.id;
+    $("e-name").value = e.name;
+    $("e-cat").value = e.category || "";
+    $("e-tags").value = (e.tags || []).join(", ");
+    $("dlg-edit").showModal();
+  }
+  function saveEdit() {
+    var e = entries.filter(function (x) { return x.id === editingId; })[0];
+    if (!e) { $("dlg-edit").close(); return; }
+    e.name = $("e-name").value.trim() || "Unbenannte Jason";
+    e.category = $("e-cat").value.trim();
+    e.tags = L.normalizeTags($("e-tags").value);
+    e.updatedAt = L.nowIso();
+    persist(); render();
+    $("dlg-edit").close();
+    toast("Gespeichert");
+  }
+
+  // ---- Wiring ----
+  $("btn-add").addEventListener("click", function () { $("file-add").click(); });
+  $("file-add").addEventListener("change", function (ev) {
+    var files = ev.target.files ? Array.prototype.slice.call(ev.target.files) : [];
+    ev.target.value = "";
+    files.forEach(function (f) { ingestFile(f); });
+  });
+  $("btn-export-all").addEventListener("click", exportAll);
+  $("btn-export-enc").addEventListener("click", exportEncrypted);
+  $("btn-import-lib").addEventListener("click", function () { $("file-import").click(); });
+  $("file-import").addEventListener("change", function (ev) {
+    var f = ev.target.files && ev.target.files[0];
+    if (f) ingestFile(f);
+    ev.target.value = "";
+  });
+  ["q", "f-cat", "f-tag", "f-sort"].forEach(function (id) {
+    $(id).addEventListener("input", render);
+    $(id).addEventListener("change", render);
+  });
+  $("e-cancel").addEventListener("click", function () { $("dlg-edit").close(); });
+  $("e-save").addEventListener("click", saveEdit);
+
+  render();
+})();
+</script>
+
+<!-- ============================================================
+     📬 SBKIM-Briefkasten (INTERFACES §11.6) — liest die SIGNAL.json der
+     Nachbarn (Sage + SB-KIMTool-Point) und zeigt ungelesene Bauten.
+     Zero-dependency. Vorlage: Sage .github/SBKIM-WATCH-FUER-FORKER.md.
+     ============================================================ -->
+<dialog id="sbkim-mailbox-dialog" style="max-width:32em;border:none;border-radius:.8em;padding:1.2em">
+  <h3 style="margin:.2em 0 .6em">📬 SBKIM-Briefkasten</h3>
+  <div id="sbkim-mailbox-body">…</div>
+  <form method="dialog" style="text-align:right;margin-top:1em">
+    <button style="font:inherit;padding:.4em 1em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">Schließen</button>
+  </form>
+</dialog>
+
+<script>
+  // === SBKIM-Briefkasten CONFIG ===
+  window.SBKIM_MAILBOX = {
+    self: "Mein-Tresor",                   // unser Knoten-Name
+    selfSignal: "sbkim/SIGNAL.json",          // relativ zu dieser Seite
+    peers: [
+      { name: "Sage-Protokol",    signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
+      { name: "SB-KIMTool-Point", signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" },
+      { name: "Jasons-Tresor",    signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" }
+    ]
+  };
+
+  // === SBKIM-Briefkasten Logik (zero-dependency) ===
+  async function sbkimMailboxFetch(url) {
+    try { const r = await fetch(url, { cache: "no-store" }); if (!r.ok) return { error: "HTTP " + r.status }; return await r.json(); }
+    catch (e) { return { error: String(e && e.message || e) }; }
+  }
+  // silent=true: nur Badge setzen (beim Laden), KEIN Dialog (Vorlage-Intention "still pruefen").
+  async function sbkimMailboxCheck(silent) {
+    const cfg = window.SBKIM_MAILBOX || {};
+    const dlg = document.getElementById("sbkim-mailbox-dialog");
+    const body = document.getElementById("sbkim-mailbox-body");
+    if (!silent) { body.innerHTML = "Lese Nachbarn …"; if (dlg.showModal) dlg.showModal(); }
+    let selfAck = {};
+    try { const s = await sbkimMailboxFetch(cfg.selfSignal); if (s && s.ack) selfAck = s.ack; } catch {}
+    const lines = [];
+    let unread = 0;
+    for (const peer of (cfg.peers || [])) {
+      const sig = await sbkimMailboxFetch(peer.signal);
+      if (sig.error) { lines.push(`<li><b>${peer.name}</b>: SIGNAL nicht lesbar (${sig.error})</li>`); continue; }
+      const seq = Number(sig.seq) || 0;
+      const seen = Number(selfAck[peer.name]) || 0;
+      if (seq > seen) {
+        unread++;
+        lines.push(`<li><b>${peer.name}</b>: NEUER Bau (seq ${seq}) — ${sig.headline || ""}</li>`);
+      } else {
+        lines.push(`<li><b>${peer.name}</b>: nichts Neues (seq ${seq})</li>`);
+      }
+    }
+    if (!silent) {
+      body.innerHTML = `<ul style="margin:.2em 0 .2em 1.1em;padding:0">${lines.join("")}</ul>` +
+        (unread ? `<p style="margin:.6em 0 0"><b>${unread}</b> ungelesene(r) Bau(ten). Lies das jeweilige Postfach und quittiere via <code>ack</code> in deiner SIGNAL.json.</p>`
+                : `<p style="margin:.6em 0 0">Alles gelesen. 📭</p>`);
+    }
+    const badge = document.getElementById("sbkim-mailbox-badge");
+    if (unread) { badge.textContent = String(unread); badge.hidden = false; } else { badge.hidden = true; }
+  }
+  // Beim Laden still pruefen und Badge setzen (kein Dialog-Popup).
+  window.addEventListener("DOMContentLoaded", () => { try { sbkimMailboxCheck(true); } catch {} });
+</script>
+
+<!-- ===== Schwelle-Steuerung (Erlebnis-Schale; kein Teil des getesteten Kerns) ===== -->
+<script>
+(function(){
+  var th = document.getElementById('threshold');
+  if(!th) return;
+  var skip  = document.getElementById('th-skip');
+  var stage = document.getElementById('th-stage');
+  var flash = document.getElementById('th-flash');
+  var burst = document.getElementById('th-burst');
+  var seq   = document.getElementById('th-lock-seq');
+  var frames = seq ? seq.querySelectorAll('img') : [];
+  var timers = [];
+  var KEY = 'jt-threshold-seen';
+  // Schon in dieser Sitzung eingetreten? Dann Schwelle still überspringen.
+  try{ if(sessionStorage.getItem(KEY) === '1'){ done(true); return; } }catch(e){}
+  // Hintergrund (Bibliothek) nicht scrollen, solange die Schwelle offen ist.
+  document.body.classList.add('th-lock-scroll');
+
+  function showFrame(i){
+    for(var k=0; k<frames.length; k++) frames[k].classList.toggle('is-on', k === i);
+  }
+
+  var opening = false;
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function open(){
+    if(opening) return; opening = true;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    th.classList.add('is-opening');                 // Tür zoomt, Schloss-Sequenz blendet ein
+    if(reduce){ showFrame(frames.length - 1); th.classList.add('is-open-final'); at(800, function(){ done(false); }); return; }
+    // Frame-Sequenz LANGSAM: jeder Frame blendet über ~1,2 s ein und überlagert den
+    // vorherigen (weiche Kreuz-Überblendung), mit Ruhe dazwischen — schwere Tür, viel Spannung.
+    var times = [1600, 3000, 4400, 5900, 7400];     // Einblendzeiten Frame 1..5 (Türkis → Gold)
+    for(var i=0; i<frames.length; i++){ (function(idx){ at(times[idx], function(){ showFrame(idx); }); })(i); }
+    at(6000, function(){                                             // Lichtblitz mit dem Gold-Frame
+      flash.classList.add('is-flash');
+      if(burst) burst.classList.add('is-flash');                     // transparenter Funken-Blitz
+    });
+    at(9000, function(){ th.classList.add('is-open-final'); });      // Tür geht langsam auf → Bibliothek
+    at(11800, function(){ done(false); });           // dann ruhig in die App blenden
+  }
+  function done(instant){
+    for(var i=0;i<timers.length;i++) clearTimeout(timers[i]);   // keine Nachzügler
+    try{ sessionStorage.setItem(KEY, '1'); }catch(e){}
+    document.body.classList.remove('th-lock-scroll');
+    if(instant){ th.setAttribute('hidden',''); return; }
+    th.classList.add('is-gone');
+    setTimeout(function(){ th.setAttribute('hidden',''); }, 1450);
+  }
+  // Eintreten: Klick irgendwo auf die Tür, oder Enter/Leertaste (der Zeiger lädt zum Klick ein).
+  stage.addEventListener('click', open);
+  if(skip) skip.addEventListener('click', function(e){ e.stopPropagation(); done(false); });
+  document.addEventListener('keydown', function(e){
+    if(th.hasAttribute('hidden')) return;
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); }
+    else if(e.key === 'Escape'){ done(false); }
+  });
+})();
+</script>
+
+<!-- ===== Muster-Buch-Steuerung (Szene-2-Vorschau; kein Teil des getesteten Kerns) ===== -->
+<script>
+(function(){
+  var demo = document.getElementById('bookdemo');
+  if(!demo) return;
+  var L = window.JasonLib;
+  var btn    = document.getElementById('btn-bookdemo');
+  var btnSeq = document.getElementById('btn-bookseq');
+  var close  = document.getElementById('bd-close');
+  var back   = document.getElementById('bd-backdrop');
+  var titleEl= document.getElementById('bd-title');
+  var ctTitle= document.getElementById('bd-content-title');
+  var hintEl = document.getElementById('bd-hint');
+  var codeForm = document.getElementById('bd-code');
+  var codeIn   = document.getElementById('bd-code-input');
+  var codeGo   = codeForm ? codeForm.querySelector('.bd-code-go') : null;
+  var codeLock = document.getElementById('bd-code-lock');
+  var renameIn = document.getElementById('bd-rename');
+  var emptyEl  = document.getElementById('bd-empty');
+  var listEl   = document.getElementById('bd-entries');
+  var loadBtn  = document.getElementById('bd-load');
+  var lockBtn  = document.getElementById('bd-lock');
+  var giftBtn  = document.getElementById('bd-gift');
+  var fileIn   = document.getElementById('bd-file');
+  var resetBtn = document.getElementById('bd-reset');   // TESTBUCH — vor Echtbetrieb entfernen
+  // Shamir 3-von-5 (Schale; echte Krypto im Kern)
+  var splitBtn    = document.getElementById('bd-split');
+  var decoyBtn    = document.getElementById('bd-decoy');     // Honigtopf/Tarnfach (Köder-Passwort)
+  var splitPanel  = document.getElementById('bd-split-panel');
+  var shParts     = document.getElementById('bd-sh-parts');
+  var shTest      = document.getElementById('bd-sh-test');
+  var shDone      = document.getElementById('bd-sh-done');
+  var recoverLink = document.getElementById('bd-recover-link');
+  var recoverPanel= document.getElementById('bd-recover-panel');
+  var shInputs    = document.getElementById('bd-sh-inputs');
+  var shResult    = document.getElementById('bd-sh-result');
+  var recGo       = document.getElementById('bd-rec-go');
+  var recCancel   = document.getElementById('bd-rec-cancel');
+  var practiceSplit = document.getElementById('bd-sh-practice-split');   // TESTBUCH
+  var practiceRec   = document.getElementById('bd-sh-practice-rec');     // TESTBUCH
+
+  var curId = null, curEl = null;
+  var openEntries = null;     // entschlüsselte Einträge — NUR im Speicher, nie in localStorage
+  var openPw = null;          // Passwort des offenen Buchs — nur im Speicher, nie gespeichert/geloggt
+  var openIsDecoy = false;    // true, wenn mit dem Köder-Passwort geöffnet (Honigtopf/Tarnfach)
+  var dirty = false;          // ungespeicherte Änderungen → Schutz vor versehentlichem Verlust
+  var seqTimer = null, lockTimer = null;
+  var attempts = 0, lockedUntil = 0;   // 2 Fehlversuche gelten GLOBAL → 1 Min Sperre
+
+  // --- Buch-Tresore (lokal): Buch-ID → { tresor: jason-tresor v2, name }. Gespeichert wird
+  //     NUR der verschlüsselte Umschlag (kdf/cipher/ciphertext) — nie Klartext, nie Passwort. ---
+  function loadVaults(){ try{ return JSON.parse(localStorage.getItem('jt-vaults')||'{}')||{}; }catch(e){ return {}; } }
+  function saveVaults(m){ try{ localStorage.setItem('jt-vaults', JSON.stringify(m)); }catch(e){} scheduleSync(); }
+  function getVault(id){ var m=loadVaults(); return id ? m[id] : null; }
+  function isLocked(id){ var v=getVault(id); return !!(v && v.tresor && L.isTresor(v.tresor)); }
+  window.jtBookLocked = isLocked;     // Regal markiert echte Tresor-Bücher mit 🔒
+
+  function setTitles(t){ if(titleEl) titleEl.textContent = t; if(ctTitle) ctTitle.textContent = t; }
+  function clearLockTimer(){ if(lockTimer){ clearInterval(lockTimer); lockTimer = null; } }
+
+  function updateLockUI(){
+    var now = Date.now();
+    if(now < lockedUntil){
+      var s = Math.ceil((lockedUntil - now)/1000);
+      if(codeLock){ codeLock.hidden = false; codeLock.textContent = 'Zu viele Fehlversuche — bitte ' + s + ' s warten.'; }
+      if(codeIn) codeIn.disabled = true; if(codeGo) codeGo.disabled = true;
+    } else {
+      clearLockTimer();
+      if(codeLock){ codeLock.hidden = true; codeLock.textContent = ''; }
+      if(codeIn) codeIn.disabled = false; if(codeGo) codeGo.disabled = false;
+    }
+  }
+  function startLock(){ lockedUntil = Date.now() + 60000; updateLockUI(); clearLockTimer(); lockTimer = setInterval(updateLockUI, 500); }
+
+  // --- Inhalt des offenen Buchs rendern (Einträge read-only + „Ansehen"/„Herunterladen") ---
+  function humanSize(b){ b = Number(b) || 0; if(b < 1024) return b + ' B'; if(b < 1048576) return (b/1024).toFixed(1) + ' KB'; return (b/1048576).toFixed(1) + ' MB'; }
+  function isFileEntry(e){ return !!(e && e.payload && e.payload.kind === 'jt-datei' && typeof e.payload.data === 'string'); }
+  function renderEntries(){
+    if(!listEl) return;
+    listEl.innerHTML = '';
+    var n = openEntries ? openEntries.length : 0;
+    if(emptyEl) emptyEl.hidden = (n !== 0);
+    if(!openEntries) return;
+    openEntries.forEach(function(e){
+      var li = document.createElement('li');
+      var nm = document.createElement('div'); nm.className = 'bd-en-name'; nm.textContent = e.name || 'Unbenannt';
+      li.appendChild(nm);
+      var file = isFileEntry(e);
+      var parts = [];
+      if(e.category) parts.push(e.category);
+      if(file){ parts.push(e.payload.mimeType || 'Datei'); parts.push(humanSize(e.payload.size)); }
+      else if(e.size != null) parts.push(e.size + ' B');
+      if(parts.length){ var mt = document.createElement('div'); mt.className = 'bd-en-meta'; mt.textContent = parts.join(' · '); li.appendChild(mt); }
+      if(file){
+        var dl = document.createElement('button'); dl.type = 'button'; dl.className = 'bd-view'; dl.textContent = '⤓ Herunterladen';
+        dl.addEventListener('click', function(){
+          var a = document.createElement('a'); a.href = e.payload.data; a.download = e.payload.filename || e.name || 'datei';
+          document.body.appendChild(a); a.click(); a.remove();
+        });
+        li.appendChild(dl);
+      } else {
+        var view = document.createElement('button'); view.type = 'button'; view.className = 'bd-view'; view.textContent = 'Ansehen';
+        view.addEventListener('click', function(){
+          var pre = li.querySelector('pre');
+          if(pre){ pre.remove(); return; }
+          pre = document.createElement('pre');
+          try{ pre.textContent = JSON.stringify(e.payload, null, 2); }catch(_){ pre.textContent = String(e.payload); }
+          li.appendChild(pre);
+        });
+        li.appendChild(view);
+      }
+      listEl.appendChild(li);
+    });
+  }
+
+  function showContentMode(){ demo.classList.remove('code-mode', 'test-mode'); demo.classList.add('is-open'); renderEntries(); }
+  function showTestMode(){ demo.classList.remove('code-mode'); demo.classList.add('is-open', 'test-mode'); }   // TESTBUCH
+
+  // --- Öffnen: Testbuch → Werkzeuge; verschlossenes Buch → Passwort; leeres Buch → direkt füllen ---
+  function openBook(opts){
+    opts = opts || {};
+    clearTimeout(seqTimer);
+    curId = opts.id || null; curEl = opts.el || null;
+    openEntries = null; openPw = null; openIsDecoy = false; dirty = false;
+    var label = (opts.label != null) ? opts.label : (opts.title || '');
+    demo.classList.remove('is-open', 'test-mode', 'code-mode');
+    if(codeIn) codeIn.value = '';
+    // attempts NICHT zurücksetzen → 2 Fehlversuche gelten GLOBAL (Knacker muss alle probieren)
+    updateLockUI();
+
+    if(opts.test){           // TESTBUCH — nur zum Üben; öffnet die Test-Werkzeuge (kein Passwort, kein Tresor)
+      setTitles('🧪 Testbuch');
+      demo.classList.toggle('has-rename', false);
+      if(hintEl) hintEl.textContent = 'Test-Werkzeuge';
+      demo.hidden = false;
+      seqTimer = setTimeout(showTestMode, 120);
+      return;
+    }
+
+    setTitles(label || 'Buch');
+    demo.classList.toggle('has-rename', !!curId);             // jedes Regal-Buch ist beschriftbar
+    if(renameIn) renameIn.value = label;
+
+    if(curId && isLocked(curId)){
+      // verschlossenes Buch → echtes Passwort verlangen (kein Demo-Code mehr)
+      demo.classList.add('code-mode');
+      if(hintEl) hintEl.textContent = 'mit dem Passwort öffnen';
+      demo.hidden = false;
+      if(codeIn && Date.now() >= lockedUntil){ setTimeout(function(){ codeIn.focus(); }, 60); }
+    } else {
+      // leeres/neues Buch → direkt öffnen: Jason laden + Passwort setzen
+      demo.classList.remove('code-mode');
+      if(hintEl) hintEl.textContent = 'leeres Buch — Jason laden und verschließen';
+      openEntries = [];
+      demo.hidden = false;
+      seqTimer = setTimeout(showContentMode, 120);
+    }
+  }
+  window.jtOpenBook = openBook;          // von der Regal-Ansicht aufgerufen
+
+  // korrektes Passwort → decryptTresor → Öffnen-Sequenz + Inhalt
+  if(codeForm){
+    codeForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(Date.now() < lockedUntil) return;
+      var pw = (codeIn && codeIn.value) || '';
+      var v = getVault(curId);
+      if(!v || !v.tresor) return;
+      L.openVault(v, pw).then(function(res){
+        attempts = 0; if(codeLock) codeLock.hidden = true;
+        openIsDecoy = (res.mode === 'decoy');     // Köder-Passwort -> harmlose Schein-Bibliothek
+        openEntries = L.payloadToEntries(res.plain, (renameIn && renameIn.value) || 'Buch').entries;
+        openPw = pw; dirty = false;
+        if(codeIn) codeIn.value = '';
+        showContentMode();               // Schlüssel versinkt + Energie + Buch auf + Inhalt
+      }).catch(function(){               // falsches Passwort/Manipulation → AES-GCM wirft
+        attempts++;
+        if(codeIn) codeIn.value = '';
+        codeForm.classList.remove('shake'); void codeForm.offsetWidth; codeForm.classList.add('shake');
+        if(codeIn) codeIn.focus();
+        if(attempts >= 2){ attempts = 0; startLock(); }   // 2× falsch → 1 Minute Sperre
+      });
+    });
+  }
+
+  // Dateien ins offene Buch laden — JSON wie bisher (Bibliothek/Tresor), alles andere als
+  // verschlüsselte Datei-Einträge (DataURL/Base64). Mehrere Dateien auf einmal möglich.
+  // Große Datei verschlüsselt in einen externen Ordner speichern (Chrome/Edge, File System Access).
+  // Eigene .tresor.json; zum Zurückholen via „＋ Datei laden" + Passwort. Browser-ungeprüft.
+  window.jtSaveFileExtern = function(file){
+    if(!window.showSaveFilePicker){ alert('Externes Speichern geht nur in Chrome/Edge.'); return; }
+    var pw = window.prompt('Passwort zum Verschlüsseln dieser Datei (mind. 8 Zeichen):'); if(pw == null) return;
+    if(pw.length < 8){ alert('Passwort zu kurz (mind. 8 Zeichen).'); return; }
+    var pc = window.prompt('Passwort wiederholen:'); if(pc == null) return;
+    if(pc !== pw){ alert('Die Passwörter stimmen nicht überein.'); return; }
+    var safe = String(file.name || 'datei').replace(/[^a-z0-9._-]+/gi, '_');
+    window.showSaveFilePicker({ suggestedName: safe + '.tresor.json', types: [{ description: 'Verschlüsselte Datei', accept: { 'application/json': ['.json'] } }] }).then(function(handle){
+      var rd = new FileReader();
+      rd.onload = function(){
+        var entry = L.makeEntry({ name: file.name, category: '', payload: { kind: 'jt-datei', filename: file.name, mimeType: file.type || 'application/octet-stream', size: file.size, encoding: 'dataurl', data: String(rd.result) } });
+        L.encryptTresor(L.buildLibraryExport([entry]), pw).then(function(blob){
+          return handle.createWritable().then(function(w){ return w.write(JSON.stringify(blob, null, 2)).then(function(){ return w.close(); }); });
+        }).then(function(){
+          alert('„' + file.name + '" verschlüsselt gespeichert. 🛡️\n\nZum Zurückholen: „＋ Datei laden" mit dieser .tresor.json + Passwort → die Datei erscheint mit „⤓ Herunterladen".');
+        }).catch(function(e){ alert('Fehler: ' + String((e && e.message) || e)); });
+      };
+      rd.onerror = function(){ alert('Datei konnte nicht gelesen werden.'); };
+      rd.readAsDataURL(file);
+    }).catch(function(e){ if(e && e.name === 'AbortError') return; alert('Speichern abgebrochen: ' + String((e && e.message) || e)); });
+  };
+  function addRawFile(f){
+    if(f.size > 2 * 1024 * 1024){
+      if(window.showSaveFilePicker){
+        if(confirm('„' + f.name + '" ist ' + humanSize(f.size) + ' groß.\n\nGroße Dateien sprengen den Browser-Speicher. Stattdessen VERSCHLÜSSELT in einen externen Ordner speichern?\n\nOK = extern verschlüsselt · Abbrechen = doch in den Browser laden')){
+          window.jtSaveFileExtern(f); return;
+        }
+        if(!confirm('Trotzdem in den Browser-Speicher laden? (kann den Tresor sprengen)')) return;
+      } else {
+        if(!confirm('„' + f.name + '" ist ' + humanSize(f.size) + ' groß. Externes Speichern geht nur in Chrome/Edge. Trotzdem in den Browser-Speicher laden?')) return;
+      }
+    }
+    var rd = new FileReader();
+    rd.onload = function(){
+      var entry = L.makeEntry({ name: f.name, category: '', payload: {
+        kind: 'jt-datei', filename: f.name, mimeType: f.type || 'application/octet-stream',
+        size: f.size, encoding: 'dataurl', data: String(rd.result)
+      }});
+      openEntries = L.mergeEntries(openEntries || [], [entry]);
+      dirty = true; renderEntries();
+    };
+    rd.onerror = function(){ alert('„' + f.name + '" konnte nicht gelesen werden.'); };
+    rd.readAsDataURL(f);
+  }
+  function addJsonFile(f){
+    var rd = new FileReader();
+    rd.onload = function(){
+      var text = String(rd.result), base = f.name.replace(/\.json$/i, '');
+      var p = L.validateAndParse(text);
+      if(!p.ok){ addRawFile(f); return; }                 // kein gültiges JSON -> als Datei ablegen
+      if(L.isTresor(p.value)){
+        var pw2 = window.prompt('„' + f.name + '" ist selbst ein Tresor. Passwort:');
+        if(pw2 == null) return;
+        L.decryptTresor(p.value, pw2).then(function(plain){
+          openEntries = L.mergeEntries(openEntries || [], L.payloadToEntries(plain, base).entries);
+          dirty = true; renderEntries();
+        }).catch(function(){ alert('Falsches Passwort oder Tresor beschädigt.'); });
+        return;
+      }
+      openEntries = L.mergeEntries(openEntries || [], L.parseLibraryImport(text, base).entries);
+      dirty = true; renderEntries();
+    };
+    rd.onerror = function(){ alert('„' + f.name + '" konnte nicht gelesen werden.'); };
+    rd.readAsText(f);
+  }
+  if(loadBtn && fileIn){
+    loadBtn.addEventListener('click', function(){ fileIn.click(); });
+    fileIn.addEventListener('change', function(ev){
+      var files = ev.target.files ? Array.prototype.slice.call(ev.target.files) : [];
+      ev.target.value = '';
+      files.forEach(function(f){ if(/\.json$/i.test(f.name)) addJsonFile(f); else addRawFile(f); });
+    });
+  }
+
+  // Verschließen: Sammlung → encryptTresor → jason-tresor v2 ans Buch (zu = verschlüsselt)
+  if(lockBtn){
+    lockBtn.addEventListener('click', function(){
+      if(!curId){ alert('Vorschau-Buch — zum echten Verschließen ein Buch im Regal öffnen.'); return; }
+      var list = openEntries || [];
+      if(!list.length){ alert('Dieses Buch ist leer — erst eine .json laden.'); return; }
+      var pw = openPw;
+      if(!pw){
+        pw = window.prompt('Neues Passwort für dieses Buch (mind. 8 Zeichen):');
+        if(pw == null) return;
+        if(pw.length < 8){ alert('Passwort zu kurz (mind. 8 Zeichen).'); return; }
+        var pwc = window.prompt('Passwort zur Sicherheit wiederholen:');
+        if(pwc == null) return;
+        if(pwc !== pw){ alert('Die Passwörter stimmen nicht überein.'); return; }
+      }
+      L.encryptTresor(L.buildLibraryExport(list), pw).then(function(blob){
+        var m = loadVaults();
+        var rec = m[curId] || {};
+        if(openIsDecoy){ rec.decoy = blob; }          // im Tarnfach: nur den Köder neu sichern
+        else { rec.tresor = blob; }                   // echtes Buch: echten Umschlag sichern (Tarnfach bleibt erhalten)
+        rec.name = (renameIn && renameIn.value) || rec.name || '';
+        rec.updatedAt = L.nowIso();
+        m[curId] = rec;
+        saveVaults(m);
+        openPw = pw; dirty = false;
+        if(window.jtMarkVault && !openIsDecoy) window.jtMarkVault(curId, true);
+        hide();
+      }).catch(function(err){ alert(String((err && err.message) || err)); });
+    });
+  }
+
+  // Verschenken/Sichern: den verschlüsselten Umschlag herunterladen (Passwort getrennt mitteilen)
+  if(giftBtn){
+    giftBtn.addEventListener('click', function(){
+      var list = openEntries || [];
+      if(!list.length){ alert('Nichts zu sichern — Buch ist leer.'); return; }
+      var pw = openPw;
+      if(!pw){
+        pw = window.prompt('Passwort zum Verschlüsseln (mind. 8 Zeichen):');
+        if(pw == null) return;
+        if(pw.length < 8){ alert('Passwort zu kurz (mind. 8 Zeichen).'); return; }
+      }
+      L.encryptTresor(L.buildLibraryExport(list), pw).then(function(blob){
+        var name = ((renameIn && renameIn.value) || 'buch').replace(/[^a-z0-9-_]+/gi, '_').replace(/^_+|_+$/g, '') || 'buch';
+        var b = new Blob([JSON.stringify(blob, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(b), a = document.createElement('a');
+        a.href = url; a.download = name + '.tresor.json'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      }).catch(function(err){ alert(String((err && err.message) || err)); });
+    });
+  }
+
+  // Honigtopf/Tarnfach (pro Buch, opt-in): zweites Passwort -> harmlose Schein-Bibliothek.
+  // Echtes Passwort zeigt echte Daten; Köder-Passwort zeigt den Köder. Echte Krypto über den Kern
+  // (eigener AES-256-GCM-Umschlag rec.decoy). Ehrliche Grenze: stark gegen Gelegenheits-Gucker,
+  // schwach gegen Kenner.
+  function buildDecoyEntries(){
+    var s = [
+      { name:'Einkaufsliste', category:'Alltag',  payload:{ artikel:['Milch','Brot','Äpfel','Kaffee','Butter'], notiz:'vor dem Wochenende' } },
+      { name:'Apfelkuchen',   category:'Rezepte',  payload:{ zutaten:['Äpfel','Mehl','Zucker','Butter','Zimt'], schritte:['Teig kneten','Äpfel schneiden','45 Min bei 180°C'] } },
+      { name:'Urlaubsideen',  category:'Notizen',  payload:{ orte:['Nordsee','Schwarzwald','Gardasee'], wann:'Sommer' } },
+      { name:'Lesetipps',     category:'Notizen',  payload:{ buecher:['Reiseführer Italien','Gartenkalender'] } }
+    ];
+    return s.map(function(x){ return L.makeEntry(x); });
+  }
+  if(decoyBtn){
+    decoyBtn.addEventListener('click', function(){
+      if(!curId || !isLocked(curId)){ alert('Ein Tarnfach gibt es nur für ein verschlossenes Buch.\nErst eine .json laden und „🔒 Verschließen", dann hier ein Köder-Passwort vergeben.'); return; }
+      if(openIsDecoy){ alert('Du bist gerade IM Tarnfach (mit dem Köder-Passwort geöffnet).\nDas echte Buch öffnest du mit deinem echten Passwort — dort verwaltest du das Tarnfach.'); return; }
+      var rec = getVault(curId) || {};
+      if(rec.decoy && L.isTresor(rec.decoy)){
+        if(confirm('Dieses Buch hat schon ein Tarnfach (Köder-Passwort).\n\nOK = Tarnfach ENTFERNEN.\nAbbrechen = behalten.')){
+          var m0 = loadVaults(); if(m0[curId]){ delete m0[curId].decoy; saveVaults(m0); }
+          alert('Tarnfach entfernt. Nur noch dein echtes Passwort öffnet dieses Buch.');
+        }
+        return;
+      }
+      var dpw = window.prompt('Köder-Passwort (mind. 8 Zeichen).\nWer DIESES eingibt, sieht eine harmlose Bibliothek statt deiner echten Daten:');
+      if(dpw == null) return;
+      if(dpw.length < 8){ alert('Köder-Passwort zu kurz (mind. 8 Zeichen).'); return; }
+      if(openPw && dpw === openPw){ alert('Das Köder-Passwort muss sich von deinem echten Passwort unterscheiden.'); return; }
+      var dpc = window.prompt('Köder-Passwort zur Sicherheit wiederholen:');
+      if(dpc == null) return;
+      if(dpc !== dpw){ alert('Die Köder-Passwörter stimmen nicht überein.'); return; }
+      L.encryptTresor(L.buildLibraryExport(buildDecoyEntries()), dpw).then(function(blob){
+        var m = loadVaults(); var r = m[curId] || {}; r.decoy = blob; r.updatedAt = L.nowIso(); m[curId] = r; saveVaults(m);
+        alert('Tarnfach aktiv. 🪤\n\n• Echtes Passwort  → deine echten Daten\n• Köder-Passwort  → eine harmlose Schein-Bibliothek (Einkaufsliste, Rezepte …)\n\nTipp: Mit dem Köder-Passwort öffnen, dann „＋ Jason laden" + „🔒 Verschließen" — so machst du den Köder persönlicher.\n\nEhrlich: stark gegen neugierige Blicke, schwächer gegen echte Technik-Kenner.');
+      }).catch(function(err){ alert(String((err && err.message) || err)); });
+    });
+  }
+
+  // TESTBUCH — vor Echtbetrieb entfernen: Probelauf zurücksetzen (Zwei-Schritt, nur lokale Kopie).
+  // Entfernt NUR die lokalen Test-Schlösser (jt-vaults) in diesem Browser; exportierte Dateien bleiben.
+  if(resetBtn){
+    resetBtn.addEventListener('click', function(){
+      if(!confirm('Probelauf zurücksetzen?\n\nAlle Test-Bücher in DIESEM Browser werden wieder entriegelt (die lokalen Schlösser werden entfernt).\nBereits exportierte .tresor.json-Dateien bleiben erhalten.')) return;
+      if(!confirm('Sicher? Zweiter Schritt zur Sicherheit:\n\nJa = alle lokalen Test-Schlösser jetzt entfernen.')) return;
+      try{ localStorage.removeItem('jt-vaults'); }catch(e){}
+      if(window.jtClearVaultMarks) window.jtClearVaultMarks();
+      alert('Probelauf zurückgesetzt — alle Test-Bücher sind wieder offen. (Exportierte Dateien bleiben.)');
+      hide();
+    });
+  }
+
+  // Beschriftung (Buchrücken-Schild) live mitführen
+  if(renameIn){
+    renameIn.addEventListener('input', function(){
+      var v = renameIn.value;
+      setTitles(v || 'Buch');
+      if(curId && window.jtRenameBook) window.jtRenameBook(curId, v);
+    });
+  }
+
+  // ===== Shamir 3-von-5: Schale um JasonLib.splitSecret / combineShares =====
+  function copyText(str, btn){
+    function done(){ if(!btn) return; var t = btn.textContent; btn.textContent = 'kopiert ✓'; setTimeout(function(){ btn.textContent = t; }, 1200); }
+    function fallback(){
+      try{ var ta = document.createElement('textarea'); ta.value = str; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); ta.remove(); done(); }
+      catch(e2){ alert('Konnte nicht kopieren — bitte den Code von Hand markieren und kopieren.'); }
+    }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(str).then(done, fallback); return; } }catch(e){}
+    fallback();
+  }
+  function codeRow(code){
+    var row = document.createElement('div'); row.className = 'bd-sh-row';
+    var inp = document.createElement('input'); inp.type = 'text'; inp.readOnly = true; inp.className = 'bd-sh-code'; inp.value = code;
+    inp.addEventListener('focus', function(){ inp.select(); });
+    var cp = document.createElement('button'); cp.type = 'button'; cp.textContent = 'Kopieren';
+    cp.addEventListener('click', function(){ copyText(code, cp); });
+    row.appendChild(inp); row.appendChild(cp); return row;
+  }
+  // Aufteilen + sofortiger Selbsttest (3 zufaellige Teile -> muss das Original ergeben)
+  function doSplit(secret){
+    if(!shParts || !splitPanel) return;
+    L.splitSecret(secret).then(function(res){
+      shParts.innerHTML = '';
+      res.shares.forEach(function(code){
+        var li = document.createElement('li'); li.appendChild(codeRow(code)); shParts.appendChild(li);
+      });
+      if(shTest){ shTest.className = 'bd-sh-test'; shTest.textContent = 'Selbsttest läuft …'; }
+      var order = [0,1,2,3,4].sort(function(){ return Math.random() - 0.5; }).slice(0, res.k);
+      L.combineShares(order.map(function(i){ return res.shares[i]; })).then(function(back){
+        if(!shTest) return;
+        if(back === secret){ shTest.className = 'bd-sh-test ok';
+          shTest.textContent = '✓ Geprüft: die Teile ' + order.map(function(i){ return i+1; }).sort().join(', ') + ' ergeben wieder das Passwort.'; }
+        else { shTest.className = 'bd-sh-test bad'; shTest.textContent = '⚠ Selbsttest unerwartet fehlgeschlagen — bitte diese Teile nicht verwenden.'; }
+      }).catch(function(){ if(shTest){ shTest.className = 'bd-sh-test bad'; shTest.textContent = '⚠ Selbsttest fehlgeschlagen.'; } });
+      if(recoverPanel) recoverPanel.hidden = true;
+      splitPanel.hidden = false;
+    }).catch(function(err){ alert(String((err && err.message) || err)); });
+  }
+  if(splitBtn){
+    splitBtn.addEventListener('click', function(){
+      if(!openPw){ alert('Erst das Buch mit einem Passwort verschließen — dann lässt sich dieses Passwort in 5 Teile aufteilen.'); return; }
+      doSplit(openPw);
+    });
+  }
+  if(shDone){ shDone.addEventListener('click', function(){ if(splitPanel) splitPanel.hidden = true; if(shParts) shParts.innerHTML = ''; if(shTest) shTest.textContent = ''; }); }
+
+  function openRecover(){
+    if(!shInputs || !recoverPanel) return;
+    shInputs.innerHTML = '';
+    for(var i = 0; i < 5; i++){
+      var ta = document.createElement('textarea'); ta.rows = 1;
+      ta.placeholder = 'Teil-Code ' + (i+1) + ' (z. B. JT3v5-…) — oder leer lassen';
+      shInputs.appendChild(ta);
+    }
+    if(shResult){ shResult.hidden = true; shResult.textContent = ''; shResult.className = 'bd-sh-result'; }
+    if(splitPanel) splitPanel.hidden = true;
+    recoverPanel.hidden = false;
+  }
+  if(recoverLink){ recoverLink.addEventListener('click', openRecover); }
+  if(recCancel){ recCancel.addEventListener('click', function(){ if(recoverPanel) recoverPanel.hidden = true; if(shInputs) shInputs.innerHTML = ''; }); }
+  if(recGo){
+    recGo.addEventListener('click', function(){
+      var tas = shInputs ? shInputs.querySelectorAll('textarea') : [];
+      var codes = [], i; for(i = 0; i < tas.length; i++){ if(tas[i].value.trim()) codes.push(tas[i].value.trim()); }
+      L.combineShares(codes).then(function(pw){
+        if(!shResult) return;
+        shResult.hidden = false; shResult.className = 'bd-sh-result ok'; shResult.innerHTML = '';
+        var msg = document.createElement('div'); msg.textContent = '✓ Passwort wiederhergestellt:'; shResult.appendChild(msg);
+        shResult.appendChild(codeRow(pw));
+        if(curId && isLocked(curId) && codeForm){
+          var op = document.createElement('button'); op.type = 'button'; op.className = 'bd-lock'; op.textContent = '🔓 Buch mit diesem Passwort öffnen';
+          op.addEventListener('click', function(){
+            if(recoverPanel) recoverPanel.hidden = true; if(shInputs) shInputs.innerHTML = '';
+            if(codeIn) codeIn.value = pw;
+            if(codeForm.requestSubmit) codeForm.requestSubmit();
+            else codeForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+          });
+          shResult.appendChild(op);
+        }
+      }).catch(function(err){
+        if(!shResult) return;
+        shResult.hidden = false; shResult.className = 'bd-sh-result bad'; shResult.textContent = '✖ ' + String((err && err.message) || err);
+      });
+    });
+  }
+  // TESTBUCH — gefahrloser Probelauf mit einem Demo-Passwort (keine echten Daten).
+  if(practiceSplit){ practiceSplit.addEventListener('click', function(){ doSplit('ÜBUNG-Beispiel-Passwort-3von5'); }); }
+  if(practiceRec){ practiceRec.addEventListener('click', openRecover); }
+
+  function hide(){
+    clearTimeout(seqTimer); clearLockTimer();
+    demo.classList.remove('is-open', 'test-mode'); demo.hidden = true;
+    if(splitPanel) splitPanel.hidden = true; if(recoverPanel) recoverPanel.hidden = true;
+    if(shParts) shParts.innerHTML = ''; if(shInputs) shInputs.innerHTML = '';   // Codes/Passwort nicht im DOM liegen lassen
+    if(shTest) shTest.textContent = ''; if(shResult){ shResult.hidden = true; shResult.textContent = ''; }
+    openEntries = null; openPw = null; openIsDecoy = false; dirty = false;   // Klartext + Passwort aus dem Speicher werfen
+    renderVaultOverview();   // Liste-Übersicht aktuell halten (neues/geändertes Buch)
+  }
+  function tryClose(){
+    if(dirty && !confirm('Dieses Buch ist noch nicht verschlossen — neu geladene Inhalte gehen verloren. Trotzdem schließen?')) return;
+    hide();
+  }
+
+  // --- Bibliothek-Ansicht: alle Regal-Bücher (Tresore) zentral verwalten:
+  //     Name + Kategorie eintragen, öffnen, löschen (je 1 Rückfrage). KEIN Tarnfach-Hinweis (Deniability). ---
+  function renderVaultOverview(){
+    var ul = document.getElementById('vault-list'); if(!ul) return;
+    var ovEmpty = document.getElementById('ov-empty');
+    var delAll  = document.getElementById('ov-delete-all');
+    var vaults = loadVaults(), names = {};
+    try{ names = JSON.parse(localStorage.getItem('jt-booknames') || '{}') || {}; }catch(e){ names = {}; }   // lokal lesen (loadNames lebt im Regal-Skript)
+    var idset = {};
+    Object.keys(vaults).forEach(function(id){ idset[id] = 1; });
+    Object.keys(names).forEach(function(id){ idset[id] = 1; });   // auch benannte (noch leere) Bücher zeigen
+    var ids = Object.keys(idset).filter(function(id){
+      if(id === '1-0-0') return false;                            // TESTBUCH nicht listen
+      var v = vaults[id] || {};
+      var hasContent = !!(v.tresor && L.isTresor(v.tresor));
+      var hasName = !!((v.name && v.name.length) || (names[id] && names[id].length));
+      var hasCat  = !!(v.category && v.category.length);
+      return hasContent || hasName || hasCat;
+    });
+    ids.sort(function(a,b){ var na = String((vaults[a]||{}).name || names[a] || a).toLowerCase(), nb = String((vaults[b]||{}).name || names[b] || b).toLowerCase(); return na < nb ? -1 : na > nb ? 1 : 0; });
+    ul.innerHTML = '';
+    if(ovEmpty) ovEmpty.hidden = (ids.length !== 0);
+    if(delAll)  delAll.hidden  = (ids.length === 0);
+    ids.forEach(function(id){
+      var rec = vaults[id] || {}, nm = rec.name || names[id] || '';
+      var locked = !!(rec.tresor && L.isTresor(rec.tresor));
+      var li = document.createElement('li'); li.className = 'ov-item';
+      var lk = document.createElement('span'); lk.className = locked ? 'ov-lock' : 'ov-lock ov-lock-empty';
+      lk.textContent = locked ? '🔒' : 'leer'; lk.title = locked ? 'verschlossen' : 'leeres Buch'; lk.setAttribute('aria-hidden','true');
+      var nin = document.createElement('input'); nin.className = 'ov-name-in'; nin.type = 'text'; nin.maxLength = 24; nin.value = nm; nin.placeholder = 'Name …';
+      nin.setAttribute('aria-label', 'Buchname');
+      nin.addEventListener('change', function(){
+        var nv = nin.value.trim();
+        var mm = loadVaults(); if(mm[id]){ mm[id].name = nv; saveVaults(mm); }
+        if(window.jtRenameBook) window.jtRenameBook(id, nv);   // Schild im Regal + jt-booknames mitführen
+      });
+      var cin = document.createElement('input'); cin.className = 'ov-cat-in'; cin.type = 'text'; cin.maxLength = 24; cin.value = rec.category || ''; cin.placeholder = 'Kategorie …';
+      cin.setAttribute('aria-label', 'Kategorie');
+      cin.addEventListener('change', function(){
+        var mm = loadVaults(); var rc = mm[id] || {}; rc.category = cin.value.trim();
+        if(!rc.category && !rc.tresor && !rc.decoy){ delete mm[id]; } else { mm[id] = rc; }
+        saveVaults(mm);
+      });
+      var op = document.createElement('button'); op.type = 'button'; op.className = 'ov-open2'; op.textContent = 'Öffnen';
+      op.addEventListener('click', function(){ var lab = nin.value.trim() || nm || 'Buch'; openBook({ id: id, label: lab, title: lab }); });
+      var del = document.createElement('button'); del.type = 'button'; del.className = 'ov-del';
+      del.title = locked ? 'Inhalt löschen (das Buch bleibt leer erhalten)' : 'Leeres Buch aus der Bibliothek entfernen';
+      del.textContent = locked ? '🗑 Inhalt' : '🗑 Entfernen';
+      del.addEventListener('click', function(){
+        var lab = nin.value.trim() || nm || 'dieses Buch';
+        if(locked){
+          if(!confirm('Inhalt von „' + lab + '" löschen?\n\nNur der Inhalt wird entfernt — das Buch bleibt (leer) erhalten und kann neu gefüllt werden. Bereits exportierte Dateien bleiben erhalten.')) return;
+          var mm = loadVaults(), r2 = mm[id];
+          if(r2){ delete r2.tresor; delete r2.decoy; r2.updatedAt = L.nowIso();   // nur der Inhalt (echt + Tarnfach) weg
+            if(!r2.name && !r2.category){ delete mm[id]; } }                      // gar nichts mehr übrig -> Buch ganz weg
+          saveVaults(mm);
+          if(window.jtMarkVault) window.jtMarkVault(id, false);                   // Regal-🔒 weg (jetzt leer)
+        } else {
+          if(!confirm('Leeres Buch „' + lab + '" aus der Bibliothek entfernen?')) return;
+          var m2 = loadVaults(); if(m2[id]){ delete m2[id]; saveVaults(m2); }
+          try{ var nn = JSON.parse(localStorage.getItem('jt-booknames') || '{}') || {}; delete nn[id]; localStorage.setItem('jt-booknames', JSON.stringify(nn)); }catch(e){}
+          if(window.jtMarkVault) window.jtMarkVault(id, false);
+        }
+        renderVaultOverview();
+      });
+      li.appendChild(lk); li.appendChild(nin); li.appendChild(cin); li.appendChild(op); li.appendChild(del);
+      ul.appendChild(li);
+    });
+  }
+  window.jtRenderOverview = renderVaultOverview;
+  var ovDelAll = document.getElementById('ov-delete-all');
+  if(ovDelAll){
+    ovDelAll.addEventListener('click', function(){
+      if(!confirm('Den GESAMTEN Tresor-Inhalt in diesem Browser löschen?\n\nAlle Bücher werden entfernt. Bereits exportierte .tresor.json-Dateien bleiben erhalten.')) return;
+      try{ localStorage.removeItem('jt-vaults'); }catch(e){}
+      if(window.jtClearVaultMarks) window.jtClearVaultMarks();
+      renderVaultOverview();
+    });
+  }
+  var ovNewBook = document.getElementById('ov-new-book');
+  if(ovNewBook){
+    ovNewBook.addEventListener('click', function(){
+      var name = window.prompt('Name für das neue Buch:'); if(name == null) return;
+      name = name.trim(); if(!name){ alert('Bitte einen Namen eingeben.'); return; }
+      var id = window.jtFreeBookSlot ? window.jtFreeBookSlot() : null;
+      if(!id){ alert('Kein freier Platz im Regal — bitte ein vorhandenes leeres Buch im Regal nutzen.'); return; }
+      if(window.jtRenameBook) window.jtRenameBook(id, name);   // schreibt jt-booknames + Schild
+      renderVaultOverview();
+      openBook({ id: id, label: name, title: name });          // direkt öffnen zum Füllen + Verschließen
+    });
+  }
+  renderVaultOverview();
+
+  // --- Gesamt-Sicherung (Super-Passwort): ganze Bibliothek -> EINE verschlüsselte Datei.
+  //     Stellt nach App-Löschung ALLE Bücher wieder her; 3-von-5-Codes teilen das Super-Passwort.
+  //     Bücher behalten zusätzlich ihr eigenes Passwort (Super-Passwort = Schlüssel zur Sicherung). ---
+  var ssCreate = document.getElementById('ss-create'), ssRestoreBtn = document.getElementById('ss-restore');
+  var ssSplit = document.getElementById('ss-split'), ssCombine = document.getElementById('ss-combine');
+  var ssFile = document.getElementById('ss-file'), ssOut = document.getElementById('ss-out');
+  function ssShow(text){ if(!ssOut) return; ssOut.value = text; ssOut.hidden = false; ssOut.focus(); ssOut.select(); }
+  function ssReadLS(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+  function ssCollect(){
+    return { schemaVersion: 1, kind: 'jt-gesamtsicherung', version: 1, exportedAt: L.nowIso(),
+      vaults: ssReadLS('jt-vaults') || {}, names: ssReadLS('jt-booknames') || {},
+      liste: ssReadLS('jasons-bibliothek-v1'), layout: ssReadLS('jt-booklayout'), shelves: ssReadLS('jt-shelves2') };
+  }
+  function ssApply(b){
+    function mergeMap(key, obj){ if(!obj || typeof obj !== 'object') return; try{
+      var cur = JSON.parse(localStorage.getItem(key) || '{}') || {};
+      for(var k in obj){ if(Object.prototype.hasOwnProperty.call(obj, k)) cur[k] = obj[k]; }
+      localStorage.setItem(key, JSON.stringify(cur)); }catch(e){} }
+    mergeMap('jt-vaults', b.vaults); mergeMap('jt-booknames', b.names);
+    function setIf(key, v){ if(v != null){ try{ localStorage.setItem(key, JSON.stringify(v)); }catch(e){} } }
+    setIf('jasons-bibliothek-v1', b.liste); setIf('jt-booklayout', b.layout); setIf('jt-shelves2', b.shelves);
+  }
+  if(ssCreate){ ssCreate.addEventListener('click', function(){
+    var pw = window.prompt('Super-Passwort für die Gesamt-Sicherung (mind. 8 Zeichen):'); if(pw == null) return;
+    if(pw.length < 8){ alert('Super-Passwort zu kurz (mind. 8 Zeichen).'); return; }
+    var pc = window.prompt('Super-Passwort wiederholen:'); if(pc == null) return;
+    if(pc !== pw){ alert('Die Super-Passwörter stimmen nicht überein.'); return; }
+    L.encryptTresor(ssCollect(), pw).then(function(blob){
+      var b = new Blob([JSON.stringify(blob, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(b), a = document.createElement('a');
+      a.href = url; a.download = 'jasons-tresor-gesamt.tresor.json'; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      alert('Gesamt-Sicherung erstellt. 🛡️\n\nBewahre die Datei + das Super-Passwort (oder 3 von 5 Codes) getrennt auf. Damit holst du nach App-Löschung ALLE Bücher zurück.');
+    }).catch(function(err){ alert(String((err && err.message) || err)); });
+  }); }
+  if(ssRestoreBtn && ssFile){
+    ssRestoreBtn.addEventListener('click', function(){ ssFile.click(); });
+    ssFile.addEventListener('change', function(ev){
+      var f = ev.target.files && ev.target.files[0]; ev.target.value = ''; if(!f) return;
+      var rdr = new FileReader();
+      rdr.onload = function(){
+        var p = L.validateAndParse(String(rdr.result));
+        if(!p.ok || !L.isTresor(p.value)){ alert('Das ist keine gültige Gesamt-Sicherung.'); return; }
+        var pw = window.prompt('Super-Passwort der Gesamt-Sicherung:'); if(pw == null) return;
+        L.decryptTresor(p.value, pw).then(function(bundle){
+          if(!bundle || bundle.kind !== 'jt-gesamtsicherung'){ alert('Entschlüsselt, aber keine Gesamt-Sicherung.'); return; }
+          if(!confirm('Gesamt-Sicherung einspielen?\n\nBücher werden wiederhergestellt (gleiche ID wird überschrieben). Fortfahren?')) return;
+          ssApply(bundle);
+          if(window.jtRenderOverview) window.jtRenderOverview();
+          alert('Gesamt-Sicherung eingespielt — deine Bücher sind zurück. Tipp: Seite neu laden (Ctrl+Shift+R).');
+        }).catch(function(){ alert('Falsches Super-Passwort oder Datei beschädigt.'); });
+      };
+      rdr.onerror = function(){ alert('Datei konnte nicht gelesen werden.'); };
+      rdr.readAsText(f);
+    });
+  }
+  if(ssSplit){ ssSplit.addEventListener('click', function(){
+    var pw = window.prompt('Super-Passwort, das du in 5 Codes (3 genügen) aufteilen willst:'); if(pw == null) return;
+    if(!pw){ alert('Kein Passwort eingegeben.'); return; }
+    L.splitSecret(pw).then(function(res){
+      ssShow('5 Codes — getrennt aufbewahren. Beliebige 3 stellen das Super-Passwort wieder her:\n\n' + res.shares.join('\n'));
+    }).catch(function(err){ alert(String((err && err.message) || err)); });
+  }); }
+  if(ssCombine){ ssCombine.addEventListener('click', function(){
+    var raw = window.prompt('Mindestens 3 der 5 Codes eingeben (durch Leerzeichen oder Zeilen getrennt):'); if(raw == null) return;
+    var codes = raw.split(/\s+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if(codes.length < 3){ alert('Bitte mindestens 3 Codes eingeben.'); return; }
+    L.combineShares(codes).then(function(pw){
+      ssShow('Wiederhergestelltes Super-Passwort (damit „Gesamt-Sicherung einlesen" entschlüsseln):\n\n' + pw);
+    }).catch(function(err){ alert('Konnte nicht wiederherstellen: ' + String((err && err.message) || err)); });
+  }); }
+
+  // --- Auto-Sync in einen festen Ordner (nur Chrome/Edge, File System Access).
+  //     Schreibt GENAU EINE verschlüsselte Gesamt-Sicherung in den Ordner und aktualisiert sie
+  //     in-place bei Änderungen (kein Backup-Stapel). Super-Passwort lebt NUR im Speicher (nie
+  //     gespeichert); der Ordner-Zugriff wird in IndexedDB gemerkt. Browser-ungeprüft. ---
+  var syncDir = null, syncPw = null, syncOn = false, syncTimer = null;
+  var ssSync = document.getElementById('ss-sync'), ssSyncBtn = document.getElementById('ss-sync-btn');
+  var ssSyncOff = document.getElementById('ss-sync-off'), ssSyncStatus = document.getElementById('ss-sync-status');
+  var ssSyncNote = document.getElementById('ss-sync-note');
+  var SYNC_FILE = 'jasons-tresor-gesamt.tresor.json';
+  function syncStatus(t){ if(ssSyncStatus) ssSyncStatus.textContent = t; if(ssSyncOff) ssSyncOff.hidden = !syncOn; }
+  function idbDir(mode, val){
+    return new Promise(function(res){
+      var rq; try{ rq = indexedDB.open('jt-sync', 1); }catch(e){ res(null); return; }
+      rq.onupgradeneeded = function(){ try{ rq.result.createObjectStore('h'); }catch(e){} };
+      rq.onerror = function(){ res(null); };
+      rq.onsuccess = function(){
+        var db = rq.result;
+        try{
+          var st = db.transaction('h', mode === 'get' ? 'readonly' : 'readwrite').objectStore('h');
+          var op = mode === 'get' ? st.get('dir') : st.put(val, 'dir');
+          op.onsuccess = function(){ res(mode === 'get' ? (op.result || null) : true); };
+          op.onerror = function(){ res(null); };
+        }catch(e){ res(null); }
+      };
+    });
+  }
+  function verifyPerm(handle){
+    var opts = { mode: 'readwrite' };
+    return handle.queryPermission(opts).then(function(p){
+      if(p === 'granted') return true;
+      return handle.requestPermission(opts).then(function(q){ return q === 'granted'; });
+    });
+  }
+  function writeSync(){
+    if(!syncDir || !syncPw) return Promise.resolve(false);
+    return L.encryptTresor(ssCollect(), syncPw).then(function(blob){
+      return syncDir.getFileHandle(SYNC_FILE, { create: true }).then(function(fh){
+        return fh.createWritable().then(function(w){ return w.write(JSON.stringify(blob, null, 2)).then(function(){ return w.close(); }); });
+      });
+    }).then(function(){ return true; });
+  }
+  function scheduleSync(){
+    if(!syncOn || !syncDir || !syncPw) return;
+    if(syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(function(){
+      writeSync().then(function(){ syncStatus('Auto-Sync aktiv ✓ (zuletzt ' + new Date().toLocaleTimeString() + ')'); })
+        .catch(function(){ syncOn = false; syncPw = null; syncStatus('Sync gestoppt (Ordner-Zugriff verloren) — bitte neu aktivieren.'); });
+    }, 800);
+  }
+  if(window.showDirectoryPicker && ssSync){
+    ssSync.hidden = false;
+    idbDir('get').then(function(h){ if(h){ syncDir = h; syncStatus('Ordner verbunden — „Auto-Sync aktivieren" drücken + Super-Passwort.'); } });
+    if(ssSyncBtn){ ssSyncBtn.addEventListener('click', function(){
+      var step = syncDir ? Promise.resolve(syncDir) : window.showDirectoryPicker().then(function(h){ syncDir = h; return idbDir('put', h).then(function(){ return h; }); });
+      step.then(function(){ return verifyPerm(syncDir); }).then(function(ok){
+        if(!ok){ syncStatus('Kein Schreibrecht für den Ordner.'); return; }
+        var pw = window.prompt('Super-Passwort für die Auto-Sync-Datei (mind. 8 Zeichen):'); if(pw == null) return;
+        if(pw.length < 8){ alert('Super-Passwort zu kurz (mind. 8 Zeichen).'); return; }
+        syncPw = pw; syncOn = true; syncStatus('Auto-Sync wird eingerichtet …');
+        writeSync().then(function(){ syncStatus('Auto-Sync aktiv ✓ (' + new Date().toLocaleTimeString() + ')'); })
+          .catch(function(e){ syncOn = false; syncPw = null; syncStatus('Fehler: ' + String((e && e.message) || e)); });
+      }).catch(function(e){ if(e && e.name === 'AbortError') return; syncStatus('Abgebrochen.'); });
+    }); }
+    if(ssSyncOff){ ssSyncOff.addEventListener('click', function(){ syncOn = false; syncPw = null; syncStatus('Auto-Sync pausiert (Super-Passwort aus dem Speicher entfernt).'); }); }
+  } else if(ssSyncNote){
+    ssSyncNote.hidden = false;
+  }
+
+  // Vorschau-Knöpfe (Muster-Buch / Buchsequenz) — harmlos, ohne echten Tresor (kein curId → nichts gespeichert)
+  if(btn)    btn.addEventListener('click', function(){ openBook({ title: 'Muster-Buch' }); });
+  if(btnSeq) btnSeq.addEventListener('click', function(){ openBook({ title: 'Muster-Buch' }); });
+  if(close)  close.addEventListener('click', tryClose);
+  if(back)   back.addEventListener('click', tryClose);
+  document.addEventListener('keydown', function(e){ if(!demo.hidden && e.key === 'Escape'){ tryClose(); } });
+})();
+</script>
+
+<!-- ===== Regal-Navigation (Szene 1; kein Teil des getesteten Kerns) ===== -->
+<script>
+(function(){
+  var regal = document.getElementById('regal');
+  if(!regal) return;
+  var bg     = document.getElementById('regal-bg');
+  var prev   = document.getElementById('regal-prev');
+  var next   = document.getElementById('regal-next');
+  var cap    = document.getElementById('regal-caption');
+  var toList = document.getElementById('regal-tolist');
+  var toRegal= document.getElementById('btn-regal');
+  var editBtn  = document.getElementById('regal-edit');
+  var editTools= document.getElementById('regal-edit-tools');
+  // Einmalige Umstellung auf die automatische Boden-Verteilung: alte Editier-/Nudge-Layouts leeren
+  // (nur Anzeige-Layout im Browser, KEINE Tresor-/Jason-Daten).
+  try{ if(localStorage.getItem('jt-shelf-v') !== '2'){ localStorage.removeItem('jt-shelfrows'); localStorage.removeItem('jt-booklayout'); localStorage.setItem('jt-shelf-v','2'); } }catch(e){}
+  var P = '../assets/erlebnis/bilder/';
+  // VIEWS = Hintergrundbild + Beschriftung je Ansicht. Die Regalböden (Position/Perspektive)
+  // stehen in SHELVES; daraus werden die Buchrücken automatisch je Boden mittig verteilt.
+  var VIEWS = [
+    { src: P+'regal-links.webp',  cap: 'Ebene 1' },
+    { src: P+'regal-ebene1.webp', cap: 'Ebene 1' },
+    { src: P+'regal-rechts.webp', cap: 'Ebene 1' },
+    { src: P+'regal-ebene2.webp', cap: 'Ebene 2' },
+    { src: P+'regal-ebene3.webp', cap: 'Ebene 3 · nicht von dieser Welt' }
+  ];
+  var i = 1, busy = false;
+  // Nach App-Schließen/Neustart in der zuletzt gewählten Ebene bleiben (nur Anzeige-Index, keine Daten)
+  try{ var savedView = parseInt(localStorage.getItem('jt-regal-view'), 10); if(savedView >= 0 && savedView < VIEWS.length) i = savedView; }catch(e){}
+  function render(){
+    busy = true; regal.classList.add('switching'); regal.classList.remove('has-books');
+    setTimeout(function(){
+      var v = VIEWS[i]; bg.src = v.src; cap.textContent = v.cap;
+      regal.classList.add('has-books');     // sichtbar machen, BEVOR die Reihen vermessen werden (matrix3d braucht echte Pixelgröße)
+      renderBooks(i);
+      requestAnimationFrame(function(){ reapplyRows(); fitAllSpines(); });   // nach dem Layout: Perspektive sicher anwenden
+      regal.classList.remove('switching'); busy = false;
+    }, 300);
+    prev.disabled = (i <= 0); next.disabled = (i >= VIEWS.length - 1);
+    updateLevelBar();
+    try{ localStorage.setItem('jt-regal-view', String(i)); }catch(e){}
+  }
+  // #regal-books exakt auf das angezeigte Bild-Rechteck (object-fit:cover) legen — so sind die
+  // Bücher BILD-relativ verankert und bleiben sitzen, egal wie das Fenster geteilt/verzogen wird.
+  function fitBooksToImage(){
+    var wrap = document.getElementById('regal-books'); if(!wrap) return;
+    var vw = regal.clientWidth, vh = regal.clientHeight; if(!vw || !vh) return;
+    var iw = bg.naturalWidth || 1672, ih = bg.naturalHeight || 941;
+    var scale = Math.max(vw/iw, vh/ih), w = iw*scale, h = ih*scale;
+    wrap.style.width = w + 'px'; wrap.style.height = h + 'px';
+    wrap.style.left = ((vw - w)/2) + 'px'; wrap.style.top = ((vh - h)/2) + 'px';
+    wrap.style.right = 'auto'; wrap.style.bottom = 'auto';
+  }
+  function reapplyRows(){ fitBooksToImage(); var rs = document.querySelectorAll('#regal-books .shelf-row');
+    for(var k=0;k<rs.length;k++){ if(currentRows[k]) applyRowStyle(rs[k], currentRows[k]); } }
+  window.addEventListener('resize', function(){ if(!regal.classList.contains('has-books')) return; reapplyRows(); fitAllSpines(); });
+  bg.addEventListener('load', function(){ if(regal.classList.contains('has-books')){ reapplyRows(); fitAllSpines(); } });
+  function go(d){ if(busy) return; var n = i + d; if(n < 0 || n >= VIEWS.length) return; i = n; render(); }
+  prev.addEventListener('click', function(){ go(-1); });
+  next.addEventListener('click', function(){ go(1); });
+  // Ebenen-Balken unten — direkt anspringen (reiner Ansichtswechsel; kein Buch wird bewegt/geändert)
+  var lvlBtns = regal.querySelectorAll('#regal-levelbar .lvl-btn');
+  function jumpTo(n){ if(busy || editing) return; if(n < 0 || n >= VIEWS.length || n === i) return; i = n; render(); }
+  for(var lb = 0; lb < lvlBtns.length; lb++){ (function(btn){
+    btn.addEventListener('click', function(){ jumpTo(parseInt(btn.getAttribute('data-view'), 10)); });
+  })(lvlBtns[lb]); }
+  function updateLevelBar(){ if(!lvlBtns) return; for(var k = 0; k < lvlBtns.length; k++){
+    lvlBtns[k].classList.toggle('active', parseInt(lvlBtns[k].getAttribute('data-view'), 10) === i); } }
+  // Regal füllen: volle Reihen aus Füll-Büchern + echte anklickbare Bücher dazwischen,
+  // auf allen FRONTALEN Ebenen (Mitte=1, Ebene2=3, Ebene3=4), gemischt — nie leer.
+  var SPINES = [P+'buchruecken-1.webp', P+'buchruecken-2.webp', P+'buchruecken-3.webp', P+'buchruecken-4.webp', P+'buchruecken-5.webp'];
+  // TESTBUCH — vor Echtbetrieb entfernen: ein einziges Buch (oben links auf Ebene 1, ID „1-0-0")
+  // trägt die Test-Werkzeuge (🧪 Reset/Probelauf zurücksetzen). Für je ein Testbuch pro Ebene
+  // einfach weitere IDs ergänzen (z. B. '3-0-0', '4-0-0'). Eine Stelle = leicht wieder entfernbar.
+  var TESTBOOK_IDS = ['1-0-0'];
+  // Alle Bücher sind gleich & anonym; jedes ist anklickbar und unten frei beschriftbar.
+  // Frei wählbare Beschriftungen (nur lokal im Browser gespeichert)
+  function loadNames(){ try{ return JSON.parse(localStorage.getItem('jt-booknames') || '{}') || {}; }catch(e){ return {}; } }
+  function saveNames(m){ try{ localStorage.setItem('jt-booknames', JSON.stringify(m)); }catch(e){} scheduleSync(); }
+  // Schild-Text: ein Wort pro Zeile (Umbruch nach jedem Wort), damit lange Namen schmal
+  // bleiben und sich benachbarte Bücher nicht ins Gehege kommen. Der echte Name (mit
+  // Leerzeichen) bleibt unverändert in data-name erhalten und wird beim Öffnen genutzt.
+  function spineLines(s){ return String(s == null ? '' : s).trim().replace(/\s+/g, '\n'); }
+  // Schrift automatisch in Höhe/Breite an den Buchrücken einpassen
+  function fitSpineText(el){
+    if(!el) return; var fs = 13, min = 7, guard = 60; el.style.fontSize = fs + 'px';
+    while(guard-- > 0 && (el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1) && fs > min){
+      fs -= 1; el.style.fontSize = fs + 'px';
+    }
+  }
+  function fitAllSpines(){ var ns = document.querySelectorAll('#regal-books .sb-label'); for(var i=0;i<ns.length;i++) fitSpineText(ns[i]); }
+  window.jtFitSpine = fitSpineText;
+  window.jtRenameBook = function(id, name){
+    var m = loadNames(); m[id] = name; saveNames(m);
+    var sp = document.querySelector('#regal-books .shelf-book[data-id="' + id + '"] .sb-label');
+    if(sp){ sp.setAttribute('data-name', name); sp.textContent = spineLines(name); fitSpineText(sp); }
+  };
+  // Nach dem Verschließen: Buch live als echtes Tresor-Buch markieren (🔒), ohne Neu-Rendern.
+  window.jtMarkVault = function(id, on){
+    var el = document.querySelector('#regal-books .shelf-book[data-id="' + id + '"]');
+    if(el) el.classList.toggle('has-vault', !!on);
+  };
+  // TESTBUCH — vor Echtbetrieb entfernen: nach dem Reset alle 🔒-Markierungen wegnehmen.
+  window.jtClearVaultMarks = function(){
+    var els = document.querySelectorAll('#regal-books .shelf-book.has-vault');
+    for(var k=0;k<els.length;k++) els[k].classList.remove('has-vault');
+  };
+  // Nächster freier Buch-Platz (für „＋ Neues Buch" in der Bibliothek): erstes Grid-Feld auf den
+  // frontalen Ebenen ohne Tresor und ohne Namen. TESTBUCH wird ausgelassen.
+  window.jtFreeBookSlot = function(){
+    var used = {};
+    try{ var v = JSON.parse(localStorage.getItem('jt-vaults') || '{}') || {}; for(var a in v) used[a] = 1; }catch(e){}
+    try{ var n = JSON.parse(localStorage.getItem('jt-booknames') || '{}') || {}; for(var b in n) used[b] = 1; }catch(e){}
+    var levels = [1, 3, 4];   // frontale Ebenen mit Büchern (VIEWS-Index: ebene1/ebene2/ebene3)
+    for(var li = 0; li < levels.length; li++){
+      var lvl = levels[li], rows = shelfRows(lvl);
+      for(var r = 0; r < rows.length; r++){
+        for(var c = 0; c < 6; c++){
+          var id = lvl + '-' + r + '-' + c;
+          if(TESTBOOK_IDS.indexOf(id) !== -1) continue;
+          if(!used[id]) return id;
+        }
+      }
+    }
+    return null;
+  };
+
+  // --- Bücher bewegen (Drag) & kippen (oben/unten = Drehpunkt); Layout lokal gespeichert ---
+  function getLayout(){ try{ return JSON.parse(localStorage.getItem('jt-booklayout') || '{}') || {}; }catch(e){ return {}; } }
+  function setLayout(m){ try{ localStorage.setItem('jt-booklayout', JSON.stringify(m)); }catch(e){} }
+  function applyTransform(el, t){
+    el.style.transform = 'translate(' + (t.dx||0) + 'px,' + (t.dy||0) + 'px)';   // Buch bewegt sich
+    var im = el.querySelector('img'); if(im) im.style.transform = 'rotate(' + (t.rot||0) + 'deg)';  // nur der Rücken kippt (Schild bleibt aufrecht)
+  }
+  var DRAG = null;
+  function bookDown(e){
+    var el = e.currentTarget, id = el.getAttribute('data-id'); if(!id) return;
+    var rect = el.getBoundingClientRect();
+    var rel = (e.clientY - rect.top) / Math.max(1, rect.height);
+    var region = rel < 0.34 ? 'top' : (rel > 0.66 ? 'bottom' : 'mid');   // greifst du oben/unten → kippen
+    var lay = getLayout()[id] || {dx:0, dy:0, rot:0};
+    DRAG = { el:el, id:id, sx:e.clientX, sy:e.clientY, bx:lay.dx||0, by:lay.dy||0, br:lay.rot||0, region:region, moved:false, t:lay };
+    var im = el.querySelector('img');   // Drehpunkt: greifst du oben → Pivot unten, greifst du unten → Pivot oben
+    if(im) im.style.transformOrigin = region==='bottom' ? 'center top' : 'center bottom';
+    el.classList.add('book-dragging');
+    try{ el.setPointerCapture(e.pointerId); }catch(_){}
+    e.preventDefault();
+  }
+  function bookMove(e){
+    if(!DRAG) return;
+    var dx = e.clientX - DRAG.sx, dy = e.clientY - DRAG.sy;
+    if(Math.abs(dx) + Math.abs(dy) > 6) DRAG.moved = true;
+    var t = { dx:DRAG.bx, dy:DRAG.by, rot:DRAG.br };
+    if(DRAG.region === 'mid'){ t.dx = DRAG.bx + dx; t.dy = DRAG.by + dy; }   // Mitte greifen → bewegen
+    else { var sign = DRAG.region === 'top' ? 1 : -1; t.rot = DRAG.br + sign * dx * 0.25;
+           if(t.rot > 42) t.rot = 42; if(t.rot < -42) t.rot = -42; }
+    applyTransform(DRAG.el, t); DRAG.t = t;
+  }
+  function bookUp(){
+    if(!DRAG) return;
+    var el = DRAG.el;
+    if(DRAG.moved){ var m = getLayout(); m[DRAG.id] = DRAG.t; setLayout(m);
+      el._suppressClick = true; setTimeout(function(){ el._suppressClick = false; }, 60); }
+    el.classList.remove('book-dragging'); DRAG = null;
+  }
+  document.addEventListener('pointermove', bookMove);
+  document.addEventListener('pointerup', bookUp);
+  document.addEventListener('pointercancel', bookUp);
+
+  // --- Regalböden je Ansicht (aus den Hintergrundbildern abgelesen): ein Viereck pro Ansicht,
+  //     in n Böden geteilt; die Buchrücken werden je Boden automatisch mittig verteilt.
+  //     tl/tr/bl/br = Eckpunkte in % der Bühne. Frontale Ansicht = Rechteck; schräge = Trapez. ---
+  var SHELVES = [
+    { tl:[39,8],  tr:[98,18], bl:[39,97], br:[98,82], n:6 },   // 0 links (flieht nach rechts)
+    { tl:[21,17], tr:[79,17], bl:[21,84], br:[79,84], n:5 },   // 1 Ankunft (frontal)
+    { tl:[3,15],  tr:[57,4],  bl:[3,80],  br:[57,99], n:6 },   // 2 rechts (flieht nach links)
+    { tl:[17,16], tr:[83,16], bl:[17,86], br:[83,86], n:6 },   // 3 Übergang (frontal)
+    { tl:[16,17], tr:[84,17], bl:[16,82], br:[84,82], n:5 }    // 4 Kern (frontal)
+  ];
+  function lerp(a,b,f){ return [ a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f ]; }
+  // Start-Aufteilung: Viereck in n Böden teilen (Klaus justiert danach je Boden 2 Linien).
+  function defaultShelves(level){
+    var S = SHELVES[level] || SHELVES[1], n = S.n, rows = [];
+    for(var k=0;k<n;k++){
+      var ltp=lerp(S.tl,S.bl,k/n),     rtp=lerp(S.tr,S.br,k/n);       // obere Bandkante
+      var lbt=lerp(S.tl,S.bl,(k+1)/n), rbt=lerp(S.tr,S.br,(k+1)/n);   // untere Bandkante
+      var minx=Math.min(ltp[0],lbt[0]), maxx=Math.max(rtp[0],rbt[0]);
+      var miny=Math.min(ltp[1],rtp[1]), maxy=Math.max(lbt[1],rbt[1]);
+      rows.push({ l:minx, r:100-maxx, t:miny, h:Math.max(0.5, maxy-miny),
+        c:{ tl:[ltp[0]-minx, ltp[1]-miny], tr:[rtp[0]-maxx, rtp[1]-miny],
+            bl:[lbt[0]-minx, lbt[1]-maxy], br:[rbt[0]-maxx, rbt[1]-maxy] } });
+    }
+    return rows;
+  }
+  // Klaus' eingerichtete Böden je Ansicht (lokal gespeichert) gelten vorrangig.
+  function allShelves(){ try{ return JSON.parse(localStorage.getItem('jt-shelves2')||'{}')||{}; }catch(e){ return {}; } }
+  // Von Klaus im Browser eingerichtet (Export) — fest als Standard, bis er es selbst überschreibt.
+  var BAKED = {
+    0: [{"l":39,"r":2,"t":11.878206791374854,"h":20.666666666666664,"c":{"tl":[5.14644595287373,-9.756881848761607],"tr":[0.05283771345480481,13.45267176292326],"bl":[4.165248850600685,-13.421524118773196],"br":[0.18036557704888873,6.487548020777501]}},{"l":37.71168779464923,"r":3.2883122053507705,"t":27.561150364547636,"h":16.499999999999996,"c":{"tl":[5.536453827297684,-4.330129214770874],"tr":[0.9535940728088028,15.45445497546982],"bl":[5.283746710818222,-6.730622411485192],"br":[1.0683703296271827,6.903866838331604]}},{"l":36.53550107236556,"r":4.464498927634439,"t":43.421847316328495,"h":14.833333333333336,"c":{"tl":[7.371881828950356,-2.3657993412123366],"tr":[1.776217106747655,9.317874982226952],"bl":[7.189612984706823,-2.2267289175431317],"br":[1.6675201054144857,5.072246260399866]}},{"l":38.383957130964454,"r":2.616042869035547,"t":47.09715430194129,"h":17.33333333333333,"c":{"tl":[4.555404848974048,11.443050224206962],"tr":[-1.0323494200571341,17.897995151994902],"bl":[4.2468248570731095,11.406377893313213],"br":[-0.7677471480547554,12.723944314857695]}}],
+    1: [{"l":21,"r":21,"t":17,"h":13.399999999999999,"c":{"tl":[2.083164161913997,11.134258880612837],"tr":[-2.462028792531218,11.44222738499938],"bl":[1.7222881980177807,10.358920593038322],"br":[-1.8633333612640741,10.913482401708109]}},{"l":21,"r":21,"t":30.4,"h":13.399999999999999,"c":{"tl":[1.9971647758824653,11.314171614818122],"tr":[-2.4224255410882782,11.554440811577022],"bl":[1.9343682180669746,8.753870078269156],"br":[-2.4018507416754336,8.088399435376708]}},{"l":21,"r":21,"t":43.8,"h":13.399999999999999,"c":{"tl":[1.5125467427296917,10.936833972078666],"tr":[-2.3275118051815586,11.85442700390111],"bl":[1.6390939470783557,7.69766255495257],"br":[-2.4285271383965674,7.275678989656592]}},{"l":21,"r":21,"t":57.199999999999996,"h":13.399999999999999,"c":{"tl":[0.5800478529766426,9.426216494736245],"tr":[-0.9422130744813835,8.698146243333907],"bl":[0.1547490003968705,8.447541319633132],"br":[-0.6968161240612416,8.028377740807631]}},{"l":21,"r":21,"t":71.6,"h":13.399999999999999,"c":{"tl":[1.323302007737831,7.470285432404773],"tr":[-1.8722686591949398,7.5163030003871265],"bl":[1.431413018721468,4.525439704760485],"br":[-1.437272761205115,5.600042914534553]}}],
+    2: [{"l":7.080300700989879,"r":38.91969929901012,"t":22.53645746404526,"h":21.833333333333332,"c":{"tl":[-0.0929070073912358,18.23085570405263],"tr":[-0.7430434909962333,-0.8618376801483145],"bl":[-0.3483895234104867,8.074434724900241],"br":[-0.743265288201826,-6.730713357717713]}},{"l":4.495124475734931,"r":41.504875524265074,"t":1.274199818600616,"h":16.833333333333332,"c":{"tl":[-0.7403389522242406,24.96954036751518],"tr":[-0.8358819125642913,5.011965429581095],"bl":[-1.021863711288582,21.689460740881643],"br":[-0.6061749202171062,0.8396137043940756]}},{"l":2.1670714436711846,"r":43.83292855632881,"t":35.55769578625407,"h":15.833333333333336,"c":{"tl":[-0.4353889420096803,17.962408219984972],"tr":[0.6038660154722364,4.7770588091161095],"bl":[-0.6562096424211286,14.61313831457827],"br":[1.025392963534971,5.681620439550965]}},{"l":3.092878188958701,"r":42.9071218110413,"t":40.98130605121584,"h":19.83333333333333,"c":{"tl":[-1.1340184664902901,27.09446735380298],"tr":[0.5745236210325344,18.919663512941916],"bl":[-1.0734062168142193,19.267926411127718],"br":[0.7386377383614908,12.743998611368182]}}],
+    3: [{"l":14.585155664347296,"r":19.414844335652706,"t":18.230275182881385,"h":11.666666666666664,"c":{"tl":[12.95962736069343,0.4679726385314804],"tr":[-9.814464359575453,0.7212407450769234],"bl":[12.76841505487248,-2.1392957155150487],"br":[-9.702095795839488,-2.445861000804727]}},{"l":17,"r":17,"t":27.666666666666664,"h":11.666666666666664,"c":{"tl":[6.52259009249194,40.13469306138143],"tr":[-6.321136896376608,39.924794335728045],"bl":[6.189451721032378,38.82830373608993],"br":[-6.247320344787968,39.87943634052259]}},{"l":17.43943228744819,"r":16.56056771255181,"t":38.6657566732325,"h":11.666666666666671,"c":{"tl":[6.7378805515175575,-7.681177295319738],"tr":[-8.617803705613209,-8.11842451771473],"bl":[6.538921185998095,-10.048441609247325],"br":[-8.413250595314347,-8.869370114925408]}},{"l":16.953562809308394,"r":17.046437190691606,"t":51.24781061119754,"h":11.666666666666664,"c":{"tl":[6.854309226993781,-7.955721219506403],"tr":[-7.276895367530066,-8.438825580112212],"bl":[6.522778976952696,-8.938922540774952],"br":[-7.170913440750757,-9.724155302190495]}},{"l":17,"r":17,"t":62.666666666666664,"h":11.666666666666679,"c":{"tl":[6.619534176181527,-7.059098135851494],"tr":[-6.488565027716183,-6.866203620401492],"bl":[6.359060250993123,-7.715860610275696],"br":[-6.328275996748718,-7.191548096582647]}}],
+    4: [{"l":16.67801496773156,"r":15.32198503226844,"t":19.349112019877946,"h":13,"c":{"tl":[10.506282242474958,-4.844433685954854],"tr":[-10.201590807689072,-3.6449740228157754],"bl":[10.02566898567991,-7.781968458200589],"br":[-9.523311536077362,-6.867546027354822]}},{"l":16,"r":16,"t":30,"h":13,"c":{"tl":[10.628068800439957,-1.3193109398901401],"tr":[-9.288733526258577,-2.026559088674147],"bl":[10.146495071669849,-4.503553751716124],"br":[-9.005233966929495,-3.2880029417886982]}},{"l":16.510835750636094,"r":15.489164249363906,"t":40.19150457274579,"h":13,"c":{"tl":[9.821308324147928,0.1757991696674015],"tr":[-9.127852287054333,1.2457044182273802],"bl":[9.55072704988151,-0.18099922670600166],"br":[-8.550007117929008,-0.18167241810492962]}},{"l":15.67492824243229,"r":16.32507175756771,"t":53.439315183943336,"h":13,"c":{"tl":[10.075400622042993,2.8723854820867456],"tr":[-8.91278067538055,3.182893813038616],"bl":[9.425492095422117,1.9861896373806116],"br":[-8.763083843967756,3.064359544451909]}},{"l":16.092878188958704,"r":15.907121811041298,"t":60.574520490869546,"h":13,"c":{"tl":[9.599567553288997,13.623136376757023],"tr":[-8.291562499874555,14.202070092877282],"bl":[9.169032527379109,11.820300715465336],"br":[-7.950785018864675,12.475092809729727]}}]
+  };
+  function shelfRows(level){ var a=allShelves(); if(a[level]&&a[level].length) return a[level];
+    if(BAKED[level]) return JSON.parse(JSON.stringify(BAKED[level]));
+    return defaultShelves(level); }
+  function saveShelves(level, rows){ try{ var a=allShelves(); a[level]=rows; localStorage.setItem('jt-shelves2', JSON.stringify(a)); }catch(e){} }
+  // --- Eck-Verzerrung (Free-Distort) je Reihe: 4 Eckpunkte frei ziehbar (Homographie → matrix3d) ---
+  function adjugate(m){ return [
+    m[4]*m[8]-m[5]*m[7], m[2]*m[7]-m[1]*m[8], m[1]*m[5]-m[2]*m[4],
+    m[5]*m[6]-m[3]*m[8], m[0]*m[8]-m[2]*m[6], m[2]*m[3]-m[0]*m[5],
+    m[3]*m[7]-m[4]*m[6], m[1]*m[6]-m[0]*m[7], m[0]*m[4]-m[1]*m[3] ]; }
+  function multmm(a,b){ var c=[]; for(var x=0;x<3;x++){ for(var y=0;y<3;y++){ var s=0;
+    for(var k=0;k<3;k++) s+=a[3*x+k]*b[3*k+y]; c[3*x+y]=s; } } return c; }
+  function multmv(m,v){ return [ m[0]*v[0]+m[1]*v[1]+m[2]*v[2], m[3]*v[0]+m[4]*v[1]+m[5]*v[2], m[6]*v[0]+m[7]*v[1]+m[8]*v[2] ]; }
+  function basisToPoints(x1,y1,x2,y2,x3,y3,x4,y4){ var m=[x1,x2,x3, y1,y2,y3, 1,1,1];
+    var v=multmv(adjugate(m),[x4,y4,1]); return multmm(m,[v[0],0,0, 0,v[1],0, 0,0,v[2]]); }
+  function warp(w,h, ax,ay,bx,by,cx,cy,dx,dy){   // Quelle (0,0)(w,0)(0,h)(w,h) → Ziel A,B,C,D
+    var s=basisToPoints(0,0, w,0, 0,h, w,h), t=basisToPoints(ax,ay, bx,by, cx,cy, dx,dy);
+    var p=multmm(t, adjugate(s)); for(var k=0;k<9;k++) p[k]=p[k]/p[8];
+    return 'matrix3d('+[p[0],p[3],0,p[6], p[1],p[4],0,p[7], 0,0,1,0, p[2],p[5],0,p[8]].join(',')+')'; }
+  function hasCorners(c){ return c && (c.tl[0]||c.tl[1]||c.tr[0]||c.tr[1]||c.bl[0]||c.bl[1]||c.br[0]||c.br[1]); }
+  function applyRowStyle(el, d){
+    el.style.left = d.l + '%'; el.style.right = d.r + '%'; el.style.top = d.t + '%'; el.style.height = d.h + '%';
+    if(hasCorners(d.c)){
+      var R = el.parentNode.getBoundingClientRect(), W = el.offsetWidth, H = el.offsetHeight;   // R = #regal-books (Bild-Rechteck)
+      if(W>0 && H>0){
+        var fx = R.width/100, fy = R.height/100, c = d.c;
+        el.style.transformOrigin = '0 0';
+        el.style.transform = warp(W, H,
+          c.tl[0]*fx,     c.tl[1]*fy,
+          W + c.tr[0]*fx, c.tr[1]*fy,
+          c.bl[0]*fx,     H + c.bl[1]*fy,
+          W + c.br[0]*fx, H + c.br[1]*fy);
+        return;
+      }
+    }
+    el.style.transform = ''; el.style.transformOrigin = '';
+  }
+
+  // --- Regale einrichten: je Boden 2 Linien (oben/unten) mit je 2 frei ziehbaren Endpunkten ---
+  var editing = false, currentRows = [];
+  function setEditing(on){ editing = on; regal.classList.toggle('editing', on);
+    if(editBtn)   editBtn.textContent   = on ? '✓ Fertig' : '📐 Regale einrichten';
+    if(editTools) editTools.style.display = on ? 'flex' : 'none'; }
+  var RDRAG = null;
+  function rowDown(e){
+    if(!editing || !e.target.closest) return;
+    var rowEl = e.target.closest('.shelf-row'); if(!rowEl) return;
+    var hd = e.target.closest('[data-h]');                            // Endpunkt? sonst ganzen Rahmen schieben
+    var rect = (rowEl.parentNode||regal).getBoundingClientRect(), ri = +rowEl.getAttribute('data-row'), cur = currentRows[ri] || {};
+    RDRAG = { ri:ri, el:rowEl, corner: hd ? hd.getAttribute('data-h') : 'move', sx:e.clientX, sy:e.clientY,
+              W:rect.width||1, H:rect.height||1,
+              s:{ l:cur.l, r:cur.r, t:cur.t, h:cur.h,
+                  c:{ tl:cur.c.tl.slice(), tr:cur.c.tr.slice(), bl:cur.c.bl.slice(), br:cur.c.br.slice() } } };
+    e.preventDefault(); e.stopPropagation();
+  }
+  function rowMove(e){
+    if(!RDRAG) return;
+    var dxp=(e.clientX-RDRAG.sx)/RDRAG.W*100, dyp=(e.clientY-RDRAG.sy)/RDRAG.H*100, s=RDRAG.s, m=RDRAG.corner;
+    var d = { l:s.l, r:s.r, t:s.t, h:s.h, c:{ tl:s.c.tl.slice(), tr:s.c.tr.slice(), bl:s.c.bl.slice(), br:s.c.br.slice() } };
+    if(m === 'move'){ d.l = s.l + dxp; d.r = s.r - dxp; d.t = s.t + dyp; }   // ganzen Rahmen verschieben (alle Ecken mit)
+    else d.c[m] = [ s.c[m][0]+dxp, s.c[m][1]+dyp ];                          // einen Endpunkt frei verschieben
+    currentRows[RDRAG.ri] = d; if(RDRAG.el) applyRowStyle(RDRAG.el, d);
+    e.preventDefault();
+  }
+  function rowUp(){ if(!RDRAG) return; saveShelves(i, currentRows); RDRAG = null; }
+  document.addEventListener('pointermove', rowMove);
+  document.addEventListener('pointerup', rowUp);
+  document.addEventListener('pointercancel', rowUp);
+  if(editBtn) editBtn.addEventListener('click', function(){ setEditing(!editing); });
+  // Werkzeugleiste frei verschiebbar (Griff „⠿ ziehen") — damit sie keine Eckpunkte verdeckt
+  (function(){
+    var grip = document.getElementById('tools-grip'); if(!grip || !editTools) return;
+    var TD = null;
+    grip.addEventListener('pointerdown', function(e){
+      var r = editTools.getBoundingClientRect();
+      TD = { sx:e.clientX, sy:e.clientY, ox:r.left, oy:r.top };
+      editTools.style.right = 'auto'; e.preventDefault();
+      try{ grip.setPointerCapture(e.pointerId); }catch(_){}
+    });
+    document.addEventListener('pointermove', function(e){ if(!TD) return;
+      editTools.style.left = (TD.ox + e.clientX - TD.sx) + 'px';
+      editTools.style.top  = (TD.oy + e.clientY - TD.sy) + 'px'; });
+    document.addEventListener('pointerup', function(){ TD = null; });
+  })();
+  (function(){
+    var add=document.getElementById('shelf-add'), del=document.getElementById('shelf-del'), rst=document.getElementById('shelf-reset');
+    if(add) add.addEventListener('click', function(){ var rows=shelfRows(i).slice();
+      var last=rows[rows.length-1] || { l:20, r:20, t:40, h:12, c:{tl:[0,0],tr:[0,0],bl:[0,0],br:[0,0]} };
+      var nr=JSON.parse(JSON.stringify(last)); nr.t=Math.min(92, (last.t||40)+(last.h||12)+1); rows.push(nr);
+      saveShelves(i, rows); renderBooks(i); });
+    if(del) del.addEventListener('click', function(){ var rows=shelfRows(i).slice(); if(rows.length>1){ rows.pop(); saveShelves(i, rows); renderBooks(i); } });
+    if(rst) rst.addEventListener('click', function(){ var a=allShelves(); delete a[i]; try{ localStorage.setItem('jt-shelves2', JSON.stringify(a)); }catch(e){} renderBooks(i); });
+    // Export: gespeicherte Einrichtung als Text ausgeben (Klaus schickt ihn mir → ich backe ihn fest ein)
+    var exp=document.getElementById('shelf-export'), imp=document.getElementById('shelf-import');
+    if(exp) exp.addEventListener('click', function(){ var data=localStorage.getItem('jt-shelves2')||'{}';
+      try{ if(navigator.clipboard) navigator.clipboard.writeText(data); }catch(e){}
+      window.prompt('Deine Regal-Einrichtung — markieren & kopieren, dann mir im Chat schicken:', data); });
+    if(imp) imp.addEventListener('click', function(){ var t=window.prompt('Regal-Einrichtung einfügen:'); if(!t) return;
+      try{ JSON.parse(t); localStorage.setItem('jt-shelves2', t); renderBooks(i); }catch(e){ alert('Ungültiger Text.'); } });
+  })();
+
+  function renderBooks(level){
+    var wrap = document.getElementById('regal-books'); if(!wrap) return;
+    wrap.innerHTML = '';
+    fitBooksToImage();   // Container = Bild-Rechteck, BEVOR die Reihen vermessen werden
+    var names = loadNames(), lay = getLayout();
+    currentRows = shelfRows(level); var PER = 6;
+    for(var r=0; r<currentRows.length; r++){
+      var row = document.createElement('div'); row.className = 'shelf-row'; row.setAttribute('data-row', r);
+      for(var c=0; c<PER; c++){
+        var id = level + '-' + r + '-' + c;
+        var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'shelf-book';
+        btn.setAttribute('data-id', id); btn.setAttribute('aria-label', 'Buch öffnen');
+        var im = document.createElement('img'); im.src = SPINES[(r + c + level) % SPINES.length]; im.alt = '';
+        var lb = document.createElement('span'); lb.className = 'sb-label';
+        lb.setAttribute('data-name', names[id] || ''); lb.textContent = spineLines(names[id] || '');
+        btn.appendChild(im); btn.appendChild(lb);
+        var isTest = TESTBOOK_IDS.indexOf(id) !== -1;    // TESTBUCH — vor Echtbetrieb entfernen
+        if(isTest) btn.classList.add('is-testbook');     // 🧪 Testbuch (öffnet die Test-Werkzeuge)
+        else if(window.jtBookLocked && window.jtBookLocked(id)) btn.classList.add('has-vault');   // echtes Tresor-Buch → 🔒
+        // Bücher automatisch mittig je Boden; einzeln frei nachjustierbar (verschieben/kippen/drehen).
+        if(lay[id]) applyTransform(btn, lay[id]);
+        btn.addEventListener('pointerdown', bookDown);
+        (function(bid, el, test){ el.addEventListener('click', function(){
+          if(el._suppressClick) return;                  // nach echtem Ziehen nicht öffnen
+          var s = el.querySelector('.sb-label'); var lblTxt = (s && s.getAttribute('data-name')) ? s.getAttribute('data-name') : '';
+          if(window.jtOpenBook) window.jtOpenBook({ title: lblTxt || 'Buch', label: lblTxt, id: bid, el: el, test: test });
+        }); })(id, btn, isTest);
+        row.appendChild(btn);
+      }
+      // 4 Endpunkte (Linien-Ecken) — nur im Einricht-Modus sichtbar/ziehbar
+      ['tl','tr','bl','br'].forEach(function(h){ var hd=document.createElement('div'); hd.className='rh rh-'+h; hd.setAttribute('data-h',h); row.appendChild(hd); });
+      row.addEventListener('pointerdown', rowDown);
+      wrap.appendChild(row);
+      applyRowStyle(row, currentRows[r]);   // nach dem Einhängen: Pixelgröße steht (für matrix3d-Perspektive)
+    }
+  }
+
+  // Einmaliger Bedien-Hinweis: blendet nach kurzer Zeit oder bei erster Navigation aus.
+  var hint = document.getElementById('regal-hint');
+  function dismissHint(){
+    if(!hint) return;
+    hint.classList.add('gone');
+    try{ sessionStorage.setItem('jt-regal-hint','1'); }catch(e){}
+    setTimeout(function(){ if(hint) hint.style.display = 'none'; }, 700);
+  }
+  if(hint){
+    try{ if(sessionStorage.getItem('jt-regal-hint') === '1'){ hint.style.display = 'none'; } }catch(e){}
+    setTimeout(dismissHint, 7000);
+    prev.addEventListener('click', dismissHint);
+    next.addEventListener('click', dismissHint);
+  }
+  if(toList)  toList.addEventListener('click', function(){ regal.classList.add('is-hidden'); if(window.jtRenderOverview) window.jtRenderOverview(); });
+  if(toRegal) toRegal.addEventListener('click', function(){ regal.classList.remove('is-hidden'); });
+  document.addEventListener('keydown', function(e){
+    if(regal.classList.contains('is-hidden')) return;
+    var th = document.getElementById('threshold');
+    if(th && !th.hasAttribute('hidden')) return;     // während des Intros nichts tun
+    if(editing) return;                               // beim Einrichten keine Ebenen-Navigation
+    if(e.key === 'ArrowLeft')  go(-1);
+    else if(e.key === 'ArrowRight') go(1);
+  });
+  render();
+})();
+</script>
+
+<!-- „Intro neu starten"-Schlüssel (Funfakt): Sitzungs-Merker löschen → Intro läuft neu -->
+<script>
+(function(){
+  var b = document.getElementById('btn-replay-intro');
+  if(!b) return;
+  b.addEventListener('click', function(){
+    try{ sessionStorage.removeItem('jt-threshold-seen'); }catch(e){}
+    location.reload();
+  });
+})();
+</script>
+
+<!-- Notfall (Panik): Stufe 1 verriegelt sofort (zurück zur Tür); Stufe 2/3 folgen in der Sicherheits-Sitzung -->
+<script>
+(function(){
+  var panik = document.getElementById('panik');
+  var open  = document.getElementById('hud-panik');
+  var s1     = document.getElementById('panik-1');
+  var s3     = document.getElementById('panik-3');
+  var cancel = document.getElementById('panik-cancel');
+  var restoreBtn  = document.getElementById('panik-restore');
+  var restoreFile = document.getElementById('panik-restore-file');
+  if(open && panik){
+    open.addEventListener('click', function(){ open.classList.add('armed'); if(panik.showModal) panik.showModal(); });
+    panik.addEventListener('close', function(){ open.classList.remove('armed'); });
+  }
+  if(cancel && panik){ cancel.addEventListener('click', function(){ if(panik.close) panik.close(); }); }
+  if(s1){ s1.addEventListener('click', function(){
+    // Stufe 1 · Verriegeln: zurück zur verschlossenen Tür (umkehrbar). Kein Datenverlust.
+    try{ sessionStorage.removeItem('jt-threshold-seen'); }catch(e){}
+    location.reload();
+  }); }
+
+  // (Stufe 2 „Verbergen" bewusst noch nicht aktiv — folgt als Honigtopf/Köder in eigener Sitzung.)
+
+  // ---- Stufe 3 · Retten & Löschen: erst Rettungs-Datei sichern, dann lokale Bücher (DIESER Browser)
+  //      löschen — Zwei-Schritt. EHRLICHE GRENZE: bereits exportierte/gesicherte Dateien überleben;
+  //      gelöscht wird nur die lokale Kopie (jt-vaults + offene Liste + Schilder). Über die Rettungs-
+  //      Datei (verschlüsselte Bücher bleiben verschlüsselt) holt „↻ Rettung einlesen" alles zurück.
+  function countBooks(){ try{ return Object.keys(JSON.parse(localStorage.getItem('jt-vaults') || '{}') || {}).length; }catch(e){ return 0; } }
+  function buildRescue(){
+    var bundle = { type: 'jason-tresor-rettung', v: 1, savedAt: new Date().toISOString() };
+    try{ var v = localStorage.getItem('jt-vaults');           if(v) bundle.vaults = JSON.parse(v); }catch(e){}
+    try{ var l = localStorage.getItem('jasons-bibliothek-v1'); if(l) bundle.liste  = JSON.parse(l); }catch(e){}
+    try{ var n = localStorage.getItem('jt-booknames');         if(n) bundle.names  = JSON.parse(n); }catch(e){}
+    return bundle;
+  }
+  function downloadRescue(){
+    var b = new Blob([JSON.stringify(buildRescue(), null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(b), a = document.createElement('a');
+    var ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    a.href = url; a.download = 'jasons-tresor-rettung-' + ts + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+  if(s3){ s3.addEventListener('click', function(){
+    var n = countBooks();
+    if(!confirm('RETTEN & LÖSCHEN — Schritt 1 von 3 (Rettung sichern)\n\n'
+      + 'Es wird jetzt eine Rettungs-Datei heruntergeladen' + (n ? ' (' + n + ' lokale Bücher, verschlüsselt)' : '') + '.\n'
+      + 'Bewahre sie sicher auf — nur mit ihr (und den Buch-Passwörtern) kommst du wieder an die Inhalte.\n\nFortfahren?')) return;
+    downloadRescue();
+    if(!confirm('Schritt 2 von 3 (Löschen vorbereiten)\n\n'
+      + 'Nur die Bücher in DIESEM Browser werden gelöscht.\n'
+      + 'Exportierte/gesicherte Dateien — auch die eben geladene Rettung — BLEIBEN erhalten.\n\nWeiter zum letzten Schritt?')) return;
+    if(!confirm('Schritt 3 von 3 — endgültig löschen?\n\n'
+      + 'Ja = die lokalen Bücher jetzt entfernen. Unwiderruflich (nur über die Rettungs-Datei wiederherstellbar).')) return;
+    try{ localStorage.removeItem('jt-vaults'); }catch(e){}
+    try{ localStorage.removeItem('jasons-bibliothek-v1'); }catch(e){}
+    try{ localStorage.removeItem('jt-booknames'); }catch(e){}
+    if(window.jtClearVaultMarks) window.jtClearVaultMarks();
+    try{ sessionStorage.removeItem('jt-threshold-seen'); }catch(e){}
+    alert('Lokale Bücher gelöscht. Mit „↻ Rettung einlesen" (im Notfall-Dialog) holst du sie aus der Rettungs-Datei zurück.');
+    location.reload();
+  }); }
+
+  // ---- Rettung einlesen: gesicherte Rettungs-Datei zurückspielen (additiv: gleiche Buch-IDs werden
+  //      überschrieben, sonst hinzugefügt). Nicht zerstörend — fragt vor dem Überschreiben nach.
+  if(restoreBtn && restoreFile){
+    restoreBtn.addEventListener('click', function(){ restoreFile.click(); });
+    restoreFile.addEventListener('change', function(ev){
+      var f = ev.target.files && ev.target.files[0]; ev.target.value = '';
+      if(!f) return;
+      var rd = new FileReader();
+      rd.onload = function(){
+        var data; try{ data = JSON.parse(String(rd.result)); }catch(e){ alert('Keine gültige Rettungs-Datei (kein JSON).'); return; }
+        if(!data || data.type !== 'jason-tresor-rettung'){ alert('Das ist keine Mein-Tresor-Rettungs-Datei.'); return; }
+        var cur = countBooks();
+        if(cur && !confirm('Es sind bereits ' + cur + ' lokale Bücher vorhanden.\nDie Rettung wird hinzugefügt; Bücher mit gleicher ID werden überschrieben.\n\nFortfahren?')) return;
+        try{
+          if(data.vaults){
+            var m = {}; try{ m = JSON.parse(localStorage.getItem('jt-vaults') || '{}') || {}; }catch(e){}
+            for(var k in data.vaults){ if(Object.prototype.hasOwnProperty.call(data.vaults, k)) m[k] = data.vaults[k]; }
+            localStorage.setItem('jt-vaults', JSON.stringify(m));
+          }
+          if(data.names){
+            var nm = {}; try{ nm = JSON.parse(localStorage.getItem('jt-booknames') || '{}') || {}; }catch(e){}
+            for(var k2 in data.names){ if(Object.prototype.hasOwnProperty.call(data.names, k2)) nm[k2] = data.names[k2]; }
+            localStorage.setItem('jt-booknames', JSON.stringify(nm));
+          }
+          if(data.liste && !localStorage.getItem('jasons-bibliothek-v1')){ localStorage.setItem('jasons-bibliothek-v1', JSON.stringify(data.liste)); }
+        }catch(e){ alert('Konnte die Rettung nicht einlesen: ' + ((e && e.message) || e)); return; }
+        alert('Rettung eingelesen — die Seite wird neu geladen.');
+        location.reload();
+      };
+      rd.onerror = function(){ alert('Datei konnte nicht gelesen werden.'); };
+      rd.readAsText(f);
+    });
+  }
+
+  // SBKIM-Siegel → Andock-Dialog (Verbindung zum Werkzeug)
+  var siegel = document.getElementById('sbkim-siegel-badge');
+  var andock = document.getElementById('andock');
+  var andockClose = document.getElementById('andock-close');
+  if(siegel && andock){
+    siegel.addEventListener('click', function(){ if(andock.showModal) andock.showModal(); });
+    siegel.classList.add('first-boot'); setTimeout(function(){ siegel.classList.remove('first-boot'); }, 700);
+  }
+  if(andockClose && andock){ andockClose.addEventListener('click', function(){ if(andock.close) andock.close(); }); }
+})();
+</script>
+</body>
+</html>
