@@ -39,11 +39,11 @@
       "hinweis": "1:1 aus Jasons-Tresor; nur die KONFIG (oeffentliche Identitaet) in generate_spore.mjs angepasst. Krypto-Kern unveraendert."
     },
     {
-      "name": "Reziproke Verifikation der Nachbarn (sbkim/sage_inbox.json, point_inbox.json)",
+      "name": "Netz-Andock: reziproke Verifikation ALLER SBKIM-Nachbarn (sbkim/*_inbox.json)",
       "status": "real-headless-bewiesen",
       "echt": true,
-      "beleg": "test/andock.test.js: Sages Spore ✔ VALID (nodeName 'Sage'), SB-KIMTool-Points Spore ✔ VALID (nodeName 'SB-KIMTool-Point').",
-      "hinweis": "Oeffentliche Spore-Snapshots der Nachbarn. OFFEN: Mein-Tresor bei Sage + SB-KIMTool-Point + Jasons-Tresor melden, damit die uns reziprok als Endknoten registrieren (braucht zuerst dauerhafte nodeId + Pages)."
+      "beleg": "test/andock.test.js (npm test): 5 Nachbar-Sporen ✔ VALID — Sage (sage_inbox), SB-KIMTool-Point (point_inbox), Jasons-Tresor (jason_inbox), Mein-Rezeptbuch/'Rezeptbuch Klaus' (rezeptbuch_inbox), Mein-Mixarium/'Mixarium Klaus' (mixarium_inbox). Generischer Test verifiziert jede *_inbox.json (id==SHA256(pubkey), Ed25519-Signatur, Manipulation faellt durch).",
+      "hinweis": "Andock von UNSERER Seite zu allen 5 oeffentlichen SBKIM-Knoten vollzogen. Briefkasten-Sync (SIGNAL.json ack) nur mit den 3 Knoten, die ein Postfach fuehren (Sage/SB-KIMTool-Point/Jasons-Tresor); Mein-Rezeptbuch/Mein-Mixarium haben Identitaet, aber (noch) kein SIGNAL.json. OFFEN (Gegenseite/Klaus): unsere dauerhafte nodeId (npm run key) + Pages, dann registrieren die Nachbarn uns reziprok."
     },
     {
       "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",
@@ -81,7 +81,13 @@
       "status": "wartet-auf-klaus",
       "echt": false,
       "hinweis": "Pages (main/root) noch zu aktivieren, damit endpoint + sporeUrl https://lausiklauskn-png.github.io/Mein-Tresor/ abrufbar sind."
+    },
+    {
+      "name": "SBKIM-Siegel + Briefkasten im neuen Gesicht (Tresorraum)",
+      "status": "real-browser-tauglich",
+      "echt": true,
+      "hinweis": "Briefkasten-Knopf '📬 Briefkasten' im Tresorraum -> oeffnet den geerbten Dialog (window.sbkimMailboxCheck) mit Nachbar-Stand (Sage/SB-KIMTool-Point/Jasons-Tresor). SBKIM-Siegel (assets/sbkim-siegel-wappen.svg, Band auf 'MEIN-TRESOR' personalisiert) + eigene nodeId aus sbkim/spore.json oben im Dialog. BROWSER-UNGEPRUEFT."
     }
   ],
-  "real_anteil_geschaetzt": "ca. 55% (headless-bewiesener Tresor/Bibliothek-Kern byte-gleich aus Jasons-Tresor [51/51 Tests], echte signierte Spore ✔ VALID, Briefkasten/Watch; das NEUE Gesicht [Dreh-Safe + 30-Faecher-Raum] ist GEBAUT und ruft die bewiesene Oeffnen-Logik). OFFEN/ehrlich: Schale BROWSER-UNGEPRUEFT (Pixel-Feinschliff erwartet); Identitaet noch FLUECHTIG [kein node_key.enc.json]; domainVector Demo; Pages nicht aktiv; bei den Nachbarn noch nicht registriert."
+  "real_anteil_geschaetzt": "ca. 64% (Kern byte-gleich [52/52 Tests], eigene Spore ✔ VALID, NEUES Gesicht bild-genau verankert mit bewiesener Oeffnen-Logik, Netz-Andock an ALLE 5 oeffentlichen SBKIM-Knoten reziprok ✔ VALID, Siegel+Briefkasten im Gesicht). OFFEN/ehrlich: Schale browser-ungeprueft; Identitaet noch FLUECHTIG [kein node_key.enc.json]; domainVector Demo; Pages nicht aktiv; Nachbarn registrieren uns reziprok erst nach dauerhafter nodeId+Pages."
 }

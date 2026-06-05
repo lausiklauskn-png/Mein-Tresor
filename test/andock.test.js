@@ -6,7 +6,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { createHash } from "node:crypto";
@@ -67,4 +67,22 @@ test("reziprok: SB-KIMTool-Points Spore (sbkim/point_inbox.json) verifiziert ✔
   const r = verifyForeignSpore(spore);
   assert.equal(r.valid, true, r.reason);
   assert.equal(spore.nodeName, "SB-KIMTool-Point");
+});
+
+test("reziprok: Jasons-Tresor-Spore (sbkim/jason_inbox.json) verifiziert ✔ VALID", () => {
+  const spore = load("sbkim/jason_inbox.json");
+  const r = verifyForeignSpore(spore);
+  assert.equal(r.valid, true, r.reason);
+  assert.equal(spore.nodeName, "Jasons-Tresor");
+});
+
+test("alle Nachbar-Sporen (sbkim/*_inbox.json) verifizieren ✔ VALID (Netz-Andock)", () => {
+  const files = readdirSync(resolve(ROOT, "sbkim")).filter((f) => /_inbox\.json$/.test(f));
+  assert.ok(files.length >= 5, "mind. 5 verbundene Nachbarn erwartet, gefunden: " + files.length);
+  for (const f of files) {
+    const spore = load("sbkim/" + f);
+    const r = verifyForeignSpore(spore);
+    assert.equal(r.valid, true, f + ": " + r.reason);
+    assert.ok(spore.nodeName && spore.id, f + ": nodeName/id fehlt");
+  }
 });

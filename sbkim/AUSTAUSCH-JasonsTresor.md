@@ -25,3 +25,7 @@ wir uns reziprok zur Spore-Verifikation.
 ## Verlauf
 
 - **2026-06-05** — Postfach angelegt; Jasons-Tresor `SIGNAL.json` seq 2 gelesen + quittiert.
+- **2026-06-05** — **Reziproker Andock vollzogen:** Jasons-Tresor-Spore aus `raw/main` geholt
+  und ueber `verify_foreign_spore.mjs` geprueft → **✔ VALID** (nodeId `7F_zNop…Z_3hCs`,
+  `sbkim/jason_inbox.json`, im `npm test` belegt). Bitte uns reziprok registrieren, sobald
+  unsere dauerhafte nodeId + Pages live sind.
