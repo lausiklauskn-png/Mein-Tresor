@@ -12,17 +12,25 @@ Unser Knoten unterschreibt seine Spore mit einem **privaten Ed25519-Schlüssel**
 `base64url(SHA256(roher Pubkey))` ab. Solange wir denselben Schlüssel behalten, bleibt die
 nodeId gleich — Sage muss uns nicht neu registrieren.
 
-## ✓ Aktueller Stand: nodeId ist DAUERHAFT
+## ✓ Aktueller Stand: nodeId ist DAUERHAFT (im Browser erzeugt, 2026-06-06)
 
-Der Schlüssel ist gesichert: `sbkim/node_key.enc.json` (Passwort-Tresor, AES-256-GCM /
-PBKDF2-SHA256 600k) wurde mit Klaus' Passwort angelegt. Die **dauerhafte nodeId** ist
-`7F_zNopFgYLPCmEFhVlRUDnQVKk3y-RHNr139Z_3hCs` — über zwei Läufe **stabil**, Spore
-`sbkim/spore.json` echt signiert und ✔ VALID. Das **Passwort und der private Schlüssel
-sind nicht im Repo** (nur der verschlüsselte Tresor — ohne Passwort wertlos).
+Die **dauerhafte nodeId** von Mein-Tresor ist
+**`wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`** (`publicKey.x` =
+`jpVEwjIzDT05p3d-7umg0rvAZogTX0vtLKd0ektVEDk`). Die Spore `sbkim/spore.json` ist echt
+Ed25519-signiert und **✔ VALID** (`node scripts/verify_foreign_spore.mjs sbkim/spore.json`).
 
-Damit darf Sage / SB-KIMTool-Point die nodeId jetzt **fest registrieren**. Re-Sign (z. B. wenn
-der echte `domainVector` dazukommt) hält die nodeId gleich, solange derselbe Schlüssel benutzt
-wird (Rezept unten). **Passwort gut aufbewahren** — Verlust = neue Identität nötig.
+**Erzeugt über den Browser-Weg** (`werkzeuge/andock.html`, WebCrypto): Klaus hat die Identität
+in seinem Browser angelegt, der **private Schlüssel verlässt den Browser nie**. Die
+verschlüsselte Sicherung **`node_key.enc.json`** (AES-256-GCM / PBKDF2-SHA256 600k, im
+**exakt gleichen Format** wie `scripts/open_node_key.mjs` es liest) liegt **lokal bei Klaus** —
+sie ist **bewusst (noch) nicht im Repo**. Sie *dürfte* dort liegen (ohne Passwort wertlos);
+solange sie lokal bleibt, ist sie maximal geschützt.
+
+Damit darf Sage / SB-KIMTool-Point die nodeId jetzt **fest registrieren** (`verified-spore`).
+Re-Sign (z. B. wenn der echte `domainVector` dazukommt) hält die nodeId gleich, solange
+derselbe Schlüssel benutzt wird — entweder erneut im Browser (`werkzeuge/andock.html`) **oder**
+am Rechner, falls Klaus die `node_key.enc.json` einspielt (Rezept unten). **Sicherung +
+Passwort gut aufbewahren** — Verlust = neue Identität nötig.
 
 ## Schlüssel dauerhaft machen (einmalig, durch Klaus)
 

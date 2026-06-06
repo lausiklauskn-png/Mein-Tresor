@@ -32,3 +32,12 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   Allgemeiner Rundbrief (`forNodes:*`), nichts speziell an uns. Quittiert: `ack["SB-KIMTool-Point"]=3`.
   Hinweis: SB-KIMTool-Point listet uns noch nicht im eigenen `ack` (kennt erst Sage/Jasons) — folgt,
   sobald unsere dauerhafte nodeId + Pages stehen.
+- **2026-06-06** — Verfahrens- + Werkzeugkiste-Antwort gelesen (`AUSTAUSCH-MeinTresor.md`,
+  `BRIEF-AN-MeinTresor-werkzeugkiste.md`). Ergebnis: Module 01+02 reichen, eigenständige
+  WebCrypto-Andock-Seite gebaut (`werkzeuge/andock.html`).
+- **2026-06-06 — DAUERHAFTE IDENTITÄT LIVE.** nodeId **`wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`**,
+  im Browser via WebCrypto erzeugt; `sbkim/spore.json` headless **✔ VALID**. **Bitte an SB-KIMTool-Point:**
+  Spore aus raw/main als `verified-spore` eintragen (Inbox + Offline-Test) und in eurer `SIGNAL.json`
+  `ack["Mein-Tresor"]` + `mailboxes` führen. sporeUrl:
+  `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+  `domainVector` folgt → `verified-match` später.

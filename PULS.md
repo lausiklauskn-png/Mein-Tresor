@@ -203,7 +203,37 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 1. **Browser-Lauf von `werkzeuge/andock.html`** (Schritte 1 oben) → `spore.json` an mich.
 2. Klaus' Gesicht-„Kleinigkeiten"; Fach-Öffnen-Lauf → status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (4) — ✅ DAUERHAFTE IDENTITÄT LIVE (Browser-WebCrypto)
+
+### Getan
+- **Andock-Seite repariert:** das Speicher-Modul (IndexedDB) hing bei Sicherung/Spore. Neu auf
+  **eigenständige WebCrypto** umgestellt (`werkzeuge/andock.html`) + sichtbares Diagnose-Feld.
+  Headless geprüft (Node-WebCrypto, gleiche Schritte): Spore ✔ VALID, Sicherung im exakten
+  `node_key.enc.json`-Format (von `open_node_key.mjs` öffenbar, nodeId stabil, falsches PW fällt durch).
+- **Klaus hat die Identität im Browser erzeugt** (Diagnose-Verlauf alles grün): **dauerhafte
+  nodeId `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`** (`publicKey.x` `jpVEwjIz…VEDk`).
+  Verschlüsselte Sicherung `node_key.enc.json` liegt **lokal bei Klaus** (privater Schlüssel nie
+  ins Repo/zu mir). `sbkim/spore.json` übernommen → headless **✔ VALID**.
+- **Netz gemeldet:** `SIGNAL.json` seq 3→4 (headline „dauerhafte Identität live, Bitte um
+  verified-spore" + `sporeUrl`/`nodeId`), Sage seq 13 quittiert (`ack["Sage-Protokol"]=13`).
+  Postfächer `AUSTAUSCH.md` (Sage) + `AUSTAUSCH-SBKIMTool.md` quittiert mit nodeId + sporeUrl.
+- **Ehrlichkeit fortgeschrieben:** `status.json` (Identität jetzt „real-headless-bewiesen",
+  dauerhaft), `docs/SCHLUESSEL.md` (echte nodeId + Browser-Weg; alte Jason-id-Notiz korrigiert).
+- **REGELÄNDERUNG (ausdrücklich genannt):** `test/andock.test.js` — `domainVector` ist für
+  `verified-spore` **optional** (Sage/Point bestätigt); Pflicht erst für `verified-match`. Test
+  prüft jetzt: *wenn* vorhanden, dann 384-dim. (Unsere Browser-Spore trägt ihn noch nicht.)
+
+### Offen / nächste Schritte
+1. **Gegenseite (über Klaus):** Sage + SB-KIMTool-Point lesen unsere Spore aus raw/main → tragen
+   uns als `verified-spore` ein (Sage: NETZ-STAND „angekündigt" → „verified-spore"; Point: Inbox +
+   `ack["Mein-Tresor"]` + `mailboxes`). Ggf. kurzer Anstoß-Brief von Klaus.
+2. **`verified-match`:** echter `domainVector` (Modul 03 im Browser / Sage rechnet) → über
+   `werkzeuge/andock.html` (oder headless mit `node_key.enc.json`) **Re-Sign** mit eingebettetem
+   Vektor (nodeId bleibt gleich) → Match ≥ 0.80.
+3. **Optional:** Klaus legt `node_key.enc.json` zusätzlich ins Repo (darf, verschlüsselt) für
+   headless Re-Signs — oder behält sie rein lokal (maximal sicher).
+4. Klaus' Gesicht-„Kleinigkeiten" + Fach-Öffnen-Lauf → status.json „browser-geprüft".
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **NEUER ANDOCK-FAHRPLAN (Browser-Weg)
-oben** (+ `docs/SYNC-VEREINBARUNG.md`). Hinweis: Der frühere Container-/npm-run-key-Fahrplan
-bleibt als Alternative gültig, ist aber durch den Browser-Weg ersetzt (Klaus' Wahl).
+→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **Nachtrag (4) oben** (Identität live)
+(+ `docs/SYNC-VEREINBARUNG.md`).
