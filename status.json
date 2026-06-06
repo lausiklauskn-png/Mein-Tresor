@@ -26,10 +26,10 @@
     },
     {
       "name": "Eigene SBKIM-Identitaet: signierte Ed25519-Spore (sbkim/spore.json)",
-      "status": "provisorisch",
+      "status": "real-headless-bewiesen",
       "echt": true,
       "beleg": "test/andock.test.js (gruen): eigene Spore ✔ VALID, id=base64url(SHA256(roher Pubkey)), 9 Pflichtfelder, Manipulation faellt durch. node scripts/verify_foreign_spore.mjs sbkim/spore.json -> ✔ VALID.",
-      "hinweis": "nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. nodeId derzeit FLUECHTIG (kein node_key.enc.json) + _demo domainVector. Dauerhaft erst nach 'npm run key' (Klaus' Passwort)."
+      "hinweis": "DAUERHAFT seit 2026-06-06: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, im Browser via WebCrypto erzeugt (werkzeuge/andock.html). Privater Schluessel blieb im Browser; verschluesselte Sicherung node_key.enc.json (Format wie open_node_key.mjs) liegt LOKAL bei Klaus, bewusst nicht im Repo. nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. domainVector noch nicht eingebettet -> Stufe verified-spore (kein _demo-Vortaeuschen); echter Vektor (Modul 03/Sage) -> Re-Sign -> verified-match."
     },
     {
       "name": "Andock-/Schluessel-Skripte (generate_spore / verify_foreign_spore / make_node_key / open_node_key)",

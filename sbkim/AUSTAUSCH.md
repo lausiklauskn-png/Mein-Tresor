@@ -11,8 +11,8 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-05** (`SIGNAL.json` seq 12 gelesen → `ack["Sage-Protokol"]=12`) | Registrierung unserer Spore als Endknoten (sobald dauerhafte nodeId + Pages live) |
-| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | — | unsere abrufbare Spore-URL (Pages) |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-06** (`SIGNAL.json` seq 13 + Verfahrens-Antwort gelesen → `ack["Sage-Protokol"]=13`) | Eintrag als `verified-spore` im NETZ-STAND |
+| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | — | (erledigt) unsere Spore liegt in raw/main |
 
 ---
 
@@ -43,3 +43,12 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
 - **2026-06-05** — Postfach angelegt; Sage `SIGNAL.json` seq 12 gelesen + quittiert.
 - **2026-06-05** — Sage-Spore reziprok geprueft → **✔ VALID** (`sbkim/sage_inbox.json`,
   nodeId `nysOZE…tJkYfA`, im `npm test`). Andock von unserer Seite steht.
+- **2026-06-06** — Sages Verfahrens-Antwort + Synchronisationsvereinbarung (`AUSTAUSCH-MeinTresor.md`,
+  `SIGNAL.json` seq 13) gelesen + quittiert (`ack["Sage-Protokol"]=13`). Vereinbarung 1:1 abgelegt
+  (`docs/SYNC-VEREINBARUNG.md`).
+- **2026-06-06 — DAUERHAFTE IDENTITÄT LIVE.** nodeId **`wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`**,
+  im Browser via WebCrypto erzeugt (privater Schluessel blieb im Browser; verschluesselte Sicherung
+  `node_key.enc.json` liegt lokal bei Klaus). `sbkim/spore.json` headless **✔ VALID** (id==SHA256(pub),
+  Ed25519, Manipulation faellt durch). **Bitte an Sage:** Spore aus raw/main als `verified-spore`
+  eintragen. sporeUrl: `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+  `domainVector` noch nicht eingebettet → Stufe `verified-spore`; echter Vektor (Modul 03/Sage) → Re-Sign → `verified-match`.

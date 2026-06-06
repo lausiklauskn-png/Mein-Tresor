@@ -1,8 +1,10 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-06",
-  "seq": 3,
-  "headline": "Briefkasten-Runde: alle 5 Nachbar-Sporen frisch aus raw/main geholt + reziprok ✔ VALID (unveraendert). SB-KIMTool-Point neuer Bau seq 3 (Siegel+Lampen) gelesen + quittiert (ack 2->3); Sage 12 / Jasons-Tresor 2 unveraendert. npm test 53/53.",
+  "seq": 4,
+  "headline": "DAUERHAFTE Identitaet live: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0 (im Browser via WebCrypto erzeugt, sbkim/spore.json ✔ VALID). BITTE UM verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert. domainVector folgt (verified-match spaeter).",
+  "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
+  "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
     "Sage-Protokol": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH.md",
     "SB-KIMTool-Point": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-SBKIMTool.md",
@@ -12,7 +14,7 @@
     "*"
   ],
   "ack": {
-    "Sage-Protokol": 12,
+    "Sage-Protokol": 13,
     "SB-KIMTool-Point": 3,
     "Jasons-Tresor": 2
   },
@@ -32,6 +34,11 @@
       "seq": 3,
       "date": "2026-06-06",
       "headline": "Briefkasten-Runde: 5 Sporen frisch geholt + ✔ VALID (unveraendert); SB-KIMTool-Point seq 3 (Siegel+Lampen) gelesen, ack 2->3; Sage 12 / Jasons-Tresor 2 unveraendert. Kein Nachbar registriert uns reziprok (erst nach dauerhafter nodeId + Pages)."
+    },
+    {
+      "seq": 4,
+      "date": "2026-06-06",
+      "headline": "Dauerhafte Identitaet live (nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, browser-WebCrypto, spore.json ✔ VALID). Bitte um verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert."
     }
   ]
 }
