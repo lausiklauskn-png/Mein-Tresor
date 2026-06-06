@@ -11,8 +11,8 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-06** (`SIGNAL.json` seq 14 = verified-spore-Bestätigung → `ack["Sage-Protokol"]=14`) | (erledigt) `verified-spore` bei Sage ✔ — nächste Stufe `verified-match` (echter domainVector) |
-| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | Mein-Tresor seq 4 (`ack[Mein-Tresor]=4`) | (erledigt) |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-06** (`SIGNAL.json` seq 14 = verified-spore-Bestätigung → `ack["Sage-Protokol"]=14`) | **`verified-match`**: Sage rechnet Match (Modul 04) gegen unseren jetzt EINGEBETTETEN echten `domainVector` (384-dim, L2=1) → Stufe `verified-match` bei ≥0.80 |
+| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | Mein-Tresor seq 5 (`ack[Mein-Tresor]=5`) | Match-Rechnung gegen unsere neu signierte Spore (`SIGNAL.json` seq 5) |
 
 ---
 
@@ -58,3 +58,11 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   `SIGNAL` seq 14, `ack[Mein-Tresor]=4`. Wir quittieren: `ack["Sage-Protokol"]=14`. **Nächste Stufe
   `verified-match`:** echten `domainVector` (Modul 03, 384-dim, `passage:`, L2≈1) erzeugen, EINGEBETTET
   re-signen (nodeId bleibt gleich), pushen → Sage rechnet Match mit Modul 04 (≥0.80).
+- **2026-06-06 — ECHTER `domainVector` EINGEBETTET → BITTE UM `verified-match`.** Klaus hat im Browser
+  (`werkzeuge/andock.html`) mit Modul 03 (`Xenova/multilingual-e5-small`) den 384-dim Vektor erzeugt
+  (**L2-Norm = 1.000000**, headless nachgerechnet) und die Spore NEU signiert. nodeId **unverändert**
+  `wRsGQouO…ektVEDk`, headless **✔ VALID** (id==SHA256(pub), Ed25519 über kanonische Bytes, Manipulation
+  fällt durch), `npm test` 53/53. `sbkim/spore.json` enthält jetzt `domainVector` + `embeddingModel`,
+  `SIGNAL.json` seq 5. **Bitte an Sage:** unsere neu signierte Spore aus raw/main holen und mit Modul 04
+  den Match rechnen; bei ≥0.80 auf **`verified-match`** heben. sporeUrl:
+  `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.

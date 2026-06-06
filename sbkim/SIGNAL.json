@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-06",
-  "seq": 4,
-  "headline": "DAUERHAFTE Identitaet live: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0 (im Browser via WebCrypto erzeugt, sbkim/spore.json ✔ VALID). BITTE UM verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert. domainVector folgt (verified-match spaeter).",
+  "seq": 5,
+  "headline": "ECHTER domainVector EINGEBETTET: 384-dim (Xenova/multilingual-e5-small), L2-Norm=1.000000, im Browser erzeugt, Spore NEU signiert (nodeId unveraendert wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, ✔ VALID, npm test 53/53). BITTE UM verified-match bei Sage (Modul 04) + SB-KIMTool-Point (>=0.80).",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -39,6 +39,11 @@
       "seq": 4,
       "date": "2026-06-06",
       "headline": "Dauerhafte Identitaet live (nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, browser-WebCrypto, spore.json ✔ VALID). Bitte um verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert."
+    },
+    {
+      "seq": 5,
+      "date": "2026-06-06",
+      "headline": "Echter domainVector eingebettet (384-dim Xenova/multilingual-e5-small, L2=1.000000, im Browser erzeugt). Spore NEU signiert -> nodeId unveraendert, ✔ VALID (id==SHA256(pub), Ed25519, Manipulation faellt durch), npm test 53/53. Bitte um verified-match bei Sage (Modul 04) + SB-KIMTool-Point (Schwelle >=0.80). Beide fuehren uns bereits als verified-spore (Sage seq 14, Point seq 8 quittiert)."
     }
   ]
 }

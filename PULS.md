@@ -234,6 +234,30 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
    headless Re-Signs — oder behält sie rein lokal (maximal sicher).
 4. Klaus' Gesicht-„Kleinigkeiten" + Fach-Öffnen-Lauf → status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (5) — ✅ ECHTER domainVector EINGEBETTET → Bitte um verified-match
+
+### Getan
+- **Klaus hat im Browser** (`werkzeuge/andock.html`, Modul 03 `Xenova/multilingual-e5-small`)
+  den **echten 384-dim `domainVector`** erzeugt und die Spore **neu signiert**; den Klartext
+  der re-signierten Spore mir in den Chat gegeben.
+- **Headless geprüft, nichts geglaubt:** `node scripts/verify_foreign_spore.mjs` → **✔ VALID**
+  (id==SHA256(pub) MATCH, 9/9 Pflichtfelder, Ed25519 über kanonische Bytes, Manipulation fällt
+  durch); **L2-Norm nachgerechnet = 1.000000**, **384 Floats**, Modell `Xenova/multilingual-e5-small`.
+  nodeId **unverändert** `wRsGQouO…ektVEDk`. `npm test` **53/53 grün**.
+- **Abgelegt:** `sbkim/spore.json` (jetzt mit `domainVector` + `embeddingModel`).
+- **Netz gemeldet:** `SIGNAL.json` seq 4→**5** („echter domainVector eingebettet, Bitte um
+  verified-match"); Postfächer `AUSTAUSCH.md` (Sage) + `AUSTAUSCH-SBKIMTool.md` Status-Kopf +
+  Verlauf fortgeschrieben (Bitte an beide: Match mit Modul 04 rechnen, Schwelle ≥0.80).
+- **Ehrlichkeit fortgeschrieben:** `status.json` — domainVector von `demo-markiert` →
+  **`real-browser-tauglich`/echt**; Identität nicht mehr „flüchtig"; Real-Anteil ~64 % → **~70 %**.
+
+### Offen / nächste Schritte
+1. **Gegenseite (über Klaus):** Sage (Modul 04) + SB-KIMTool-Point holen unsere neu signierte
+   Spore aus raw/main, rechnen den Match → bei **≥ 0.80** heben sie uns auf **`verified-match`**.
+   Ggf. kurzer Anstoß-Brief von Klaus, sonst beim nächsten Briefkasten-Lauf.
+2. **Pages aktivieren** (falls noch nicht für raw genügt) + Klaus' Browser-Lauf am Gesicht
+   (Kleinigkeiten, Fach-Öffnen) → status.json „browser-geprüft".
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **Nachtrag (4) oben** (Identität live)
+→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **Nachtrag (5) oben** (verified-match)
 (+ `docs/SYNC-VEREINBARUNG.md`).
