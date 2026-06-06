@@ -99,3 +99,7 @@
    bei den Nachbarn rund machen.
 4. Optional: Fach-Raster per Kalibrier-Werkzeug exakt (LAYOUT.hoch/quer), Öffnen-Overlay
    auf `fach.png` umskinnen.
+
+## Aktiver Übergabe-Brief
+→ `docs/sessions/BRIEF_sbkim-netz-und-feinschliff.md` (umfassend: alles Gebaute + SBKIM-Netz +
+Arbeitsregel „lesen→denken→mit Knoten kommunizieren→mit Klaus abgleichen→Code" + Aufgaben).
