@@ -25,6 +25,11 @@ möglich.
 **Zusätzlich ehrlich:** Die nodeId ist **provisorisch**, solange kein `SBKIM_NODE_KEY`
 gesetzt ist (flüchtiger Schlüssel, nodeId wechselt pro Lauf). Siehe `docs/SCHLUESSEL.md`.
 
+**Leitprinzip (siehe §9): Eigentum statt Link.** Jeder Knoten besitzt das Andock-Werkzeug als
+**eigene Datei im eigenen Repo** — niemals als Verweis/URL auf einen fremden Host (auch nicht auf
+Sage). So bleibt das Signieren und Prüfen **offline + souverän** und der Knoten funktioniert auch,
+wenn ein anderer Host gerade nicht erreichbar ist.
+
 ## 2. Sage-Schema (Ziel-Format)
 
 Pflicht- und genutzte Felder unserer `sbkim/spore.json` (Reihenfolge wie bei Sage):
@@ -127,3 +132,31 @@ Sage den Vektor aus unserem Domänen-Text rechnen (so lief es bei SB-KIMTool-Poi
 - **GitHub Pages aktivieren** → Pages-Endpoint liefert 200.
 - **Sage bitten**, Mein-Tresor als neuen Endknoten zu registrieren (`verified-spore` →
   `verified-match`), `sporeUrl` eintragen — über `sbkim/AUSTAUSCH.md`.
+
+## 9. Eigentum statt Link — Werkzeug-Souveränität (Leitprinzip, verbindlich)
+
+Verankert 2026-06-06. Folgt direkt aus der Verfassung (`CLAUDE.md`): **„Kopieren, nicht klonen"**
+und **„Offline — keine externen Abhängigkeiten"**.
+
+**Regel.** Das SBKIM-Andock-Werkzeug — die Browser-Seite `werkzeuge/andock.html`, die Module
+`web/tools/{sbkim-storage,sbkim-spore,sbkim-embedding}.js` und die Headless-Skripte
+`scripts/*.mjs` — liegt in **jedem** Knoten als **Eigentum** (eigene, eingecheckte Datei).
+Es wird **niemals** als Link/URL aus dem Sage-Protokoll (oder einem anderen Fremd-Host)
+nachgeladen.
+
+**Warum.**
+1. **Souveränität / Offline:** Identität erzeugen, Spore signieren und Fremd-Sporen prüfen muss
+   **ohne Netz und ohne Fremd-Host** gehen. Ein Link macht den Knoten von Sages Verfügbarkeit
+   abhängig; eine eigene Datei nicht.
+2. **Byte-Gleichheit bleibt prüfbar:** Der Krypto-Kern wird **kopiert, nicht referenziert** —
+   nur der CONFIG-Block (nodeName/domain/endpoint) wird pro Knoten umgestellt. So bleibt der Kern
+   zwischen den Knoten **byte-gleich** und nachrechenbar.
+3. **Keine stille Fremd-Abhängigkeit:** Ein nachgeladenes Skript könnte sich unbemerkt ändern;
+   eine eingecheckte Datei steht unter Versionskontrolle und im `npm test`.
+
+**Stand Mein-Tresor:** erfüllt — `werkzeuge/andock.html`, `web/tools/*` und `scripts/*` sind
+Eigentum im Repo, kein Sage-Link. Im `npm test` (53/53) gegengeprüft.
+
+**Bitte an forkende Schwester-Knoten (z. B. Jasons-Tresor):** Werkzeug als Eigentum ins eigene
+Repo **kopieren**, nur CONFIG umstellen — **nicht** als Sage-Link einbinden. Details + Liefer-Liste
+im Postfach `sbkim/AUSTAUSCH-JasonsTresor.md` §3.
