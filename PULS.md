@@ -365,6 +365,29 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
   Tresore, kein unnötiges Scrollen** — alles schlüssig sichtbar. Auf sehr kleinen Handys dürfen die
   Fächer klein sein, aber vollständig.
 
+## Nachtrag 2026-06-06 (11) — Brief an Jasons-Tresor „Eigentum statt Link" + Prinzip verankert
+
+### Getan
+- **Brief an Jasons-Tresor geschrieben** (`sbkim/AUSTAUSCH-JasonsTresor.md` §3 + Verlauf): Inhalt
+  unseres **Siegels** (real: Ed25519-Identität, nodeId=SHA256(Pubkey), Signatur über kanonische
+  Form, **echter 384-dim domainVector**, 9 Pflichtfelder), die **Werkzeuge** zum Erzeugen/Verwalten
+  (`werkzeuge/andock.html` Teil A/B, Module 01–03 `web/tools/*`, Headless `scripts/*.mjs`) und die
+  **Exportierungen** (`spore.json`, `domainVector.real.json`, verschlüsselte Sicherung
+  `node_key.enc.json`). **Bitte:** Werkzeug **als Eigentum** ins eigene Repo kopieren (nur CONFIG
+  umstellen, Krypto-Kern byte-gleich) — **kein** Sage-Link. → **PR #27 gemergt** (squash `2496f30`).
+- **Leitprinzip „Eigentum statt Link" verbindlich verankert** in `docs/ANDOCK.md`: Verweis in §1 +
+  neuer **§9 (Werkzeug-Souveränität)**. Folgt aus den Leitplanken „Kopieren, nicht klonen" +
+  „Offline". Jeder Knoten besitzt das Andock-Werkzeug als eigene Datei, niemals als Fremd-Host-Link.
+- **Klaus-Anweisung bestätigt:** auto-mergen wenn fertig + grün (kein Nachfragen) — angewandt.
+- `npm test` **53/53**, Kern byte-gleich (reine Doku/Postfach-Änderungen).
+
+### Offen / nächste Schritte
+1. **Klaus überbringt** §3-Link an eine Jasons-Tresor-Sitzung → sie kopiert `andock.html` + Module
+   01–03 als **Eigentum** ins eigene Repo (nur CONFIG umstellen, kein Sage-Link).
+2. **Sage + SB-KIMTool-Point:** rechnen noch unseren Match (wir = verified-spore, echter Vektor da)
+   → dann auch dort `verified-match`.
+3. Klaus' Gesicht-„Kleinigkeiten" + Fach-Öffnen-Lauf → status.json „browser-geprüft".
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)+(9)+(10) oben**
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(11) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
