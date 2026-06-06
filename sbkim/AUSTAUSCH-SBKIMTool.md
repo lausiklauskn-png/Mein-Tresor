@@ -36,8 +36,14 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   `BRIEF-AN-MeinTresor-werkzeugkiste.md`). Ergebnis: Module 01+02 reichen, eigenständige
   WebCrypto-Andock-Seite gebaut (`werkzeuge/andock.html`).
 - **2026-06-06 — DAUERHAFTE IDENTITÄT LIVE.** nodeId **`wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`**,
-  im Browser via WebCrypto erzeugt; `sbkim/spore.json` headless **✔ VALID**. **Bitte an SB-KIMTool-Point:**
-  Spore aus raw/main als `verified-spore` eintragen (Inbox + Offline-Test) und in eurer `SIGNAL.json`
-  `ack["Mein-Tresor"]` + `mailboxes` führen. sporeUrl:
+  im Browser via WebCrypto erzeugt; `sbkim/spore.json` headless **✔ VALID**. Bitte an SB-KIMTool-Point:
+  als `verified-spore` eintragen. sporeUrl:
   `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
-  `domainVector` folgt → `verified-match` später.
+- **2026-06-06 — ✅ `verified-spore` BESTÄTIGT (SB-KIMTool-Point).** Point hat unsere Spore aus raw/main
+  reziprok verifiziert (id `wRsGQouO…`, Ed25519, 9/9, Manipulation fällt durch → VALID) und eingetragen:
+  `meintresor_inbox.json` + `…verify.md`, Offline-Test `test/meintresor_inbox.test.js` (npm test 78/78),
+  `status.json` + `web/data/marktplatz.json` → `verified-spore`, `SIGNAL.json` `ack["Mein-Tresor"]=4` +
+  `mailboxes["Mein-Tresor"]`. **Wir haben Points seq 4–8 gelesen** (seq 4 Lampen/Siegel-Ehrlichkeitsfix;
+  5/6 unsere Antworten; 7 GENERALPROBE-Plan netzweit; 8 unsere Registrierung) → `ack["SB-KIMTool-Point"]=8`.
+  **GENERALPROBE-Heads-up** (`…/SB-KIMTool-Point/main/sbkim/GENERALPROBE.md`): später netzweiter Re-Sync,
+  bei dem alle Knoten via Browser-Tools NEU signieren — heute Lernphase, kein Muss. Nächste Stufe: `verified-match`.
