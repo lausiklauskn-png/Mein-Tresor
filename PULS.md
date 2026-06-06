@@ -388,6 +388,24 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
    → dann auch dort `verified-match`.
 3. Klaus' Gesicht-„Kleinigkeiten" + Fach-Öffnen-Lauf → status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (12) — Rundbrief „Briefkasten-Bauplan" (1:1 für alle Knoten)
+
+### Getan
+- **Versendbaren Rundbrief geschrieben** `docs/sessions/BRIEF_briefkasten-bauplan.md`: beschreibt
+  den **Live-Verbund-Briefkasten** vollständig — Idee, **alle fünf zusammenhängenden Teile**
+  (Knopf+Badge · Dialog · CONFIG · Logik · Daten-Dateien), den **kompletten 1:1-Bauplan**
+  (HTML+JS byte-gleich, nur CONFIG umstellen), **alle RAW-Links** (Knoten-Verzeichnis Sage/Point/
+  Jasons/Rezeptbuch/Mixarium/Tresor) und den **Live-Hinweis** (② Match = Cosinus live im Browser,
+  ≥0.80 = verified-match; ③ Sync = ihr `seq` ↔ unser `ack`; „X/N verbunden"). Klaus verschickt ihn
+  an Repo 1–4 (5).
+- Quelle 1:1 aus `index.html` (sbkim-mailbox-btn/-dialog, `window.SBKIM_MAILBOX`, `sbkimCosine`,
+  `sbkimMailboxCheck`). Reine Doku — Kern unberührt, `npm test` 53/53.
+
+### Offen / nächste Schritte
+1. **Klaus überbringt** den Bauplan-Brief an die anderen Knoten → sie bauen den Briefkasten 1:1.
+2. Eingehende Antworten/PRs lesen + reziprok quittieren.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(11) oben**
+→ `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1 nachbauen) +
+`docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(12) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
