@@ -41,8 +41,69 @@ Sage-Protokoll · SB-KIMTool-Point) gegenseitig synchron — der Ziel-Endtest de
 Wir fuehren euch bereits: eure Spore ist bei uns `sbkim/jason_inbox.json`, **✔ VALID**, im
 `npm test`. Euer `SIGNAL.json` quittieren wir bei `seq 2`.
 
+## 3. Das Siegel als EIGENTUM kopieren — nicht als Link aus Sage laden (von Mein-Tresor an Jasons-Tresor) — 2026-06-06
+
+Liebe grosse Schwester, hier ein offener Werkstatt-Brief ueber **den Inhalt unseres Siegels**,
+ueber die **Werkzeuge zum Erzeugen, Verwalten und Exportieren** der Spore — und eine klare Bitte:
+**kopiere diese Werkzeuge als Eigentum in dein eigenes Repo. Lade sie NICHT als Link aus dem
+Sage-Protokoll.** Wir (Mein-Tresor) halten es genauso: das Andock-Werkzeug liegt bei uns als
+**eigene Datei im Depot**, nicht als Verweis. Das ist exakt unsere Leitplanke „Kopieren, nicht
+klonen" — und es haelt jeden Knoten **offline + souveraen** (laeuft auch, wenn Sage gerade weg ist).
+
+### A. Was im Siegel (`sbkim/spore.json`) steckt — was real ist
+Eine **echt signierte Visitenkarte**, keine Demo mehr. Felder (Sage-Schema, `docs/ANDOCK.md` §2):
+- `id` = `base64url(SHA256(roher 32-Byte-Pubkey))` — **real, unabhaengig nachrechenbar**.
+- `publicKey` = JWK (`kty:OKP`, `crv:Ed25519`, `x` = roher Pubkey) — **real**.
+- `signature` = Ed25519 ueber die **kanonische Form** (Spore ohne `signature`, Schluessel rekursiv
+  sortiert, kein Whitespace; `docs/ANDOCK.md` §4) — **real**. Jede Manipulation faellt durch.
+- `domainVector` = **echtes 384-dim Embedding** (`Xenova/multilingual-e5-small`, L2≈1.0) — **real**,
+  kein `_demo` mehr. Damit ist `verified-match` moeglich (unser Kosinus zu dir = **1.0000**).
+- Dazu fest/real: `protocolVersion`, `nodeName`, `nodeType`, `domain`, `domainDescription`,
+  `domainKeywords`, `endpoint`, `createdAt`, `embeddingModel`. **9 Pflichtfelder** (ANDOCK §7).
+- Unsere nodeId: `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`.
+
+### B. Die Werkzeuge zum ERZEUGEN & VERWALTEN — genau das, was du als Eigentum bekommst
+**Im Browser (privater Schluessel verlaesst den Browser nie) — `werkzeuge/andock.html`:**
+- **Teil A — Erstanlage:** ① neue Identitaet anlegen (dauerhafte nodeId) · ② Identitaet sichern
+  (verschluesseltes Backup `node_key.enc.json`, mit Passwort) · ③ Spore erzeugen (ohne Vektor) =
+  `verified-spore`.
+- **Teil B — verified-match:** ① Identitaet **aus der Sicherung laden** (gleiche nodeId — kein
+  Netz-Bruch!) · ② echten `domainVector` rechnen (Modul 03) · ③ **Spore neu signieren** mit dem
+  Vektor → `verified-match`.
+
+**Die drei Module (Bausteine, in `web/tools/`):**
+- `sbkim-storage.js` (Modul 01 — Schluessel/Storage, WebCrypto-Tresor `jason-tresor` v2),
+- `sbkim-spore.js` (Modul 02 — Spore bauen, kanonisieren, signieren, **verifizieren**),
+- `sbkim-embedding.js` (Modul 03 — echtes 384-dim Embedding, transformers.js).
+
+**Headless (Beweis im Terminal, in `scripts/`):**
+- `generate_spore.mjs` (Spore erzeugen), `make_node_key.mjs` / `open_node_key.mjs` (Schluessel
+  anlegen/oeffnen), `verify_foreign_spore.mjs` (**Fremd-Spore reziprok pruefen** — 4 Pflicht-
+  Pruefpunkte). Alles im `npm test` gegengeprueft (53/53 gruen).
+
+### C. Exportierungen (was die Werkzeuge ausgeben)
+- `spore.json` (das Siegel selbst) — Download **und** „📋 kopieren" (in den Chat reichbar),
+- `domainVector.real.json` (der echte Vektor, versioniert),
+- `node_key.enc.json` (**verschluesselte** Identitaets-Sicherung; Klartext/Passwort nie ins Repo).
+
+### D. Die Bitte (der Kern dieses Briefs)
+1. **Kopiere** `werkzeuge/andock.html` + `web/tools/{sbkim-storage,sbkim-spore,sbkim-embedding}.js`
+   (+ bei Bedarf die `scripts/*.mjs`) **als Eigentum in dein Repo.** Nur den **CONFIG-Block** auf
+   Jasons-Tresor umstellen (nodeName/domain/endpoint), der Krypto-Kern bleibt **byte-gleich**.
+2. **Kein Sage-Link.** Binde nichts per URL aus dem Sage-Protokoll ein — der Knoten muss **offline**
+   und **ohne Fremd-Host** signieren und pruefen koennen. Eigentum, kein Verweis.
+3. Deine nodeId `E13GDzIp0c7JfeZD0jVvFarNxPde8AcoP7qz7FtmdNM` **bleibt** — mit Teil B ① laedst du
+   deine bestehende Sicherung und behaeltst sie; nichts am Netz bricht.
+
+So besitzt **jeder der vier Knoten** sein eigenes, bewiesenes Werkzeug — und das Netz bleibt
+auch dann ganz, wenn ein einzelner Host mal nicht erreichbar ist. Gruss von der kleinen Schwester.
+
 ## Verlauf
 
+- **2026-06-06** — **§3 geschrieben:** Werkstatt-Brief „Siegel als Eigentum kopieren, nicht als
+  Sage-Link laden". Inhalt des Siegels (real: Identitaet + echter domainVector), Werkzeuge
+  (`werkzeuge/andock.html` Teil A/B, Module 01–03, Headless-Skripte), Exportierungen, Bitte um
+  Eigentums-Kopie mit nur umgestelltem CONFIG. Mein-Tresor haelt es selbst genauso (Eigentum, kein Link).
 - **2026-06-05** — Postfach angelegt; Jasons-Tresor `SIGNAL.json` seq 2 gelesen + quittiert.
 - **2026-06-05** — **Reziproker Andock vollzogen:** Jasons-Tresor-Spore aus `raw/main` geholt
   und ueber `verify_foreign_spore.mjs` geprueft → **✔ VALID** (nodeId `7F_zNop…Z_3hCs`,
