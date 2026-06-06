@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mein-Tresor — SBKIM-Andock (Identität im Browser)</title>
+<!--
+  Andock-Werkzeug (Browser) — erzeugt die DAUERHAFTE SBKIM-Identität von Mein-Tresor
+  im Browser. Lädt die bewiesenen Module 01 (Storage) + 02 (Spore) aus web/tools/.
+  Der private Schlüssel verlässt den Browser NIE (kein PII/Secret ins Repo/Container).
+  Additiv, außerhalb des JasonLib-Kerns. Begleitet von docs/SYNC-VEREINBARUNG.md.
+-->
+<style>
+  :root{
+    --bg:#0b1416; --bg2:#0f1c1f; --card:#11252a; --card2:#0d1f23; --line:#1d3a40;
+    --ink:#e7f6f3; --muted:#86a8a4; --accent:#2dd4bf; --accent-ink:#04221d; --warn:#f4b435;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    color:var(--ink); background:radial-gradient(1100px 600px at 80% -10%, #123 0%, transparent 60%), var(--bg);
+    line-height:1.5; padding:18px; max-width:760px; margin:0 auto}
+  h1{font-size:1.35rem; margin:.2em 0 .1em}
+  h2{font-size:1rem; margin:1.3em 0 .4em; color:var(--accent)}
+  p.lead{color:var(--muted); margin:.2em 0 1em}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:14px 16px; margin:12px 0}
+  button{font:inherit; cursor:pointer; color:var(--ink); background:var(--card2);
+    border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:4px 6px 4px 0;
+    transition:transform .08s ease, border-color .15s ease}
+  button:hover{border-color:var(--accent)}
+  button:active{transform:translateY(1px)}
+  button.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:700}
+  .big{font-size:1.05rem; padding:14px 18px}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .nodeid{font-family:ui-monospace,monospace; font-size:.95rem; word-break:break-all;
+    background:#06100f; border:1px solid var(--line); border-radius:8px; padding:8px 10px; color:var(--accent)}
+  textarea{width:100%; min-height:230px; font-family:ui-monospace,monospace; font-size:.8rem;
+    color:var(--ink); background:#06100f; border:1px solid var(--line); border-radius:8px; padding:10px; resize:vertical}
+  .row{display:flex; flex-wrap:wrap; align-items:center; gap:6px}
+  .ok{color:var(--accent)} .bad{color:#ff8a8a} .warn{color:var(--warn)}
+  .hint{color:var(--muted); font-size:.86rem; margin:.4em 0}
+  .status{min-height:1.4em; font-size:.9rem; margin:.5em 0}
+  input[type=password]{font:inherit; color:var(--ink); background:#06100f; border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; min-width:200px}
+  a.back{color:var(--muted); text-decoration:none; font-size:.9rem}
+  .step{counter-increment:step; }
+  ol.steps{padding-left:1.2em} ol.steps li{margin:.3em 0}
+</style>
+</head>
+<body>
+  <a class="back" href="../index.html">‹ zurück zum Tresor</a>
+  <h1>🪪 SBKIM-Andock — Identität im Browser</h1>
+  <p class="lead">Erzeugt die <b>dauerhafte</b> SBKIM-Identität von <b>Mein-Tresor</b> hier in
+  deinem Browser. Der private Schlüssel <b>verlässt diesen Browser nie</b> — er kommt nie ins
+  Repo, nie zu mir, nie in die Cloud. Du gibst mir nur die <b>öffentliche</b> <code>spore.json</code>.</p>
+
+  <div class="card">
+    <h2>So gehst du vor</h2>
+    <ol class="steps">
+      <li><b>① Identität anlegen</b> — einmal klicken. Es entsteht deine stabile <code>nodeId</code>.</li>
+      <li><b>② Identität sichern</b> — Passwort wählen, verschlüsselte Sicherung herunterladen + gut aufbewahren (gern in ein Fach von Mein-Tresor legen).</li>
+      <li><b>③ Spore erzeugen</b> — die <code>spore.json</code> wird gebaut, im Browser auf ✔ VALID geprüft, du lädst sie herunter <i>und</i> kopierst sie mir in den Chat.</li>
+    </ol>
+    <p class="hint">Schritt ② vor ③: ohne Sicherung wäre die Identität bei einem Browser-Verlust weg (dann neue Identität nötig).</p>
+  </div>
+
+  <div class="card">
+    <h2>① Identität</h2>
+    <div class="row">
+      <button id="btn-id" class="primary big" type="button">🪪 Identität anlegen / anzeigen</button>
+    </div>
+    <div id="id-status" class="status"></div>
+    <div id="id-box" class="nodeid" hidden></div>
+  </div>
+
+  <div class="card">
+    <h2>② Identität sichern (verschlüsselte Sicherung)</h2>
+    <div class="row">
+      <input id="bk-pw" type="password" placeholder="Passwort (min. 8 Zeichen)" autocomplete="new-password" />
+      <button id="btn-backup" type="button">🔒 Sicherung herunterladen</button>
+    </div>
+    <div id="bk-status" class="status"></div>
+    <p class="hint">AES-256-GCM / PBKDF2-SHA256 600k — dasselbe Schloss wie deine Tresor-Fächer. Passwort gut merken: ohne Passwort ist die Sicherung wertlos.</p>
+  </div>
+
+  <div class="card">
+    <h2>③ Spore erzeugen + herunterladen</h2>
+    <div class="row">
+      <button id="btn-spore" class="primary big" type="button">📄 Spore erzeugen</button>
+      <button id="btn-dl" type="button" hidden>⬇ spore.json herunterladen</button>
+      <button id="btn-copy" type="button" hidden>📋 in die Zwischenablage</button>
+    </div>
+    <div id="spore-status" class="status"></div>
+    <textarea id="spore-out" placeholder="Hier erscheint die spore.json …" readonly hidden></textarea>
+    <p class="hint">Die Spore ist <b>öffentlich</b> (kein Geheimnis). Kopiere sie mir in den Chat — ich lege sie als <code>sbkim/spore.json</code> ab und melde uns zur <code>verified-spore</code> an.</p>
+  </div>
+
+  <p class="hint" id="load-status">Lade Module …</p>
+
+<!-- Reihenfolge zählt: 01 Storage VOR 02 Spore (Modul 02 braucht SbkimStorage). -->
+<script src="../web/tools/sbkim-storage.js"></script>
+<script src="../web/tools/sbkim-spore.js"></script>
+<script>
+(function(){
+  "use strict";
+  // CONFIG — öffentliche Identität von Mein-Tresor (Spiegel von scripts/generate_spore.mjs).
+  var META = {
+    nodeName: "Mein-Tresor",
+    nodeType: "hybrid",                         // provider | seeker | hybrid
+    domain: "Mein-Tresor-Bibliothek",
+    domainDescription: "Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
+    domainKeywords: ["Tresor","Bibliothek","JSON","SBKIM-Schlüssel","Verschlüsselung","Endknoten"],
+    stammCategories: ["JSON-Tresor","Jasons-Bibliothek","Schlüssel-Backup","AES-256-GCM-Verschlüsselung"],
+    guestCategories: ["Jason-Verwahrung","Schlüssel-Andock","Spore-Verifikation"],
+    endpoint: "https://lausiklauskn-png.github.io/Mein-Tresor/",   // mit Schrägstrich!
+    embeddingModel: "Xenova/multilingual-e5-small",
+    protocolVersion: "0.1"
+    // domainVector bewusst WEGGELASSEN -> Stufe verified-spore (kein vorgetäuschtes Wissen).
+    // Der echte 384-dim-Vektor kommt später (Modul 03 / Sage) -> Re-Sign -> verified-match.
+  };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var lastSpore = null;
+
+  function setStatus(el, msg, cls){ el.textContent = msg; el.className = "status" + (cls ? " " + cls : ""); }
+
+  function ready(){
+    return (typeof window.SbkimStorage === "object" && typeof window.SbkimSpore === "object");
+  }
+
+  function download(name, text){
+    var blob = new Blob([text], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }
+
+  async function showIdentity(){
+    var r = await window.SbkimSpore.getOrCreateIdentity();
+    $("id-box").hidden = false;
+    $("id-box").textContent = "nodeId: " + r.nodeId;
+    setStatus($("id-status"), "✔ Identität bereit (dauerhaft in diesem Browser gespeichert).", "ok");
+    return r;
+  }
+
+  // ---- Init ----
+  async function init(){
+    if (!ready()){
+      $("load-status").innerHTML = '<span class="bad">Module nicht geladen. Bitte die Seite über die App/Pages öffnen (Pfad ../web/tools/ muss erreichbar sein).</span>';
+      return;
+    }
+    try {
+      if (typeof window.SbkimStorage.init === "function") await window.SbkimStorage.init();
+      if (typeof window.SbkimSpore.init === "function") await window.SbkimSpore.init();
+    } catch(e){ /* init ist tolerant; getOrCreateIdentity ruft ensureReady selbst */ }
+    $("load-status").innerHTML = '<span class="ok">✔ Module 01 (Storage) + 02 (Spore) geladen.</span>';
+    // Falls schon eine Identität existiert, anzeigen (legt keine neue an, wenn vorhanden).
+    try {
+      var existing = await window.SbkimSpore.getOrCreateIdentity();
+      if (existing && existing.nodeId){
+        $("id-box").hidden = false;
+        $("id-box").textContent = "nodeId: " + existing.nodeId;
+        setStatus($("id-status"), "Identität in diesem Browser vorhanden.", "ok");
+      }
+    } catch(e){ /* noch keine Identität — normal */ }
+  }
+
+  // ---- ① Identität ----
+  $("btn-id").addEventListener("click", async function(){
+    setStatus($("id-status"), "Lege Identität an …");
+    try { await showIdentity(); }
+    catch(e){ setStatus($("id-status"), "Fehler: " + (e && e.message || e), "bad"); }
+  });
+
+  // ---- ② Sicherung ----
+  $("btn-backup").addEventListener("click", async function(){
+    var pw = $("bk-pw").value || "";
+    if (pw.length < 8){ setStatus($("bk-status"), "Passwort muss mindestens 8 Zeichen haben.", "warn"); return; }
+    setStatus($("bk-status"), "Erzeuge verschlüsselte Sicherung …");
+    try {
+      await window.SbkimSpore.getOrCreateIdentity();           // sicherstellen, dass es eine gibt
+      var blob = await window.SbkimSpore.exportBackup(pw);
+      download("mein-tresor-identitaet-backup.json", JSON.stringify(blob, null, 2) + "\n");
+      $("bk-pw").value = "";
+      setStatus($("bk-status"), "✔ Sicherung heruntergeladen. Passwort + Datei sicher aufbewahren!", "ok");
+    } catch(e){ setStatus($("bk-status"), "Fehler: " + (e && e.message || e), "bad"); }
+  });
+
+  // ---- ③ Spore ----
+  $("btn-spore").addEventListener("click", async function(){
+    setStatus($("spore-status"), "Erzeuge + prüfe Spore …");
+    try {
+      var spore = await window.SbkimSpore.generateOwnSpore(META);
+      lastSpore = spore;
+      var pretty = JSON.stringify(spore, null, 2) + "\n";
+      $("spore-out").hidden = false; $("spore-out").value = pretty;
+      $("btn-dl").hidden = false; $("btn-copy").hidden = false;
+      // Selbsttest im Browser
+      var check = await window.SbkimSpore.verifyForeignSpore(spore);
+      if (check && check.valid){
+        setStatus($("spore-status"), "✔ Spore erzeugt und im Browser geprüft: VALID — nodeId " + spore.id, "ok");
+      } else {
+        setStatus($("spore-status"), "⚠ Spore erzeugt, aber Selbsttest meldet: " + (check && check.reason || "unbekannt"), "warn");
+      }
+    } catch(e){ setStatus($("spore-status"), "Fehler: " + (e && e.message || e), "bad"); }
+  });
+
+  $("btn-dl").addEventListener("click", function(){
+    if (lastSpore) download("spore.json", JSON.stringify(lastSpore, null, 2) + "\n");
+  });
+  $("btn-copy").addEventListener("click", async function(){
+    try { await navigator.clipboard.writeText($("spore-out").value); setStatus($("spore-status"), "📋 In die Zwischenablage kopiert — jetzt in den Chat einfügen.", "ok"); }
+    catch(e){ $("spore-out").focus(); $("spore-out").select(); setStatus($("spore-status"), "Bitte den markierten Text manuell kopieren.", "warn"); }
+  });
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+</body>
+</html>
