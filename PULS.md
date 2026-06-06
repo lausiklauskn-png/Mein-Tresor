@@ -276,6 +276,25 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 2. **Antworten lesen + reziprok prüfen + quittieren**, sobald sie kommen → Stufe `verified-match`
    (Sage/Point) bzw. „4-Knoten gegenseitig" (Jasons).
 
+## Nachtrag 2026-06-06 (7) — Jasons-Tresor: echten Vektor nachholen (Klaus' Entscheidung)
+
+### Getan
+- **Jasons frisch geprüft:** Identität **headless** (`sbkim/node_key.enc.json` im Repo, HTTP 200);
+  `domainVector` noch **Demo-Stub** (`_demo:["domainVector"]`); **kein** Browser-Andock-Werkzeug
+  (404). → Bei der echten Vektorspur ist **Mein-Tresor voraus**.
+- **Klaus' Entscheidung:** Jasons soll **nur den echten Vektor nachholen** (nodeId `7F_zNop…`
+  BEHALTEN), **nicht** auf neue Browser-Identität umstellen (das gäbe neue nodeId → Netz-Bruch).
+- **Brief D** ergänzt (`BRIEF_4-knoten-sync.md`): genauer Browser-Weg mit unserem bewiesenen
+  Werkzeug. Geprüft, dass `werkzeuge/andock.html` Teil B genau das kann (① `node_key.enc.json`
+  laden → gleiche nodeId, ② Vektor, ③ neu signieren); Bausteine = `andock.html` +
+  `web/tools/sbkim-embedding.js` (nur CONFIG-Block auf Jasons umstellen).
+
+### Offen / nächste Schritte
+1. **Jasons-Tresor-Sitzung** (Weg B, neue Sitzung auf dem Repo): Brief C (uns reziprok eintragen)
+   **+** Brief D (echten Vektor nachholen) ausführen.
+2. **Antworten lesen + reziprok prüfen + quittieren** → Stufe `verified-match` (Sage/Point) bzw.
+   „4-Knoten gegenseitig" (Jasons).
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C an die drei Nachbarn)
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D an die Nachbarn)
 (+ `docs/SYNC-VEREINBARUNG.md`).

@@ -53,6 +53,34 @@ echtem `domainVector`) ist **erfüllt**. Bitte uns **reziprok eintragen**:
 3. In eurer `SIGNAL.json`: `mailboxes["Mein-Tresor"]` + `ack["Mein-Tresor"]` setzen, `seq` +1.
 - nodeId / sporeUrl wie oben. Wir führen euch bereits (`sbkim/jason_inbox.json`, ✔ VALID, `ack=2`).
 
+## Brief D — an **Jasons-Tresor**: echten `domainVector` im Browser nachholen (nodeId behalten)
+
+Befund (geprüft 2026-06-06 aus eurem `raw/main`): euer `domainVector` ist noch ein **Demo-Stub**
+(`_demo:["domainVector"]`), eure Identität ist **headless** erzeugt (`sbkim/node_key.enc.json` im
+Repo). Mein-Tresor hat den **echten** Vektor inzwischen im Browser gerechnet. Damit alle vier auf
+demselben „echter-Vektor"-Stand sind, holt ihr den echten Vektor nach — **ohne neue Identität**:
+
+> ⚠️ **NICHT** eine neue Identität anlegen — das gäbe eine neue nodeId und zerrisse alle
+> bestehenden Registrierungen bei Sage + Point. **Bestehenden Schlüssel laden und neu signieren.**
+
+Schritte (Browser-Weg, der bei Mein-Tresor bewiesen lief):
+1. Aus Mein-Tresor `raw/main` zwei Dateien kopieren und in **eurem** Repo ablegen:
+   - `werkzeuge/andock.html` → CONFIG-Block (≈ Z. 118–125) auf **eure** Werte umstellen
+     (`nodeName:"Jasons-Tresor"`, `domain:"Jasons-Tresor-Bibliothek"`, `endpoint`, Kategorien,
+     `domainDescription`/`domainKeywords`); den Mein-Tresor-nodeId-Hinweistext kosmetisch anpassen.
+   - `web/tools/sbkim-embedding.js` (Modul 03, unverändert).
+2. Seite öffnen (Pages oder lokal), **Teil B**:
+   ① `node_key.enc.json` + Passwort laden → **eure** nodeId `7F_zNop…` erscheint (gleich!).
+   ② „domainVector erzeugen" (Modell ~30 MB, 1. Mal Internet) → „✔ 384 Floats, L2≈1".
+   ③ „Spore neu signieren" → Browser-Selbsttest ✔ VALID → `spore.json` herunterladen.
+3. `sbkim/spore.json` ersetzen (jetzt **echter** Vektor, **kein** `_demo` mehr), `npm test` grün,
+   `node …/verify_foreign_spore.mjs sbkim/spore.json` → ✔ VALID; SIGNAL seq +1, headline
+   „echter domainVector eingebettet". Commit + Push + Draft-PR.
+
+Quelle der Werkzeuge:
+`https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/werkzeuge/andock.html`
+`https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/web/tools/sbkim-embedding.js`
+
 ---
 
 ## Datenverträge (nicht brechen)
