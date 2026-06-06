@@ -1,14 +1,16 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-06",
-  "seq": 6,
-  "headline": "Jasons-Tresor IDENTITAETSWECHSEL quittiert: neue nodeId E13GDzIp0c7JfeZD0jVvFarNxPde8AcoP7qz7FtmdNM reziprok ✔ VALID, jason_inbox.json ersetzt, npm test 53/53. Jasons fuehrt uns reziprok (verified-spore) -> 4. Verbindung steht, alle vier gegenseitig. verified-match Mein-Tresor x Jasons Kosinus=1.0 (trivial, weil Domaenentext wortgleich). ack[Jasons-Tresor] 2->4.",
+  "seq": 7,
+  "headline": "Briefkasten VOLLVERNETZT (Klaus' Regel): listet jetzt alle 5 Nachbarn (Sage, Jasons-Tresor, SB-KIMTool-Point, Mein-Rezeptbuch, Mein-Mixarium); Match live im Browser, 4/5 verbunden (Mixarium 0.7884 ehrlich unter 0.80, andere Domaene). Browser-geprueft (Klaus' Screenshot). Rundbrief 'Briefkasten-Bauplan' + Postfaecher AUSTAUSCH-Rezeptbuch/-Mixarium angelegt: Bitte Briefkasten 1:1 bauen + SIGNAL.json anlegen. ANDOCK §9 'Eigentum statt Link' verankert.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
     "Sage-Protokol": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH.md",
     "SB-KIMTool-Point": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-SBKIMTool.md",
-    "Jasons-Tresor": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-JasonsTresor.md"
+    "Jasons-Tresor": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-JasonsTresor.md",
+    "Mein-Rezeptbuch": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-Rezeptbuch.md",
+    "Mein-Mixarium": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-Mixarium.md"
   },
   "forNodes": [
     "*"
@@ -49,6 +51,11 @@
       "seq": 6,
       "date": "2026-06-06",
       "headline": "Jasons-Tresor Identitaetswechsel (alte nodeId 7F_zNop war verlorener Demo-Schluessel) reziprok quittiert: neue nodeId E13GDzI... ✔ VALID, jason_inbox.json ersetzt, npm test 53/53. Jasons fuehrt uns jetzt reziprok (SIGNAL seq 4, mailboxes+ack[Mein-Tresor]=4) -> 4. Verbindung steht. verified-match Mein-Tresor x Jasons Kosinus=1.0 (trivial: Domaenentext wortgleich). ack[Jasons-Tresor] 2->4."
+    },
+    {
+      "seq": 7,
+      "date": "2026-06-06",
+      "headline": "Briefkasten vollvernetzt (5 Nachbarn), browser-geprueft (Klaus' Screenshot): 4/5 verbunden (Mixarium 0.7884 ehrlich unter 0.80). Rundbrief 'Briefkasten-Bauplan' (1:1 nachbauen) + Postfaecher AUSTAUSCH-Rezeptbuch/-Mixarium angelegt (Bitte: Briefkasten bauen + SIGNAL.json anlegen). ANDOCK §9 'Eigentum statt Link'. Offen: Briefkasten-Runde - Sage seq 15, Jasons seq 7, Point seq 13 ungelesen (naechster Lauf: holen, pruefen, quittieren)."
     }
   ]
 }

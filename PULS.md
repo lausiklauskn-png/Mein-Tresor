@@ -427,6 +427,28 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 2. **Rundbrief verschicken** (Vollvernetzung) an alle Knoten; Rezeptbuch/Mixarium zusätzlich bitten,
    ein `SIGNAL.json` anzulegen.
 
+## Nachtrag 2026-06-06 (14) — ✅ Briefkasten browser-geprüft (Klaus) + Rezeptbuch/Mixarium-Briefe
+
+### Getan
+- **BROWSER-GEPRÜFT (Klaus' Screenshot, Pages live):** der vollvernetzte 📬-Briefkasten zeigt im
+  Browser exakt die headless-Werte — Sage **verified-match 0.8478**, Jasons **1.0000**, Point
+  **0.8537**, Mein-Rezeptbuch **verified-spore 0.8137** mit „SIGNAL nicht lesbar". Aufbau (Siegel-
+  Kopf, 3 Ebenen je Nachbar, nodeId) korrekt. → Briefkasten-Pfad ist **nicht mehr browser-ungeprüft**.
+- **Zwei kurze Briefe + Postfächer angelegt** (Klaus' Auftrag): `sbkim/AUSTAUSCH-Rezeptbuch.md` +
+  `sbkim/AUSTAUSCH-Mixarium.md` — Verweis auf Bauplan-Brief + Werkzeug (Eigentum), ehrliche Lage
+  (vermutlicher ID-Wechsel → unsere Inbox evtl. veraltet; kein `SIGNAL.json`), Schritte:
+  **Briefkasten 1:1 bauen + `SIGNAL.json` anlegen** → wir prüfen reziprok + ersetzen Inbox.
+  Mixarium-Brief nennt ehrlich den 0.7884-Match (andere Domäne, okay).
+- **`SIGNAL.json` seq 6→7:** mailboxes um Rezeptbuch + Mixarium ergänzt; Briefkasten-Pfade in
+  `index.html` zeigen auf die neuen lokalen Postfächer. `npm test` 53/53, Kern byte-gleich.
+
+### Offen / nächste Schritte
+1. **Briefkasten-Runde (ungelesen!):** Klaus' Screenshot zeigt Nachbarn voraus — **Sage seq 15**
+   (ack 14), **Jasons seq 7** (ack 4), **Point seq 13** (ack 8). Frische Sporen + SIGNAL holen,
+   reziprok prüfen (`verify_foreign_spore.mjs`), `*_inbox.json` ggf. ersetzen, `ack` quittieren.
+2. **Klaus verschickt** Bauplan-Brief + die zwei Postfächer an Rezeptbuch/Mixarium (+ alle Knoten).
+3. `status.json` auf „Briefkasten browser-geprüft" fortschreiben (optional, beim nächsten Lauf).
+
 ## Aktiver Übergabe-Brief
 → `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1 nachbauen) +
 `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(12) oben**
