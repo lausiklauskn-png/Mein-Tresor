@@ -530,7 +530,7 @@
 
 <header>
   <button id="sbkim-mailbox-btn" type="button" onclick="sbkimMailboxCheck(false)"
-          title="Briefkasten der Nachbar-Knoten (Sage + SB-KIMTool-Point) jetzt prüfen"
+          title="Briefkasten — alle Nachbar-Knoten (Vollvernetzung) jetzt prüfen"
           style="position:relative;float:right;font:inherit;padding:.4em .8em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">
     📬 Briefkasten
     <span id="sbkim-mailbox-badge" hidden
@@ -1539,8 +1539,8 @@
       Im Browser (WebCrypto) erzeugt: nodeId <code style="font-size:.72rem">wRsGQouO…ektVEDk</code>, Spore echt Ed25519-signiert und ✔ VALID. Privater Schlüssel blieb im Browser; verschlüsselte Sicherung liegt lokal bei Klaus.</p>
     <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 03 ·</span> <b>Echter domainVector eingebettet.</b>
       384-dim Embedding (Xenova/multilingual-e5-small, L2-Norm 1.000000) im Browser erzeugt, in die Spore eingebettet und neu signiert (nodeId unverändert). Kein <code>_demo</code> mehr.</p>
-    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 05 ·</span> <b>Verbund 3/3.</b>
-      Live nachgerechnet: Sage cos 0.8478, Jasons-Tresor 1.0000, SB-KIMTool-Point 0.8537 → 3/3 verbunden; reziprok als verified-spore bei allen drei Postfach-Knoten eingetragen.</p>
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 05 ·</span> <b>Vollvernetzt — Verbund 4/5.</b>
+      Briefkasten listet jetzt ALLE Nachbarn (Klaus' Regel). Live nachgerechnet: Jasons-Tresor 1.0000, SB-KIMTool-Point 0.8537, Sage 0.8478, Mein-Rezeptbuch 0.8137 (alle ≥0.80 ✔); Mein-Mixarium 0.7884 (ehrlich knapp unter 0.80, andere Domäne) → 4/5 verbunden. Rezeptbuch/Mixarium führen noch kein SIGNAL.json (③ Sync „nicht lesbar").</p>
   </div>
 
   <p style="font-size:.74rem;color:var(--muted,#9aa);line-height:1.45;margin:.6em 0 0">
@@ -1560,10 +1560,13 @@
     self: "Mein-Tresor",
     selfSignal: "sbkim/SIGNAL.json",
     selfSpore:  "sbkim/spore.json",           // eigener domainVector fuer den Live-Match
+    // Vollvernetzung (Klaus 2026-06-06): ALLE anderen Knoten als Peers (jeder listet alle).
     peers: [
-      { name: "Sage-Protokol",    label: "Sage-Protokol",             inbox: "sbkim/sage_inbox.json",  mailbox: "sbkim/AUSTAUSCH.md",            signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
-      { name: "Jasons-Tresor",    label: "Jasons-Tresor (Schwester)", inbox: "sbkim/jason_inbox.json", mailbox: "sbkim/AUSTAUSCH-JasonsTresor.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" },
-      { name: "SB-KIMTool-Point", label: "SB-KIMTool-Point",          inbox: "sbkim/point_inbox.json", mailbox: "sbkim/AUSTAUSCH-SBKIMTool.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" }
+      { name: "Sage-Protokol",    label: "Sage-Protokol",             inbox: "sbkim/sage_inbox.json",       mailbox: "sbkim/AUSTAUSCH.md",             signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
+      { name: "Jasons-Tresor",    label: "Jasons-Tresor (Schwester)", inbox: "sbkim/jason_inbox.json",      mailbox: "sbkim/AUSTAUSCH-JasonsTresor.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" },
+      { name: "SB-KIMTool-Point", label: "SB-KIMTool-Point",          inbox: "sbkim/point_inbox.json",      mailbox: "sbkim/AUSTAUSCH-SBKIMTool.md",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Rezeptbuch",  label: "Mein-Rezeptbuch",           inbox: "sbkim/rezeptbuch_inbox.json", mailbox: "https://github.com/lausiklauskn-png/Mein-Rezeptbuch/tree/main/sbkim", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Rezeptbuch/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Mixarium",    label: "Mein-Mixarium",             inbox: "sbkim/mixarium_inbox.json",   mailbox: "https://github.com/lausiklauskn-png/Mein-Mixarium/tree/main/sbkim",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Mixarium/main/sbkim/SIGNAL.json" }
     ]
   };
 

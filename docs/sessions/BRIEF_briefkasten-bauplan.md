@@ -89,16 +89,19 @@ Wer nur Teil 1+2 baut, hat einen toten Briefkasten. Es müssen **alle fünf** zu
     self: "DEIN-KNOTENNAME",
     selfSignal: "sbkim/SIGNAL.json",
     selfSpore:  "sbkim/spore.json",           // eigener domainVector fuer den Live-Match
+    // VOLLVERNETZUNG (§7): hier ALLE anderen Knoten eintragen (außer dir selbst). Pro Nachbar:
+    //  name   = Knoten-/Repo-Name (Schlüssel in deinem ack)
+    //  label  = Anzeigename
+    //  inbox  = lokale 1:1-Kopie der geprüften Nachbar-Spore (sbkim/<name>_inbox.json)
+    //  mailbox= euer Postfach zu diesem Nachbarn (sbkim/AUSTAUSCH*.md) bzw. dessen sbkim-Ordner
+    //  signal = RAW-Link auf die SIGNAL.json des Nachbarn (Liste siehe §4)
+    // Beispiel = die echte peers-Liste von Mein-Tresor (5 Nachbarn); ihr lasst euch selbst weg.
     peers: [
-      // Hier ALLE anderen Knoten eintragen (außer dir selbst). Pro Nachbar:
-      //  name   = exakter nodeName (muss zum Schlüssel in deinem ack passen)
-      //  label  = Anzeigename
-      //  inbox  = lokale 1:1-Kopie der geprüften Nachbar-Spore (sbkim/<name>_inbox.json)
-      //  mailbox= euer Postfach zu diesem Nachbarn (sbkim/AUSTAUSCH*.md)
-      //  signal = RAW-Link auf die SIGNAL.json des Nachbarn (Liste siehe §4)
-      { name: "Sage-Protokol",    label: "Sage-Protokol",             inbox: "sbkim/sage_inbox.json",  mailbox: "sbkim/AUSTAUSCH.md",             signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
-      { name: "Jasons-Tresor",    label: "Jasons-Tresor (Schwester)", inbox: "sbkim/jason_inbox.json", mailbox: "sbkim/AUSTAUSCH-JasonsTresor.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" },
-      { name: "SB-KIMTool-Point", label: "SB-KIMTool-Point",          inbox: "sbkim/point_inbox.json", mailbox: "sbkim/AUSTAUSCH-SBKIMTool.md",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" }
+      { name: "Sage-Protokol",    label: "Sage-Protokol",             inbox: "sbkim/sage_inbox.json",       mailbox: "sbkim/AUSTAUSCH.md",             signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
+      { name: "Jasons-Tresor",    label: "Jasons-Tresor (Schwester)", inbox: "sbkim/jason_inbox.json",      mailbox: "sbkim/AUSTAUSCH-JasonsTresor.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" },
+      { name: "SB-KIMTool-Point", label: "SB-KIMTool-Point",          inbox: "sbkim/point_inbox.json",      mailbox: "sbkim/AUSTAUSCH-SBKIMTool.md",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Rezeptbuch",  label: "Mein-Rezeptbuch",           inbox: "sbkim/rezeptbuch_inbox.json", mailbox: "https://github.com/lausiklauskn-png/Mein-Rezeptbuch/tree/main/sbkim", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Rezeptbuch/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Mixarium",    label: "Mein-Mixarium",             inbox: "sbkim/mixarium_inbox.json",   mailbox: "https://github.com/lausiklauskn-png/Mein-Mixarium/tree/main/sbkim",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Mixarium/main/sbkim/SIGNAL.json" }
     ]
   };
 
@@ -242,9 +245,25 @@ SB-KIMTool-Point **0.8537** → **3/3 verbunden**.
   `*_inbox.json` (✔ VALID) vorhanden.
 - `npm test` bleibt grün (Briefkasten ist **additiv**, rührt den getesteten Kern nicht an).
 
-## 7. Offene Fragen an die Empfänger
-- Tragt ihr **alle** anderen Knoten als `peers` ein (Vollvernetzung) oder nur eure direkten Partner?
-- Soll der stille Lade-Check (Badge) bei euch ebenfalls an sein (empfohlen: ja)?
+## 7. VERBINDLICHE REGEL — Vollvernetzung (Klaus, 2026-06-06)
+
+**Jeder Knoten listet ALLE anderen Knoten als `peers` — keine Ausnahme.** Vollvernetztes Netz,
+nicht nur direkte Partner. Stand heute sind das diese sechs Knoten; jeder trägt in seine
+`peers`-Liste die **anderen fünf** ein (sich selbst lässt er weg):
+
+`Mein-Tresor` · `Sage-Protokol` · `SB-KIMTool-Point` · `Jasons-Tresor` · `Mein-Rezeptbuch` · `Mein-Mixarium`
+
+Kommt ein neuer Knoten dazu, nehmen ihn **alle** in ihre `peers` auf.
+
+**Zwei ehrliche Hinweise, die der Briefkasten korrekt anzeigt:**
+- **③ Sync braucht beim Nachbarn ein `sbkim/SIGNAL.json`** (`seq` + `ack`). Wer keins führt
+  (aktuell Mein-Rezeptbuch + Mein-Mixarium → HTTP 404), erscheint ehrlich als „SIGNAL nicht lesbar".
+  **Bitte daher: jeder Knoten legt ein `SIGNAL.json` an**, damit der Sync beidseitig läuft.
+- **② Match ist ehrlich:** ein Cosinus **unter 0.80** wird als „unter 0.80" gezeigt (kein Schummeln).
+  Beispiel-Stand von Mein-Tresor (live): Jasons 1.0000, Point 0.8537, Sage 0.8478,
+  Rezeptbuch 0.8137 (✔) — Mixarium 0.7884 (knapp darunter) → **4/5 verbunden**.
+
+**Empfohlen (ja):** der stille Lade-Check (Badge beim Seitenstart) bleibt bei allen an.
 
 ## Abschluss-Befehl (für die Empfänger-Sitzung)
 Briefkasten nach §3 einbauen (CONFIG anpassen, Logik byte-gleich) → `sbkim/SIGNAL.json` + `*_inbox.json`

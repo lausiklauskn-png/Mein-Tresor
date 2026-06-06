@@ -405,6 +405,28 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 1. **Klaus überbringt** den Bauplan-Brief an die anderen Knoten → sie bauen den Briefkasten 1:1.
 2. Eingehende Antworten/PRs lesen + reziprok quittieren.
 
+## Nachtrag 2026-06-06 (13) — Vollvernetzung (Klaus' Regel): jeder listet alle
+
+### Getan
+- **Klaus' Regel:** alle Knoten **voll vernetzt**, jeder listet **alle anderen**. Umgesetzt:
+  - **Eigener Briefkasten** (`index.html` `window.SBKIM_MAILBOX.peers`) von 3 → **5 Nachbarn**:
+    Sage, Jasons-Tresor, SB-KIMTool-Point **+ Mein-Rezeptbuch + Mein-Mixarium** (Inbox-Sporen lagen
+    bereits geprüft vor). Knopf-Titel + Siegel-Aspekt (05) wahrheitsgemäß auf **Verbund 4/5** gesetzt.
+  - **Rundbrief** `BRIEF_briefkasten-bauplan.md`: §7 von „offene Frage" → **verbindliche Regel
+    Vollvernetzung** (Knoten-Roster, neuer Knoten = alle nehmen ihn auf); §3-CONFIG-Beispiel auf die
+    volle 5-Nachbar-Liste gebracht.
+- **Ehrliche Live-Befunde** (vorab headless nachgerechnet, = was der Browser zeigt): Cosinus
+  Jasons **1.0000** · Point **0.8537** · Sage **0.8478** · Rezeptbuch **0.8137** (alle ≥0.80 ✔) ·
+  **Mixarium 0.7884** (knapp unter 0.80, andere Domäne, ehrlich kein Match) → **4/5 verbunden**.
+  Mein-Rezeptbuch + Mein-Mixarium führen **kein SIGNAL.json** (HTTP 404) → ③ Sync „nicht lesbar"
+  (im Brief als Bitte vermerkt: jeder Knoten legt ein SIGNAL.json an).
+- `npm test` **53/53** (Briefkasten additiv, Kern byte-gleich). **Browser-ungeprüft** bis Klaus' Lauf.
+
+### Offen / nächste Schritte
+1. **Klaus' Browser-Lauf:** 📬 öffnen → 5 Nachbar-Karten + „4/5 verbunden" sichten.
+2. **Rundbrief verschicken** (Vollvernetzung) an alle Knoten; Rezeptbuch/Mixarium zusätzlich bitten,
+   ein `SIGNAL.json` anzulegen.
+
 ## Aktiver Übergabe-Brief
 → `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1 nachbauen) +
 `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(12) oben**
