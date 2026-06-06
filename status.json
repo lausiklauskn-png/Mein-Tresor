@@ -43,7 +43,7 @@
       "status": "real-headless-bewiesen",
       "echt": true,
       "beleg": "test/andock.test.js (npm test): 5 Nachbar-Sporen ✔ VALID — Sage (sage_inbox), SB-KIMTool-Point (point_inbox), Jasons-Tresor (jason_inbox), Mein-Rezeptbuch/'Rezeptbuch Klaus' (rezeptbuch_inbox), Mein-Mixarium/'Mixarium Klaus' (mixarium_inbox). Generischer Test verifiziert jede *_inbox.json (id==SHA256(pubkey), Ed25519-Signatur, Manipulation faellt durch).",
-      "hinweis": "Andock von UNSERER Seite zu allen 5 oeffentlichen SBKIM-Knoten vollzogen. Briefkasten-Sync (SIGNAL.json ack) nur mit den 3 Knoten, die ein Postfach fuehren (Sage/SB-KIMTool-Point/Jasons-Tresor); Mein-Rezeptbuch/Mein-Mixarium haben Identitaet, aber (noch) kein SIGNAL.json. OFFEN (Gegenseite/Klaus): unsere dauerhafte nodeId (npm run key) + Pages, dann registrieren die Nachbarn uns reziprok."
+      "hinweis": "Andock von UNSERER Seite zu allen 5 oeffentlichen SBKIM-Knoten vollzogen. Briefkasten-Sync (SIGNAL.json ack) nur mit den 3 Knoten, die ein Postfach fuehren (Sage/SB-KIMTool-Point/Jasons-Tresor); Mein-Rezeptbuch/Mein-Mixarium haben Identitaet, aber (noch) kein SIGNAL.json. REZIPROKER STAND (geprueft 2026-06-06): Sage + SB-KIMTool-Point fuehren uns als 'verified-spore' (Bitte um verified-match offen). Jasons-Tresor fuehrt uns NOCH GAR NICHT (ihr SIGNAL seq 2 lastBuild 2026-05-31, mailboxes/ack nur Sage+Point) -> fehlende 4. Verbindung; Bitte um reziproke Registrierung gestellt (sbkim/AUSTAUSCH-JasonsTresor.md §2, BRIEF_4-knoten-sync.md). ZIEL-Endtest: alle vier Repos gegenseitig synchron."
     },
     {
       "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",

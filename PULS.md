@@ -258,6 +258,24 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 2. **Pages aktivieren** (falls noch nicht für raw genügt) + Klaus' Browser-Lauf am Gesicht
    (Kleinigkeiten, Fach-Öffnen) → status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (6) — 4-Knoten-Stand geprüft → Jasons-Tresor ist die Lücke
+
+### Getan
+- **Jasons-Tresor frisch geprüft** (raw/main): `SIGNAL.json` weiter **seq 2** (lastBuild
+  2026-05-31, unverändert); Spore erneut `✔ VALID`, byte-identisch zu `jason_inbox.json`.
+  **Befund:** Jasons führt uns **noch gar nicht** (mailboxes/ack nur Sage + Point) — das ist die
+  **fehlende 4. Verbindung** für den End-Sync.
+- **Drei Briefe aufgesetzt:** `sbkim/AUSTAUSCH-JasonsTresor.md` §2 = Bitte um reziproke
+  Erst-Registrierung (Priorität); Sage + Point tragen die `verified-match`-Bitte bereits
+  (Postfächer, seit Nachtrag 5). Gebündelter Liefer-Brief `docs/sessions/BRIEF_4-knoten-sync.md`
+  (Brief A Sage · B Point · C Jasons) — Klaus überbringt.
+
+### Offen / nächste Schritte
+1. **Klaus überbringt** die drei Bitten (oder eine Jasons-Sitzung baut die reziproke
+   Registrierung selbst — offene Frage im Brief).
+2. **Antworten lesen + reziprok prüfen + quittieren**, sobald sie kommen → Stufe `verified-match`
+   (Sage/Point) bzw. „4-Knoten gegenseitig" (Jasons).
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **Nachtrag (5) oben** (verified-match)
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C an die drei Nachbarn)
 (+ `docs/SYNC-VEREINBARUNG.md`).
