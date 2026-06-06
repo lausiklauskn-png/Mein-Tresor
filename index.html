@@ -2900,10 +2900,21 @@
     pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
   #mt-room.mt-editnums .mt-fach{outline-color:rgba(244,180,53,.9);background:rgba(244,180,53,.10)}
   #mt-room-bar{position:fixed;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);
-    display:flex;gap:8px;z-index:5;flex-wrap:wrap;justify-content:center;max-width:96vw}
+    display:flex;gap:clamp(4px,1.2vw,8px);z-index:5;flex-wrap:nowrap;justify-content:center;max-width:98vw}
   #mt-room-bar button{font:inherit;color:#e6f2f1;background:rgba(17,37,42,.9);border:1px solid #2b5b5e;
-    border-radius:8px;padding:7px 12px;cursor:pointer}
+    border-radius:8px;padding:clamp(4px,1vw,7px) clamp(7px,1.8vw,12px);font-size:clamp(.72rem,2vw,.95rem);
+    line-height:1.1;white-space:nowrap;cursor:pointer}
   #mt-room-bar button:hover{border-color:#6ee7d3}
+  #mt-room-bar .mt-blabel{margin-left:.35em}
+  /* Schmal/Handy: nur Symbole -> alle Buttons bleiben in EINER Reihe (+ Platz fuers Siegel) */
+  @media (max-width:560px){ #mt-room-bar .mt-blabel{display:none} #mt-room-bar button{padding:5px 8px;font-size:1.05rem} }
+  /* SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum — gleiches Wappen/Groesse wie im Dialog (92px),
+     auf dem Handy automatisch kleiner (mit den Buttons). Klick -> Verbindungs-Uebersicht. */
+  #mt-room-seal{position:fixed;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));
+    z-index:6;background:none;border:0;padding:0;cursor:pointer;width:clamp(38px,10vw,92px);height:auto;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
+  #mt-room-seal img{width:100%;height:auto;display:block;pointer-events:none}
+  #mt-room-seal:hover{filter:drop-shadow(0 0 10px rgba(110,231,211,.9))}
   #mt-toroom{position:fixed;left:16px;bottom:16px;z-index:70;font:inherit;color:#e6f2f1;
     background:rgba(17,37,42,.9);border:1px solid #2b5b5e;border-radius:8px;padding:8px 12px;cursor:pointer}
   #mt-toroom:hover{border-color:#6ee7d3}
@@ -2930,9 +2941,9 @@
     <div id="mt-grid"></div>
   </div>
   <div id="mt-room-bar">
-    <button id="mt-room-numbers" type="button">✎ Nummern</button>
-    <button id="mt-room-list" type="button">☰ Liste</button>
-    <button id="mt-room-lock" type="button">🔒 Verriegeln</button>
+    <button id="mt-room-numbers" type="button" title="Fach-Nummern bearbeiten">✎<span class="mt-blabel">Nummern</span></button>
+    <button id="mt-room-list" type="button" title="Listen-Ansicht">☰<span class="mt-blabel">Liste</span></button>
+    <button id="mt-room-lock" type="button" title="Verriegeln — zurück zum Eingang">🔒<span class="mt-blabel">Verriegeln</span></button>
   </div>
 </div>
 <button id="mt-toroom" type="button" hidden>🔐 Tresorraum</button>
@@ -3027,7 +3038,7 @@
   }
   document.getElementById('mt-room-numbers').addEventListener('click', function(){
     editNums=!editNums; room.classList.toggle('mt-editnums', editNums);
-    this.textContent = editNums ? '✓ Fertig' : '✎ Nummern';
+    this.innerHTML = editNums ? '✓<span class="mt-blabel">Fertig</span>' : '✎<span class="mt-blabel">Nummern</span>';
   });
   document.getElementById('mt-room-list').addEventListener('click', function(){ room.setAttribute('hidden',''); toRoom.removeAttribute('hidden'); });
   toRoom.addEventListener('click', function(){ toRoom.setAttribute('hidden',''); room.removeAttribute('hidden'); });
@@ -3060,9 +3071,21 @@
 <script>
 (function(){
   var bar=document.getElementById('mt-room-bar'); if(!bar) return;
+  var room=document.getElementById('mt-room');
   var mail=document.createElement('button'); mail.type='button'; mail.id='mt-room-mail';
-  mail.title='SBKIM-Briefkasten & Siegel'; mail.textContent='📬 Briefkasten';
+  mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span>';
   bar.insertBefore(mail, bar.firstChild);
+
+  // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog),
+  // klickbar -> zeigt die Verbindungen (3/3). Liegt im #mt-room, also nur im Raum sichtbar.
+  if(room && !document.getElementById('mt-room-seal')){
+    var seal=document.createElement('button'); seal.type='button'; seal.id='mt-room-seal';
+    seal.title='SBKIM-Siegel — Verbindungen zu anderen Tools anzeigen';
+    seal.setAttribute('aria-label','SBKIM-Siegel — Verbindungen anzeigen');
+    seal.innerHTML='<img src="assets/sbkim-siegel-wappen.svg" alt="" decoding="async"/>';
+    seal.addEventListener('click', function(){ if(typeof window.sbkimMailboxCheck==='function') window.sbkimMailboxCheck(false); });
+    room.appendChild(seal);
+  }
 
   // Siegel-Kopf NICHT mehr hier injizieren (§7 D): der Live-Verbund-Render in
   // sbkimMailboxCheck() baut den Siegel-Kopf jetzt selbst oben im Dialog-Body —
