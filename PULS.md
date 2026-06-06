@@ -308,16 +308,15 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 - **Gegenseitig:** Jasons führt uns jetzt (mailboxes + `ack[Mein-Tresor]=4`, Postfach
   `AUSTAUSCH-MeinTresor.md`, wir = verified-spore bei ihnen). Wir quittieren: `ack["Jasons-Tresor"]
   2→4`, unser SIGNAL **seq 6**. **Die fehlende 4. Verbindung steht.**
-- **verified-match Mein-Tresor × Jasons = Kosinus 1.0** (≥0.80 ✔). **Ehrlich:** trivial 1.0, weil
-  `domainDescription`+`domainKeywords` beider Schwestern **wortgleich** sind → identischer
-  Eingabetext → identischer Vektor. Inhaltlich gültig, unterscheidet die Schwestern aber nicht.
+- **verified-match Mein-Tresor × Jasons = Kosinus 1.0** (≥0.80 ✔). **Klaus-Entscheidung
+  2026-06-06 (bewusst):** die Schwester-Tresore sind **per Design semantisch identisch** (gleiche
+  Basis/Safes/Speicher, 1:1-Funktion, nur anderes Design + themenangepasste Texte). Der triviale
+  1.0-Match ist **gewollt**; Domänentexte werden **NICHT** künstlich getrennt. Erledigt, keine
+  offene Design-Frage mehr.
 
 ### Offen / nächste Schritte
 1. **Sage + SB-KIMTool-Point:** rechnen noch unseren Match (sie haben uns als verified-spore;
    wir haben jetzt echten Vektor) → dann auch dort `verified-match`.
-2. **Design-Frage (klein, an Klaus):** Sollen die Schwester-Tresore sich **unterschiedlich**
-   beschreiben (eigener `domainDescription`/`domainKeywords`), damit der Vektor sie wirklich
-   trennt? Sonst bleibt jeder Schwester-Match trivial 1.0.
 
 ## Aktiver Übergabe-Brief
 → `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D) + **Nachtrag (8) oben**

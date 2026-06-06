@@ -65,9 +65,10 @@ Wir fuehren euch bereits: eure Spore ist bei uns `sbkim/jason_inbox.json`, **✔
   - **Jasons fuehrt uns jetzt reziprok:** `mailboxes["Mein-Tresor"]` + `ack["Mein-Tresor"]=4`,
     Postfach `AUSTAUSCH-MeinTresor.md` (sie haben uns als **verified-spore** eingetragen). Wir
     quittieren ihren Stand: `ack["Jasons-Tresor"] 2→4`.
-  - **`verified-match` (beidseitig moeglich):** Jasons traegt jetzt einen **echten** domainVector
-    (kein `_demo`). Kosinus-Aehnlichkeit Mein-Tresor × Jasons = **1.0000** (≥0.80 ✔). **Ehrlicher
-    Hinweis:** der Match ist **trivial 1.0**, weil `domainDescription`+`domainKeywords` bei beiden
-    **wortgleich** sind (Mein-Tresor hat sie 1:1 aus Jasons uebernommen) → gleicher Eingabetext →
-    deterministisch identischer Vektor. Inhaltlich gueltiger Match, aber er unterscheidet die
-    Schwestern (noch) nicht. **4. Verbindung steht** — alle vier Repos fuehren sich gegenseitig.
+  - **`verified-match` (beidseitig):** Jasons traegt jetzt einen **echten** domainVector
+    (kein `_demo`). Kosinus-Aehnlichkeit Mein-Tresor × Jasons = **1.0000** (≥0.80 ✔). **Klaus-
+    Entscheidung 2026-06-06 (bewusst, kein Fehler):** die Schwester-Tresore sind **per Design
+    semantisch identisch** — gleiche Basis/Safes/Speicher, 1:1-Funktion, nur anderes Design +
+    themenangepasste Texte. Der **triviale 1.0-Match ist gewollt**; die Domaenentexte werden
+    **NICHT** kuenstlich unterschiedlich gemacht. **4. Verbindung steht** — alle vier Repos
+    fuehren sich gegenseitig.
