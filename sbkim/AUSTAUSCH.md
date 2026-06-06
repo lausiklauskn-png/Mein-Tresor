@@ -11,8 +11,8 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-06** (`SIGNAL.json` seq 13 + Verfahrens-Antwort gelesen → `ack["Sage-Protokol"]=13`) | Eintrag als `verified-spore` im NETZ-STAND |
-| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | — | (erledigt) unsere Spore liegt in raw/main |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH.md, SIGNAL.json}` | Sage: **2026-06-06** (`SIGNAL.json` seq 14 = verified-spore-Bestätigung → `ack["Sage-Protokol"]=14`) | (erledigt) `verified-spore` bei Sage ✔ — nächste Stufe `verified-match` (echter domainVector) |
+| **Sage-Protokoll** | `…/Sage-Protokol/sbkim/{AUSTAUSCH-MeinTresor.md, SIGNAL.json}` | Mein-Tresor seq 4 (`ack[Mein-Tresor]=4`) | (erledigt) |
 
 ---
 
@@ -52,3 +52,9 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   Ed25519, Manipulation faellt durch). **Bitte an Sage:** Spore aus raw/main als `verified-spore`
   eintragen. sporeUrl: `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
   `domainVector` noch nicht eingebettet → Stufe `verified-spore`; echter Vektor (Modul 03/Sage) → Re-Sign → `verified-match`.
+- **2026-06-06 — ✅ `verified-spore` BESTÄTIGT (Sage).** Sage hat unsere Spore aus raw/main reziprok
+  verifiziert (9/9 + id==SHA256(pub) + Ed25519 + Manipulationsprobe → VALID) und uns in `NETZ-STAND.md`
+  + `status.json` auf **`verified-spore`** gesetzt (Beleg `sbkim/meintresor_inbox.verify.md`). Sage
+  `SIGNAL` seq 14, `ack[Mein-Tresor]=4`. Wir quittieren: `ack["Sage-Protokol"]=14`. **Nächste Stufe
+  `verified-match`:** echten `domainVector` (Modul 03, 384-dim, `passage:`, L2≈1) erzeugen, EINGEBETTET
+  re-signen (nodeId bleibt gleich), pushen → Sage rechnet Match mit Modul 04 (≥0.80).
