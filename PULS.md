@@ -74,3 +74,28 @@
 1. Dauerhafte nodeId (`SBKIM_KEY_PW=… npm run key`) + **Pages** → dann registrieren die
    Nachbarn uns reziprok (verified-spore) und der Briefkasten-Sync läuft beidseitig.
 2. Browser-Lauf (Sichtprüfung) des neuen Gesichts in Hoch + Quer.
+
+## Nachtrag 2026-06-06 (nachts) — Gesicht live auf Pages, läuft
+
+### Getan
+- **Pages aktiv** (Klaus: main/root). Neues Gesicht live: Dreh-Safe-Eingang + Tresorraum mit
+  nummerierten Fächern, Briefkasten (📬) + Siegel im Dialog.
+- **Drei Browser-Bugs gefixt** (alle mit Klaus' Screenshots gefunden):
+  1. Räder verspranken bei JS-Fit → **CSS-Verankerung** (%-Koordinaten, feste aspect-ratio).
+  2. Räder/Fächer sprangen beim Anfassen nach rechts-unten → geerbtes
+     `button:active{transform:translateY(1px)}` überschrieb die Zentrierung →
+     `.mt-wheel/.mt-fach`-Zentrierung mit **`!important`** gepanzert.
+  3. Dreh-Logik robust (pointermove/up an `document`, Position bei jeder Bewegung neu
+     festgenagelt, **Tippen = ein Dreh-Schritt**).
+- **Räder kalibriert** (Klaus' Koordinaten aus `werkzeuge/kalibrierung.html`); Werkzeug-Leisten
+  frei verschiebbar gemacht (Punkt B erreichbar).
+- Klaus: „funktioniert ganz gut, bis auf ein paar Kleinigkeiten" → später.
+
+### Offen / nächste Schritte
+1. **Klaus' Kleinigkeiten** (kommt von ihm) am Gesicht nachziehen.
+2. **Fach-Öffnen-Lauf** im Browser: ein Fach mit Passwort öffnen → Datei laden → verschließen
+   (Honigtopf/Shamir prüfen). Dann status.json „browser-geprüft" vermerken.
+3. **Dauerhafte Identität** (`SBKIM_KEY_PW=… npm run key`) + danach reziproke Registrierung
+   bei den Nachbarn rund machen.
+4. Optional: Fach-Raster per Kalibrier-Werkzeug exakt (LAYOUT.hoch/quer), Öffnen-Overlay
+   auf `fach.png` umskinnen.
