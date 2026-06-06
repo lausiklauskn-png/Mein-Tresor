@@ -351,8 +351,19 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 - **BROWSER-UNGEPRÜFT** — wartet auf Klaus' Hard-Reload-Test (Quer/Hoch + Drehen).
 
 ### Offen / nächste Schritte
-1. **Klaus testet:** Hard-Reload im Quer- und Hochformat → Wand bleibt stabil, Fächer sitzen.
-2. Falls noch Pixel-Versatz: Fach-Positionen (`LAYOUT.x0/x1/y0/y1`) nachjustieren.
+1. **Klaus testet (jetzt LIVE, PR #20 gemergt):** Hard-Reload im Quer- und Hochformat → Wand
+   bleibt stabil, Fächer sitzen, **keine halben Tresore, kein Scrollen** (Klaus' Abnahmekriterium).
+2. Falls noch Pixel-Versatz/Rand: Fach-Positionen (`LAYOUT.x0/x1/y0/y1`) nachjustieren.
+
+### ⚠️ STEHENDE ANWEISUNG von Klaus (2026-06-06) — Regeländerung, ausdrücklich genannt
+- **„Automatisch mergen, wenn fertig":** Klaus delegiert die Merge-Entscheidung an die Sitzung.
+  Sobald eine abgegrenzte Aufgabe **fertig + grün** ist (`npm test` ok, `mergeable_state: clean`),
+  wird der Draft-PR auf ready gesetzt und **gemergt — ohne Rückfrage**. (Ersetzt „Merge entscheidet
+  Klaus" für laufende Aufgaben; Leitplanken bleiben unberührt, Browser-Teile bleiben bis zu Klaus'
+  Sicht „browser-ungeprüft".)
+- **Abnahmekriterium Schale:** In JEDER Ansicht (Handy quer/hoch, Tablet, Computer) **keine halben
+  Tresore, kein unnötiges Scrollen** — alles schlüssig sichtbar. Auf sehr kleinen Handys dürfen die
+  Fächer klein sein, aber vollständig.
 
 ## Aktiver Übergabe-Brief
 → `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)+(9)+(10) oben**
