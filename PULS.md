@@ -127,6 +127,83 @@
    stabile nodeId — Schritt 1 zuerst.
 3. **Klaus' Browser-„Kleinigkeiten"** + Fach-Öffnen-Lauf → dann status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (2) — Beide Verfahrens-Briefe zurück → ANDOCK-FAHRPLAN steht
+
+### Getan
+- **Verfahrens-Briefe an Sage + SB·KIMTool·Point** geschrieben (Klaus überbracht), **beide
+  Antworten zurück** und vollständig gelesen — inhaltlich deckungsgleich:
+  - **Sage** (Spec-Hub): A–D beantwortet, Vereinbarungs-Text B5; hat uns bereits in **SIGNAL
+    seq 13** (`mailboxes`+`forNodes`+`ack[Mein-Tresor]=0`) und in **NETZ-STAND.md** als Stufe
+    **„angekündigt"** aufgenommen. Postfach `…/Sage-Protokol/main/sbkim/AUSTAUSCH-MeinTresor.md`.
+  - **SB·KIMTool·Point**: A–D beantwortet, **SBKIM-SYNC-VEREINBARUNG v1**; hat unser SIGNAL
+    seq 3 quittiert (`ack[Mein-Tresor]=3`), führt uns als „Knoten D". Postfach
+    `…/SB-KIMTool-Point/main/sbkim/AUSTAUSCH-MeinTresor.md`.
+- **Synchronisationsvereinbarung 1:1 abgelegt:** `docs/SYNC-VEREINBARUNG.md` (beide Texte identisch).
+- **Klaus' Entscheidung zum Identitäts-Passwort:** **Umgebungs-Secret** (`SBKIM_KEY_PW` in der
+  Web-Session-Konfig; nie in Chat/Repo). Klaus richtet das gerade ein.
+
+### ⚠️ ANDOCK-FAHRPLAN für die NÄCHSTE Sitzung (Vorbedingung: `SBKIM_KEY_PW` ist als
+###    Umgebungsvariable gesetzt — prüfen mit `[ -n "$SBKIM_KEY_PW" ]`)
+Plan-vor-Code ist mit Klaus + beiden Knoten abgestimmt — **Freibrief für Andock + Mergen liegt
+vor.** Bauen in dieser Reihenfolge (alles additiv, Leitplanken wahren, `npm test` grün halten):
+1. `SBKIM_KEY_PW='…' npm run key` (Variable ist gesetzt) → erzeugt **eigene, stabile nodeId** +
+   `sbkim/node_key.enc.json` (verschlüsselt, **darf** ins Repo; Passwort/Klartext NIE).
+   **Eigener** Schlüssel — NICHT der von Jasons-Tresor.
+2. Spore signieren:
+   `SBKIM_NODE_KEY="$(SBKIM_KEY_PW='…' node scripts/open_node_key.mjs)" npm run demo`
+   → `sbkim/spore.json` stabil; `domainVector` bleibt `_demo` (→ `verified-spore`). Kontrolle:
+   gedruckte nodeId == die aus Schritt 1.
+3. `npm run verify` → ✔ VALID; `npm test` → 53/53; Kern-Hash unverändert.
+4. `sbkim/SIGNAL.json`: seq 3→4, `headline` „dauerhafte Identität live, Bitte um verified-spore",
+   `node`/`lastBuild` aktualisieren, **Sage** in `mailboxes`/`forNodes`/`ack` aufnehmen +
+   **Sage seq 13 quittieren** (`ack["Sage-Protokol"]=13`); Point bleibt `ack=3`.
+5. Postfächer quittieren: `AUSTAUSCH.md` (Sage) + `AUSTAUSCH-SBKIMTool.md` — Antwort gelesen,
+   stabile nodeId + sporeUrl nennen. SCHLUESSEL.md/status.json auf „dauerhaft" fortschreiben.
+6. Commit → Push → Draft-PR → Merge (Klaus). Danach lesen beide Knoten unsere Spore aus
+   raw/main und tragen uns reziprok als `verified-spore` ein.
+Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verified-match` (≥0.80).
+
+### Offen / wartet auf Klaus
+1. `SBKIM_KEY_PW` als Umgebungsvariable setzen + **neue Sitzung** starten → dann Fahrplan oben.
+2. Klaus' Browser-„Kleinigkeiten" am Gesicht; Fach-Öffnen-Lauf → status.json „browser-geprüft".
+
+## Nachtrag 2026-06-06 (3) — Werkzeugkiste geklärt → Browser-Andock-Seite gebaut
+
+### Getan
+- **Bei SB·KIMTool·Point nachgefragt** (Werkzeugkiste-Brief, Klaus überbracht). Antwort gelesen
+  (`…/SB-KIMTool-Point/main/sbkim/AUSTAUSCH-MeinTresor.md` + `…/BRIEF-AN-MeinTresor-werkzeugkiste.md`):
+  - Ihre `werkzeuge.html` ist **Schau/Selbstprüfung, KEINE Signier-UI** → kopieren bringt keine
+    Identitäts-Knöpfe. Module 1:1 frei („kopieren, nicht klonen"), Lade-Reihenfolge dokumentiert.
+  - **Scheibe 3** (eingebettete Identitäts-Knöpfe) hat Mein-Tresor **nicht** — und **Jasons-Tresor
+    auch nicht** (Marker `SBKIM-SPORE-EMBED` fehlt in beiden, geprüft). Für eine publizierbare
+    Identität reichen **Modul 01 (Storage) + 02 (Spore)** — die haben wir bereits in `web/tools/`.
+  - Embedding (Modul 03) braucht beim 1. Lauf Netz (transformers.js CDN + HF-Modell ~30 MB) →
+    nur für `verified-match` nötig, nicht für `verified-spore`. domainVector bleibt vorerst weg/`_demo`.
+- **Klaus' Entscheidung: Browser-Andock-Weg** (privater Schlüssel verlässt den Browser nie;
+  kein Umgebungs-Passwort nötig). **Neue Seite `werkzeuge/andock.html` gebaut** (additiv, Kern
+  byte-gleich, `npm test` 53/53): lädt unsere Module 01+02, drei Knöpfe — ① Identität anlegen,
+  ② Identität sichern (verschlüsseltes Backup), ③ Spore erzeugen+prüfen+herunterladen (mit
+  Browser-Selbsttest ✔ VALID). CONFIG spiegelt `scripts/generate_spore.mjs`.
+- **`docs/SYNC-VEREINBARUNG.md`** abgelegt (Sage B5 = Point v1, identisch).
+
+### ⚠️ NEUER ANDOCK-FAHRPLAN (Browser-Weg — ersetzt den Container-/npm-run-key-Fahrplan oben)
+1. **Klaus' Browser-Lauf:** `werkzeuge/andock.html` öffnen (lokal oder über Pages) →
+   ① „Identität anlegen" (dauerhafte nodeId) → ② „Identität sichern" (Passwort, Backup-Datei
+   gut aufbewahren) → ③ „Spore erzeugen" (Selbsttest ✔ VALID) → `spore.json` **mir in den Chat
+   kopieren**. *(Browser-ungeprüft, wartet auf Klaus' Lauf.)*
+2. **Ich:** die erhaltene `spore.json` als `sbkim/spore.json` committen; `npm run verify` + `npm
+   test`; nodeId in SCHLUESSEL.md/status.json als **dauerhaft** vermerken.
+3. **Ich:** `sbkim/SIGNAL.json` seq 3→4, headline „dauerhafte Identität live, Bitte um
+   verified-spore", **Sage** in `mailboxes`/`forNodes`/`ack` (Sage seq 13 quittieren), Postfächer
+   (Sage + Point) quittieren — stabile nodeId + sporeUrl nennen.
+4. **Gegenseite:** Sage + Point lesen unsere Spore aus raw/main → tragen uns als `verified-spore`
+   ein. Später echter `domainVector` (Browser/Sage) → Re-Sign → `verified-match` (≥0.80).
+
+### Offen / wartet auf Klaus
+1. **Browser-Lauf von `werkzeuge/andock.html`** (Schritte 1 oben) → `spore.json` an mich.
+2. Klaus' Gesicht-„Kleinigkeiten"; Fach-Öffnen-Lauf → status.json „browser-geprüft".
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` (jüngster; Vorgänger:
-`BRIEF_sbkim-netz-und-feinschliff.md`).
+→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **NEUER ANDOCK-FAHRPLAN (Browser-Weg)
+oben** (+ `docs/SYNC-VEREINBARUNG.md`). Hinweis: Der frühere Container-/npm-run-key-Fahrplan
+bleibt als Alternative gültig, ist aber durch den Browser-Weg ersetzt (Klaus' Wahl).
