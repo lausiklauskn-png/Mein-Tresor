@@ -9,7 +9,7 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-SBKIMTool.md, SIGNAL.json}` | SB-KIMTool-Point: **2026-06-05** (`SIGNAL.json` seq 2 → `ack["SB-KIMTool-Point"]=2`) | reziproke Registrierung (sobald dauerhafte nodeId + Pages) |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-SBKIMTool.md, SIGNAL.json}` | SB-KIMTool-Point: **2026-06-06** (`SIGNAL.json` seq 3 → `ack["SB-KIMTool-Point"]=3`) | reziproke Registrierung (sobald dauerhafte nodeId + Pages) |
 | **SB-KIMTool-Point** | `…/SB-KIMTool-Point/sbkim/{…, SIGNAL.json}` | — | unsere abrufbare Spore-URL |
 
 ---
@@ -26,3 +26,9 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
 ## Verlauf
 
 - **2026-06-05** — Postfach angelegt; SB-KIMTool-Point `SIGNAL.json` seq 2 gelesen + quittiert.
+- **2026-06-06** — Briefkasten-Runde: Spore frisch aus `raw/main` geholt → reziprok ✔ VALID
+  (unveraendert, id `CyunQNDRZZ…XXNY`). Neuer Bau **seq 3** gelesen — „SBKIM-Siegel (Wappen 1:1
+  aus Sage) + Lampen (lebt/verkehr/fremd) in der Statusleiste, alle vier Seiten; Andock-Modal".
+  Allgemeiner Rundbrief (`forNodes:*`), nichts speziell an uns. Quittiert: `ack["SB-KIMTool-Point"]=3`.
+  Hinweis: SB-KIMTool-Point listet uns noch nicht im eigenen `ack` (kennt erst Sage/Jasons) — folgt,
+  sobald unsere dauerhafte nodeId + Pages stehen.

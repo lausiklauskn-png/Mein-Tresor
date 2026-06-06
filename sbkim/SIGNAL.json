@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
-  "lastBuild": "2026-06-05",
-  "seq": 2,
-  "headline": "Netz-Andock: 5 Nachbar-Sporen reziprok ✔ VALID (Sage, SB-KIMTool-Point, Jasons-Tresor, Mein-Rezeptbuch, Mein-Mixarium; npm test). Briefkasten-Sync mit den 3 Knoten, die ein SIGNAL.json fuehren. Siegel+Briefkasten im neuen Gesicht.",
+  "lastBuild": "2026-06-06",
+  "seq": 3,
+  "headline": "Briefkasten-Runde: alle 5 Nachbar-Sporen frisch aus raw/main geholt + reziprok ✔ VALID (unveraendert). SB-KIMTool-Point neuer Bau seq 3 (Siegel+Lampen) gelesen + quittiert (ack 2->3); Sage 12 / Jasons-Tresor 2 unveraendert. npm test 53/53.",
   "mailboxes": {
     "Sage-Protokol": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH.md",
     "SB-KIMTool-Point": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/AUSTAUSCH-SBKIMTool.md",
@@ -13,7 +13,7 @@
   ],
   "ack": {
     "Sage-Protokol": 12,
-    "SB-KIMTool-Point": 2,
+    "SB-KIMTool-Point": 3,
     "Jasons-Tresor": 2
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
@@ -27,6 +27,11 @@
       "seq": 2,
       "date": "2026-06-05",
       "headline": "5-Knoten-Andock reziprok verifiziert (alle *_inbox.json ✔ VALID); Briefkasten-Peers = Sage/SB-KIMTool-Point/Jasons-Tresor; Siegel 'MEIN-TRESOR' + Briefkasten im Tresorraum."
+    },
+    {
+      "seq": 3,
+      "date": "2026-06-06",
+      "headline": "Briefkasten-Runde: 5 Sporen frisch geholt + ✔ VALID (unveraendert); SB-KIMTool-Point seq 3 (Siegel+Lampen) gelesen, ack 2->3; Sage 12 / Jasons-Tresor 2 unveraendert. Kein Nachbar registriert uns reziprok (erst nach dauerhafter nodeId + Pages)."
     }
   ]
 }
