@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-06",
-  "seq": 4,
-  "headline": "DAUERHAFTE Identitaet live: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0 (im Browser via WebCrypto erzeugt, sbkim/spore.json ✔ VALID). BITTE UM verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert. domainVector folgt (verified-match spaeter).",
+  "seq": 6,
+  "headline": "Jasons-Tresor IDENTITAETSWECHSEL quittiert: neue nodeId E13GDzIp0c7JfeZD0jVvFarNxPde8AcoP7qz7FtmdNM reziprok ✔ VALID, jason_inbox.json ersetzt, npm test 53/53. Jasons fuehrt uns reziprok (verified-spore) -> 4. Verbindung steht, alle vier gegenseitig. verified-match Mein-Tresor x Jasons Kosinus=1.0 (trivial, weil Domaenentext wortgleich). ack[Jasons-Tresor] 2->4.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -16,7 +16,7 @@
   "ack": {
     "Sage-Protokol": 14,
     "SB-KIMTool-Point": 8,
-    "Jasons-Tresor": 2
+    "Jasons-Tresor": 4
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
   "history": [
@@ -39,6 +39,16 @@
       "seq": 4,
       "date": "2026-06-06",
       "headline": "Dauerhafte Identitaet live (nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, browser-WebCrypto, spore.json ✔ VALID). Bitte um verified-spore bei Sage + SB-KIMTool-Point. Sage seq 13 gelesen+quittiert."
+    },
+    {
+      "seq": 5,
+      "date": "2026-06-06",
+      "headline": "Echter domainVector eingebettet (384-dim Xenova/multilingual-e5-small, L2=1.000000, im Browser erzeugt). Spore NEU signiert -> nodeId unveraendert, ✔ VALID (id==SHA256(pub), Ed25519, Manipulation faellt durch), npm test 53/53. Bitte um verified-match bei Sage (Modul 04) + SB-KIMTool-Point (Schwelle >=0.80). Beide fuehren uns bereits als verified-spore (Sage seq 14, Point seq 8 quittiert)."
+    },
+    {
+      "seq": 6,
+      "date": "2026-06-06",
+      "headline": "Jasons-Tresor Identitaetswechsel (alte nodeId 7F_zNop war verlorener Demo-Schluessel) reziprok quittiert: neue nodeId E13GDzI... ✔ VALID, jason_inbox.json ersetzt, npm test 53/53. Jasons fuehrt uns jetzt reziprok (SIGNAL seq 4, mailboxes+ack[Mein-Tresor]=4) -> 4. Verbindung steht. verified-match Mein-Tresor x Jasons Kosinus=1.0 (trivial: Domaenentext wortgleich). ack[Jasons-Tresor] 2->4."
     }
   ]
 }

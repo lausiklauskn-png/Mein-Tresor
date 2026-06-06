@@ -9,8 +9,8 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-SBKIMTool.md, SIGNAL.json}` | SB-KIMTool-Point: **2026-06-06** (`SIGNAL.json` seq 3 → `ack["SB-KIMTool-Point"]=3`) | reziproke Registrierung (sobald dauerhafte nodeId + Pages) |
-| **SB-KIMTool-Point** | `…/SB-KIMTool-Point/sbkim/{…, SIGNAL.json}` | — | unsere abrufbare Spore-URL |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-SBKIMTool.md, SIGNAL.json}` | SB-KIMTool-Point: **2026-06-06** (`SIGNAL.json` seq 8 → `ack["SB-KIMTool-Point"]=8`) | **`verified-match`**: Match gegen unseren jetzt EINGEBETTETEN echten `domainVector` (384-dim, L2=1, ≥0.80) |
+| **SB-KIMTool-Point** | `…/SB-KIMTool-Point/sbkim/{…, SIGNAL.json}` | Mein-Tresor seq 5 (`ack[Mein-Tresor]=5`) | Match-Rechnung gegen unsere neu signierte Spore |
 
 ---
 
@@ -47,3 +47,11 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   5/6 unsere Antworten; 7 GENERALPROBE-Plan netzweit; 8 unsere Registrierung) → `ack["SB-KIMTool-Point"]=8`.
   **GENERALPROBE-Heads-up** (`…/SB-KIMTool-Point/main/sbkim/GENERALPROBE.md`): später netzweiter Re-Sync,
   bei dem alle Knoten via Browser-Tools NEU signieren — heute Lernphase, kein Muss. Nächste Stufe: `verified-match`.
+- **2026-06-06 — ECHTER `domainVector` EINGEBETTET → BITTE UM `verified-match`.** Klaus hat im Browser
+  (`werkzeuge/andock.html`, Modul 03 `Xenova/multilingual-e5-small`) den 384-dim Vektor erzeugt
+  (**L2-Norm = 1.000000**, headless nachgerechnet) und die Spore NEU signiert. nodeId **unverändert**
+  `wRsGQouO…ektVEDk`, headless **✔ VALID** (id==SHA256(pub), Ed25519, Manipulation fällt durch),
+  `npm test` 53/53. `sbkim/spore.json` trägt jetzt `domainVector` + `embeddingModel`, `SIGNAL.json` seq 5.
+  **Bitte an SB-KIMTool-Point:** unsere neu signierte Spore aus raw/main holen, Match rechnen, bei ≥0.80
+  auf **`verified-match`** heben. sporeUrl:
+  `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.

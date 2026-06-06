@@ -234,6 +234,90 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
    headless Re-Signs — oder behält sie rein lokal (maximal sicher).
 4. Klaus' Gesicht-„Kleinigkeiten" + Fach-Öffnen-Lauf → status.json „browser-geprüft".
 
+## Nachtrag 2026-06-06 (5) — ✅ ECHTER domainVector EINGEBETTET → Bitte um verified-match
+
+### Getan
+- **Klaus hat im Browser** (`werkzeuge/andock.html`, Modul 03 `Xenova/multilingual-e5-small`)
+  den **echten 384-dim `domainVector`** erzeugt und die Spore **neu signiert**; den Klartext
+  der re-signierten Spore mir in den Chat gegeben.
+- **Headless geprüft, nichts geglaubt:** `node scripts/verify_foreign_spore.mjs` → **✔ VALID**
+  (id==SHA256(pub) MATCH, 9/9 Pflichtfelder, Ed25519 über kanonische Bytes, Manipulation fällt
+  durch); **L2-Norm nachgerechnet = 1.000000**, **384 Floats**, Modell `Xenova/multilingual-e5-small`.
+  nodeId **unverändert** `wRsGQouO…ektVEDk`. `npm test` **53/53 grün**.
+- **Abgelegt:** `sbkim/spore.json` (jetzt mit `domainVector` + `embeddingModel`).
+- **Netz gemeldet:** `SIGNAL.json` seq 4→**5** („echter domainVector eingebettet, Bitte um
+  verified-match"); Postfächer `AUSTAUSCH.md` (Sage) + `AUSTAUSCH-SBKIMTool.md` Status-Kopf +
+  Verlauf fortgeschrieben (Bitte an beide: Match mit Modul 04 rechnen, Schwelle ≥0.80).
+- **Ehrlichkeit fortgeschrieben:** `status.json` — domainVector von `demo-markiert` →
+  **`real-browser-tauglich`/echt**; Identität nicht mehr „flüchtig"; Real-Anteil ~64 % → **~70 %**.
+
+### Offen / nächste Schritte
+1. **Gegenseite (über Klaus):** Sage (Modul 04) + SB-KIMTool-Point holen unsere neu signierte
+   Spore aus raw/main, rechnen den Match → bei **≥ 0.80** heben sie uns auf **`verified-match`**.
+   Ggf. kurzer Anstoß-Brief von Klaus, sonst beim nächsten Briefkasten-Lauf.
+2. **Pages aktivieren** (falls noch nicht für raw genügt) + Klaus' Browser-Lauf am Gesicht
+   (Kleinigkeiten, Fach-Öffnen) → status.json „browser-geprüft".
+
+## Nachtrag 2026-06-06 (6) — 4-Knoten-Stand geprüft → Jasons-Tresor ist die Lücke
+
+### Getan
+- **Jasons-Tresor frisch geprüft** (raw/main): `SIGNAL.json` weiter **seq 2** (lastBuild
+  2026-05-31, unverändert); Spore erneut `✔ VALID`, byte-identisch zu `jason_inbox.json`.
+  **Befund:** Jasons führt uns **noch gar nicht** (mailboxes/ack nur Sage + Point) — das ist die
+  **fehlende 4. Verbindung** für den End-Sync.
+- **Drei Briefe aufgesetzt:** `sbkim/AUSTAUSCH-JasonsTresor.md` §2 = Bitte um reziproke
+  Erst-Registrierung (Priorität); Sage + Point tragen die `verified-match`-Bitte bereits
+  (Postfächer, seit Nachtrag 5). Gebündelter Liefer-Brief `docs/sessions/BRIEF_4-knoten-sync.md`
+  (Brief A Sage · B Point · C Jasons) — Klaus überbringt.
+
+### Offen / nächste Schritte
+1. **Klaus überbringt** die drei Bitten (oder eine Jasons-Sitzung baut die reziproke
+   Registrierung selbst — offene Frage im Brief).
+2. **Antworten lesen + reziprok prüfen + quittieren**, sobald sie kommen → Stufe `verified-match`
+   (Sage/Point) bzw. „4-Knoten gegenseitig" (Jasons).
+
+## Nachtrag 2026-06-06 (7) — Jasons-Tresor: echten Vektor nachholen (Klaus' Entscheidung)
+
+### Getan
+- **Jasons frisch geprüft:** Identität **headless** (`sbkim/node_key.enc.json` im Repo, HTTP 200);
+  `domainVector` noch **Demo-Stub** (`_demo:["domainVector"]`); **kein** Browser-Andock-Werkzeug
+  (404). → Bei der echten Vektorspur ist **Mein-Tresor voraus**.
+- **Klaus' Entscheidung:** Jasons soll **nur den echten Vektor nachholen** (nodeId `7F_zNop…`
+  BEHALTEN), **nicht** auf neue Browser-Identität umstellen (das gäbe neue nodeId → Netz-Bruch).
+- **Brief D** ergänzt (`BRIEF_4-knoten-sync.md`): genauer Browser-Weg mit unserem bewiesenen
+  Werkzeug. Geprüft, dass `werkzeuge/andock.html` Teil B genau das kann (① `node_key.enc.json`
+  laden → gleiche nodeId, ② Vektor, ③ neu signieren); Bausteine = `andock.html` +
+  `web/tools/sbkim-embedding.js` (nur CONFIG-Block auf Jasons umstellen).
+
+### Offen / nächste Schritte
+1. **Jasons-Tresor-Sitzung** (Weg B, neue Sitzung auf dem Repo): Brief C (uns reziprok eintragen)
+   **+** Brief D (echten Vektor nachholen) ausführen.
+2. **Antworten lesen + reziprok prüfen + quittieren** → Stufe `verified-match` (Sage/Point) bzw.
+   „4-Knoten gegenseitig" (Jasons).
+
+## Nachtrag 2026-06-06 (8) — ✅ Jasons-Tresor: Identitätswechsel quittiert, 4. Verbindung steht
+
+### Getan
+- **Jasons meldet Identitätswechsel** (SIGNAL seq 4): alte nodeId `7F_zNop…` war ein **verlorener
+  Demo-Schlüssel** (Passwort nie gesichert) → neue **Browser-Identität** `E13GDzI…`.
+- **Reziprok geprüft (nichts geglaubt):** neue Spore aus `raw/main` → `verify_foreign_spore.mjs`
+  **✔ VALID** (id==SHA256(pub) nachgerechnet, Ed25519, 9/9, Manipulation fällt durch); gemeldete
+  Felder (id/publicKey.x/signature) stimmen; echter domainVector (kein `_demo`). Vertrauensanker:
+  gleiche Repo-Adresse/Eigentümer → Wechsel legitim.
+- **`sbkim/jason_inbox.json` ersetzt** (alt→neu), `npm test` **53/53**.
+- **Gegenseitig:** Jasons führt uns jetzt (mailboxes + `ack[Mein-Tresor]=4`, Postfach
+  `AUSTAUSCH-MeinTresor.md`, wir = verified-spore bei ihnen). Wir quittieren: `ack["Jasons-Tresor"]
+  2→4`, unser SIGNAL **seq 6**. **Die fehlende 4. Verbindung steht.**
+- **verified-match Mein-Tresor × Jasons = Kosinus 1.0** (≥0.80 ✔). **Klaus-Entscheidung
+  2026-06-06 (bewusst):** die Schwester-Tresore sind **per Design semantisch identisch** (gleiche
+  Basis/Safes/Speicher, 1:1-Funktion, nur anderes Design + themenangepasste Texte). Der triviale
+  1.0-Match ist **gewollt**; Domänentexte werden **NICHT** künstlich getrennt. Erledigt, keine
+  offene Design-Frage mehr.
+
+### Offen / nächste Schritte
+1. **Sage + SB-KIMTool-Point:** rechnen noch unseren Match (sie haben uns als verified-spore;
+   wir haben jetzt echten Vektor) → dann auch dort `verified-match`.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` + **Nachtrag (4) oben** (Identität live)
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D) + **Nachtrag (8) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).

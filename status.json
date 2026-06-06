@@ -6,8 +6,8 @@
   "prinzip": "Ehrlicher Real-Anteil (analog Sage 'X % real'). Trennt klar, was echt headless-/browser-tauglich ist, was nur Demo/provisorisch ist und was noch auf Klaus wartet (Browser-Lauf, Schluessel-Secret, Pages, echte Bilder fuer die Schale).",
   "schwester_repo": "Funktion 1:1 aus Jasons-Tresor (Kern byte-gleich kopiert). NEU ist nur die Schale (futuristischer Dreh-Safe + 20-Faecher-Tresorraum). Die Schale ist in dieser Sitzung NOCH NICHT gebaut: aktuell laeuft als Platzhalter die uebernommene Jasons-Tresor-Schale (Buch/Regal). Re-Skin folgt nach Klaus' 4 echten Bildern (Plan-vor-Code).",
   "kern_byte_gleich": "Der JasonLib-Kern zwischen den Markern // JASONLIB-CORE-START..END ist byte-identisch zu Jasons-Tresor (sha256 a98a704c6518c1b18d22df4d33fe90e4a792ad063d4e0dadaa9ed55362be98a3) und in Wurzel index.html == Spiegel jasons-bibliothek/index.html gleich. npm test schneidet exakt diese Bytes und prueft sie headless.",
-  "identitaet_ehrlichkeit": "Die nodeId in sbkim/spore.json ist derzeit FLUECHTIG (jeder Lauf von 'npm run demo' erzeugt eine neue), weil noch KEIN Schluessel-Tresor sbkim/node_key.enc.json existiert. Die Spore ist echt Ed25519-signiert und ✔ VALID, traegt aber _demo:[domainVector] (Demo-Stub) und ist 'ungesichert/nur Test'. DAUERHAFT wird die Identitaet erst, wenn Klaus EINMAL 'SBKIM_KEY_PW=... npm run key' laeuft (privater Schluessel + Passwort kommen NIE ins Repo). Bis dahin ehrlich: nodeId nicht stabil.",
-  "seiten_ehrlichkeit": "Die App (index.html) laeuft echt im Browser (WebCrypto-Tresor), aber Klaus' eigener Browser-Lauf fuer Mein-Tresor steht noch aus. Der headless Beweis ist npm test (51/51 gruen).",
+  "identitaet_ehrlichkeit": "Die nodeId in sbkim/spore.json ist DAUERHAFT (seit 2026-06-06 wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, im Browser via WebCrypto erzeugt; verschluesselte Sicherung node_key.enc.json liegt LOKAL bei Klaus, bewusst nicht im Repo). Die Spore ist echt Ed25519-signiert und ✔ VALID und traegt seit 2026-06-06 einen ECHTEN domainVector (384-dim Xenova/multilingual-e5-small, L2-Norm=1.000000, im Browser erzeugt, EINGEBETTET und neu signiert). Privater Schluessel + Passwort kommen NIE ins Repo.",
+  "seiten_ehrlichkeit": "Die App (index.html) laeuft echt im Browser (WebCrypto-Tresor), aber Klaus' eigener Browser-Lauf fuer Mein-Tresor steht noch aus. Der headless Beweis ist npm test (53/53 gruen).",
   "kategorien": {
     "real-headless-bewiesen": "Durch npm test belegt (echte Krypto).",
     "real-browser-tauglich": "Laeuft echt im Browser, aber Klaus' Browser-Lauf steht aus.",
@@ -29,7 +29,7 @@
       "status": "real-headless-bewiesen",
       "echt": true,
       "beleg": "test/andock.test.js (gruen): eigene Spore ✔ VALID, id=base64url(SHA256(roher Pubkey)), 9 Pflichtfelder, Manipulation faellt durch. node scripts/verify_foreign_spore.mjs sbkim/spore.json -> ✔ VALID.",
-      "hinweis": "DAUERHAFT seit 2026-06-06: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, im Browser via WebCrypto erzeugt (werkzeuge/andock.html). Privater Schluessel blieb im Browser; verschluesselte Sicherung node_key.enc.json (Format wie open_node_key.mjs) liegt LOKAL bei Klaus, bewusst nicht im Repo. nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. STUFE: reziprok als 'verified-spore' eingetragen bei BEIDEN Briefkasten-Knoten (2026-06-06): Sage (NETZ-STAND.md + meintresor_inbox.verify.md; SIGNAL seq 14, ack[Mein-Tresor]=4) UND SB-KIMTool-Point (meintresor_inbox.json/.verify.md + Offline-Test, npm test 78/78; SIGNAL seq 8, ack[Mein-Tresor]=4 + mailboxes). Wir quittieren Sage seq 14 + Point seq 8. domainVector noch nicht eingebettet (kein _demo-Vortaeuschen); echter Vektor (Modul 03/Sage) -> Re-Sign -> verified-match (>=0.80)."
+      "hinweis": "DAUERHAFT seit 2026-06-06: nodeId wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0, im Browser via WebCrypto erzeugt (werkzeuge/andock.html). Privater Schluessel blieb im Browser; verschluesselte Sicherung node_key.enc.json (Format wie open_node_key.mjs) liegt LOKAL bei Klaus, bewusst nicht im Repo. nodeName 'Mein-Tresor', endpoint https://lausiklauskn-png.github.io/Mein-Tresor/. STUFE: reziprok als 'verified-spore' eingetragen bei BEIDEN Briefkasten-Knoten (2026-06-06): Sage (NETZ-STAND.md + meintresor_inbox.verify.md; SIGNAL seq 14, ack[Mein-Tresor]=4) UND SB-KIMTool-Point (meintresor_inbox.json/.verify.md + Offline-Test, npm test 78/78; SIGNAL seq 8, ack[Mein-Tresor]=4 + mailboxes). Wir quittieren Sage seq 14 + Point seq 8. SEIT 2026-06-06 traegt die Spore den ECHTEN domainVector EINGEBETTET (384-dim, L2=1.000000), neu signiert (nodeId unveraendert), npm test 53/53 -> SIGNAL seq 5 = BITTE UM verified-match bei Sage (Modul 04) + Point (>=0.80)."
     },
     {
       "name": "Andock-/Schluessel-Skripte (generate_spore / verify_foreign_spore / make_node_key / open_node_key)",
@@ -43,7 +43,7 @@
       "status": "real-headless-bewiesen",
       "echt": true,
       "beleg": "test/andock.test.js (npm test): 5 Nachbar-Sporen ✔ VALID — Sage (sage_inbox), SB-KIMTool-Point (point_inbox), Jasons-Tresor (jason_inbox), Mein-Rezeptbuch/'Rezeptbuch Klaus' (rezeptbuch_inbox), Mein-Mixarium/'Mixarium Klaus' (mixarium_inbox). Generischer Test verifiziert jede *_inbox.json (id==SHA256(pubkey), Ed25519-Signatur, Manipulation faellt durch).",
-      "hinweis": "Andock von UNSERER Seite zu allen 5 oeffentlichen SBKIM-Knoten vollzogen. Briefkasten-Sync (SIGNAL.json ack) nur mit den 3 Knoten, die ein Postfach fuehren (Sage/SB-KIMTool-Point/Jasons-Tresor); Mein-Rezeptbuch/Mein-Mixarium haben Identitaet, aber (noch) kein SIGNAL.json. OFFEN (Gegenseite/Klaus): unsere dauerhafte nodeId (npm run key) + Pages, dann registrieren die Nachbarn uns reziprok."
+      "hinweis": "Andock von UNSERER Seite zu allen 5 oeffentlichen SBKIM-Knoten vollzogen. Briefkasten-Sync (SIGNAL.json ack) mit den 3 Knoten, die ein Postfach fuehren (Sage/SB-KIMTool-Point/Jasons-Tresor); Mein-Rezeptbuch/Mein-Mixarium haben Identitaet, aber (noch) kein SIGNAL.json. REZIPROKER STAND (geprueft 2026-06-06): ALLE DREI Postfach-Knoten fuehren uns reziprok. Sage + SB-KIMTool-Point = 'verified-spore' (Bitte um verified-match offen, sie rechnen). JASONS-TRESOR = gegenseitig + verified-match: Jasons hatte 2026-06-06 einen IDENTITAETSWECHSEL (alte nodeId 7F_zNop war verlorener Demo-Schluessel -> neue Browser-Identitaet E13GDzIp0c7JfeZD0jVvFarNxPde8AcoP7qz7FtmdNM), reziprok ✔ VALID geprueft, sbkim/jason_inbox.json ersetzt; Jasons fuehrt uns (SIGNAL seq 4, mailboxes+ack[Mein-Tresor]=4); Kosinus-Match Mein-Tresor x Jasons = 1.0 (>=0.80). KLAUS-ENTSCHEIDUNG 2026-06-06 (bewusst, kein Fehler): die Schwester-Tresore sind PER DESIGN semantisch identisch (gleiche Basis/Safes/Speicher, 1:1-Funktion, nur anderes Design + themenangepasste Texte) -> der triviale 1.0-Match ist gewollt; domainDescription/domainKeywords werden NICHT kuenstlich unterschiedlich gemacht. Wir quittieren Jasons seq 4 (ack 2->4), unser SIGNAL seq 6. ZIEL-Endtest 4 Repos gegenseitig: mit Jasons ERREICHT; mit Sage/Point sobald deren Match-Score gerechnet ist."
     },
     {
       "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",
@@ -60,9 +60,9 @@
     },
     {
       "name": "domainVector (semantisches Embedding)",
-      "status": "demo-markiert",
-      "echt": false,
-      "hinweis": "Deterministischer Stub, _demo:[domainVector] gesetzt. Echtes 384-dim-Embedding (Xenova/multilingual-e5-small) via Sage Modul 03 im Browser -> sbkim/domainVector.real.json; bis dahin KEIN echter Match (>=0.80). ANDOCK §5."
+      "status": "real-browser-tauglich",
+      "echt": true,
+      "hinweis": "ECHT seit 2026-06-06: 384-dim Embedding (Xenova/multilingual-e5-small) im Browser erzeugt (werkzeuge/andock.html, Modul 03), L2-Norm headless nachgerechnet = 1.000000, EINGEBETTET in sbkim/spore.json und neu signiert (nodeId unveraendert, ✔ VALID, npm test 53/53). Kein _demo/_Stub mehr. OFFEN (Gegenseite): den eigentlichen Match-Score (>=0.80) rechnen Sage (Modul 04) + SB-KIMTool-Point gegen unsere neu signierte Spore -> Stufe verified-match. ANDOCK §5."
     },
     {
       "name": "Schale: Dreh-Safe-Eingang + Tresorraum (30 Faecher) — das NEUE Gesicht",
@@ -89,5 +89,5 @@
       "hinweis": "Briefkasten-Knopf '📬 Briefkasten' im Tresorraum -> oeffnet den geerbten Dialog (window.sbkimMailboxCheck) mit Nachbar-Stand (Sage/SB-KIMTool-Point/Jasons-Tresor). SBKIM-Siegel (assets/sbkim-siegel-wappen.svg, Band auf 'MEIN-TRESOR' personalisiert) + eigene nodeId aus sbkim/spore.json oben im Dialog. BROWSER-UNGEPRUEFT."
     }
   ],
-  "real_anteil_geschaetzt": "ca. 64% (Kern byte-gleich [52/52 Tests], eigene Spore ✔ VALID, NEUES Gesicht bild-genau verankert mit bewiesener Oeffnen-Logik, Netz-Andock an ALLE 5 oeffentlichen SBKIM-Knoten reziprok ✔ VALID, Siegel+Briefkasten im Gesicht). OFFEN/ehrlich: Schale browser-ungeprueft; Identitaet noch FLUECHTIG [kein node_key.enc.json]; domainVector Demo; Pages nicht aktiv; Nachbarn registrieren uns reziprok erst nach dauerhafter nodeId+Pages."
+  "real_anteil_geschaetzt": "ca. 70% (Kern byte-gleich [53/53 Tests], eigene Spore ✔ VALID mit DAUERHAFTER nodeId UND ECHTEM eingebettetem domainVector [384-dim, L2=1], reziprok als 'verified-spore' bei Sage + SB-KIMTool-Point eingetragen, NEUES Gesicht bild-genau verankert mit bewiesener Oeffnen-Logik, Netz-Andock an ALLE 5 oeffentlichen SBKIM-Knoten reziprok ✔ VALID, Siegel+Briefkasten im Gesicht). OFFEN/ehrlich: Schale browser-ungeprueft; verified-match-Score rechnen die Nachbarn noch (Sage Modul 04 / Point, >=0.80); Pages nicht aktiv."
 }
