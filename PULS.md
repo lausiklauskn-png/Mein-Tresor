@@ -449,7 +449,16 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 2. **Klaus verschickt** Bauplan-Brief + die zwei Postfächer an Rezeptbuch/Mixarium (+ alle Knoten).
 3. `status.json` auf „Briefkasten browser-geprüft" fortschreiben (optional, beim nächsten Lauf).
 
+## Sitzungsabschluss 2026-06-06 (Briefkasten-Vollverbund)
+- **Manual-Check:** `npm test` **53/53 grün**; `SIGNAL.json` valides JSON; JASONLIB-Kern byte-gleich.
+  **Browser:** Briefkasten von Klaus per Screenshot **geprüft** (4/5 verbunden, Live-Werte = headless).
+- **Diese Sitzung getan:** Brief „Eigentum statt Link" (PR #27) + ANDOCK §9 (PR #28) + Bauplan-
+  Rundbrief (PR #29) + Vollvernetzung 5 Peers (PR #30) + Rezeptbuch/Mixarium-Briefe & browser-geprüft
+  (PR #31). Alle gemergt.
+- **Übergabe-Brief an die nächste Sitzung:** `docs/sessions/BRIEF_briefkasten-vollverbund.md`.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1 nachbauen) +
-`docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(12) oben**
+→ **`docs/sessions/BRIEF_briefkasten-vollverbund.md`** (NEU: Runde lesen/quittieren + Rückläufe +
+Gesicht-Feinschliff) + `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1
+nachbauen) + `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(14) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
