@@ -755,7 +755,7 @@
   <p style="color:var(--muted); margin:.2em 0 1em; font-size:.9rem">Dieser Tresor ist ein bezeugter SBKIM-Endknoten am Sage-Protokoll.</p>
   <div class="andock-row"><span>Endknoten</span><code>Mein-Tresor</code></div>
   <div class="andock-row"><span>Endpunkt</span><a href="https://lausiklauskn-png.github.io/Mein-Tresor/" target="_blank" rel="noopener">…github.io/Mein-Tresor/ ↗</a></div>
-  <div class="andock-row"><span>nodeId</span><code>7F_zNopFgYLPCmEFhVlRUDnQVKk3y-RHNr139Z_3hCs</code></div>
+  <div class="andock-row"><span>nodeId</span><code>wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0</code></div>
   <div class="andock-row"><span>Spore</span><a href="sbkim/spore.json" target="_blank" rel="noopener">sbkim/spore.json ↗</a></div>
   <p style="margin:1.1em 0 0"><a class="andock-tool" href="https://lausiklauskn-png.github.io/SB-KIMTool-Point/" target="_blank" rel="noopener">SBKIM-Werkzeug öffnen ↗</a></p>
   <p style="color:var(--muted); font-size:.78rem; margin:.9em 0 0">Siegel-Wappen + Andock-Verbindung sind 1:1 aus dem Sage-Protokoll. Die vollständige Bezeugungs-Prüfung (Modul-Chain) folgt in einer eigenen Sitzung.</p>
@@ -1481,6 +1481,74 @@
 <dialog id="sbkim-mailbox-dialog" style="max-width:32em;border:none;border-radius:.8em;padding:1.2em">
   <h3 style="margin:.2em 0 .6em">📬 SBKIM-Briefkasten</h3>
   <div id="sbkim-mailbox-body">…</div>
+  <form method="dialog" style="text-align:right;margin-top:1em">
+    <button style="font:inherit;padding:.4em 1em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">Schließen</button>
+  </form>
+</dialog>
+
+<!-- SBKIM-Siegel — was bedeutet das? Erklaerung + Andock + Identitaet/Spore
+     (Funktion & Aufbau wie im Sage-Protokoll, Inhalte an Mein-Tresor angepasst). -->
+<dialog id="mt-seal-dialog" style="max-width:34em;border:none;border-radius:.8em;padding:1.2em">
+  <div style="text-align:center;margin:.1em 0 .7em">
+    <img src="assets/sbkim-siegel-wappen.svg" alt="SBKIM-Siegel" decoding="async" style="width:84px;height:84px;display:block;margin:0 auto .3em"/>
+    <h3 style="margin:0">SBKIM-Siegel — was bedeutet das?</h3>
+  </div>
+
+  <p style="font-size:.9rem;line-height:1.55;margin:.2em 0 .8em">
+    Dieses Siegel bezeugt: <b>Mein-Tresor ist ein echter SBKIM-Endknoten</b> am Sage-Protokoll.
+    Es ist keine Zierde, sondern steht für eine <b>kryptografisch geprüfte Identität</b> (Ed25519)
+    und eine <b>echt signierte Spore</b> — die fälschungssichere Visitenkarte dieses Knotens.
+  </p>
+  <p style="font-size:.9rem;line-height:1.55;margin:0 0 .9em">
+    <b>Warum wichtig?</b> Ohne Siegel könnte jeder behaupten, dieser Tresor zu sein. Mit ihm können
+    andere Werkzeuge (Sage-Protokol, SB-KIMTool-Point, Schwester Jasons-Tresor) die Echtheit
+    <b>selbst nachprüfen</b> und sich verbinden — die Identität ist reziprok bestätigt.
+  </p>
+
+  <a href="werkzeuge/andock.html" target="_blank" rel="noopener"
+     style="display:block;text-align:center;font:inherit;text-decoration:none;padding:.6em 1em;margin:0 0 .9em;border-radius:.55em;border:1px solid #2b5b5e;background:rgba(17,37,42,.6);color:inherit">
+    🔑 Eigene Identität &amp; Spore erzeugen / verwalten →
+  </a>
+
+  <div style="font-size:.82rem;color:var(--muted,#9aa);margin:0 0 .4em">Bezeugt seit 2026-06-06.</div>
+
+  <!-- Andock-Fenster: Verbindung zum Werkzeug -->
+  <div style="border:1px solid var(--line,#2a4a4d);border-radius:.6em;padding:.6em .75em;margin:.2em 0 1em">
+    <div style="font-weight:600;font-size:.85rem;margin-bottom:.4em">🔗 Andock — Verbindung zum Werkzeug</div>
+    <div class="andock-row"><span>Endknoten</span><code>Mein-Tresor</code></div>
+    <div class="andock-row"><span>Endpunkt</span><a href="https://lausiklauskn-png.github.io/Mein-Tresor/" target="_blank" rel="noopener">…github.io/Mein-Tresor/ ↗</a></div>
+    <div class="andock-row"><span>nodeId</span><code style="word-break:break-all">wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0</code></div>
+    <div class="andock-row"><span>Spore</span><a href="sbkim/spore.json" target="_blank" rel="noopener">sbkim/spore.json ↗ (✔ VALID)</a></div>
+    <p style="margin:.6em 0 0"><a class="andock-tool" href="https://lausiklauskn-png.github.io/SB-KIMTool-Point/" target="_blank" rel="noopener">SBKIM-Werkzeug öffnen ↗</a></p>
+  </div>
+
+  <div style="font-weight:600;font-size:.8rem;letter-spacing:.04em;margin:0 0 .35em">PFLICHT-MODULE</div>
+  <div style="font-size:.84rem;line-height:1.95;margin:0 0 1em">
+    <div><span style="color:#3bbf7a">●</span> 01 · Storage <span style="color:var(--muted,#9aa)">· Tresor/Bibliothek (AES-256-GCM) · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 02 · Spore <span style="color:var(--muted,#9aa)">· Ed25519-Identität, ✔ VALID · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 03 · Embedding <span style="color:var(--muted,#9aa)">· domainVector 384-dim (e5-small) · bereit</span></div>
+    <div><span style="color:#e0a52b">●</span> 04 · Match <span style="color:var(--muted,#9aa)">· Cosinus im Browser bereit · Gegenseite rechnet</span></div>
+    <div><span style="color:#3bbf7a">●</span> 05 · Anastomose <span style="color:var(--muted,#9aa)">· Netz-Andock, 5 Nachbarn ✔ VALID · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 07 · Apoptose <span style="color:var(--muted,#9aa)">· Notfall (Verriegeln/Retten&amp;Löschen) · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 15 · Membran <span style="color:var(--muted,#9aa)">· Wächter, warnt nur · bereit</span></div>
+  </div>
+
+  <div style="font-weight:600;font-size:.8rem;letter-spacing:.04em;margin:0 0 .35em">ASPEKTE (LEBENDES DOKUMENT)</div>
+  <div style="font-size:.82rem;line-height:1.5">
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 02 ·</span> <b>Dauerhafte Identität live.</b>
+      Im Browser (WebCrypto) erzeugt: nodeId <code style="font-size:.72rem">wRsGQouO…ektVEDk</code>, Spore echt Ed25519-signiert und ✔ VALID. Privater Schlüssel blieb im Browser; verschlüsselte Sicherung liegt lokal bei Klaus.</p>
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 03 ·</span> <b>Echter domainVector eingebettet.</b>
+      384-dim Embedding (Xenova/multilingual-e5-small, L2-Norm 1.000000) im Browser erzeugt, in die Spore eingebettet und neu signiert (nodeId unverändert). Kein <code>_demo</code> mehr.</p>
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 05 ·</span> <b>Verbund 3/3.</b>
+      Live nachgerechnet: Sage cos 0.8478, Jasons-Tresor 1.0000, SB-KIMTool-Point 0.8537 → 3/3 verbunden; reziprok als verified-spore bei allen drei Postfach-Knoten eingetragen.</p>
+  </div>
+
+  <p style="font-size:.74rem;color:var(--muted,#9aa);line-height:1.45;margin:.6em 0 0">
+    Ehrlich: headless durch <code>npm test</code> bewiesen (53/53). Browser-Pfade
+    (Match-Gegenseite bei Sage/Point, Klaus' eigener Browser-Lauf) bleiben <b>ungeprüft</b>,
+    bis Klaus sie gesehen hat.
+  </p>
+
   <form method="dialog" style="text-align:right;margin-top:1em">
     <button style="font:inherit;padding:.4em 1em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">Schließen</button>
   </form>
@@ -2850,8 +2918,13 @@
   var siegel = document.getElementById('sbkim-siegel-badge');
   var andock = document.getElementById('andock');
   var andockClose = document.getElementById('andock-close');
-  if(siegel && andock){
-    siegel.addEventListener('click', function(){ if(andock.showModal) andock.showModal(); });
+  if(siegel){
+    // Beide Siegel (altes HUD + Raum) zeigen dieselbe Erklaerung (mt-seal-dialog), Fallback: #andock.
+    siegel.addEventListener('click', function(){
+      var d=document.getElementById('mt-seal-dialog');
+      if(d && d.showModal) d.showModal();
+      else if(andock && andock.showModal) andock.showModal();
+    });
     siegel.classList.add('first-boot'); setTimeout(function(){ siegel.classList.remove('first-boot'); }, 700);
   }
   if(andockClose && andock){ andockClose.addEventListener('click', function(){ if(andock.close) andock.close(); }); }
@@ -3076,14 +3149,15 @@
   mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span>';
   bar.insertBefore(mail, bar.firstChild);
 
-  // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog),
-  // klickbar -> zeigt die Verbindungen (3/3). Liegt im #mt-room, also nur im Raum sichtbar.
+  // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog).
+  // Klick -> ERKLAERT das Siegel (was/warum), Andock + Identitaet/Spore — NICHT der Briefkasten
+  // (der bleibt auf dem 📬-Knopf). Wie im Sage-Protokoll. Liegt im #mt-room (nur im Raum sichtbar).
   if(room && !document.getElementById('mt-room-seal')){
     var seal=document.createElement('button'); seal.type='button'; seal.id='mt-room-seal';
-    seal.title='SBKIM-Siegel — Verbindungen zu anderen Tools anzeigen';
-    seal.setAttribute('aria-label','SBKIM-Siegel — Verbindungen anzeigen');
+    seal.title='SBKIM-Siegel — was bedeutet das? (Identität, Andock, Module)';
+    seal.setAttribute('aria-label','SBKIM-Siegel — Erklärung, Andock und Identität öffnen');
     seal.innerHTML='<img src="assets/sbkim-siegel-wappen.svg" alt="" decoding="async"/>';
-    seal.addEventListener('click', function(){ if(typeof window.sbkimMailboxCheck==='function') window.sbkimMailboxCheck(false); });
+    seal.addEventListener('click', function(){ var d=document.getElementById('mt-seal-dialog'); if(d&&d.showModal) d.showModal(); });
     room.appendChild(seal);
   }
 
