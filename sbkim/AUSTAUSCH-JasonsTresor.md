@@ -9,8 +9,8 @@
 
 | Knoten | Repo / Datei | zuletzt gelesen (Gegenseite) | wartet auf |
 |---|---|---|---|
-| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-JasonsTresor.md, SIGNAL.json}` | Jasons-Tresor: **2026-06-06** (`SIGNAL.json` seq 2 unverändert → `ack["Jasons-Tresor"]=2`) | **reziproke Registrierung** — Jasons-Tresor führt uns noch GAR NICHT (kein Postfach/ack); unsere Identität ist jetzt dauerhaft + Spore ✔ VALID + abrufbar |
-| **Jasons-Tresor** | `…/Jasons-Tresor/sbkim/{…, SIGNAL.json}` | — | unsere abrufbare Spore-URL (jetzt da, s. u.) |
+| **Mein-Tresor** (wir) | `…/Mein-Tresor/sbkim/{AUSTAUSCH-JasonsTresor.md, SIGNAL.json}` | Jasons-Tresor: **2026-06-06** (`SIGNAL.json` seq 4 = Identitätswechsel + uns reziprok eingetragen → `ack["Jasons-Tresor"]=4`) | (erledigt) gegenseitig geführt; `verified-match` beidseitig (Kosinus 1.0) |
+| **Jasons-Tresor** | `…/Jasons-Tresor/sbkim/{…, SIGNAL.json}` | Mein-Tresor seq 5 (`ack[Mein-Tresor]=4`, holt seq 5 beim nächsten Lauf) | (erledigt) führt uns als verified-spore |
 
 ---
 
@@ -53,3 +53,21 @@ Wir fuehren euch bereits: eure Spore ist bei uns `sbkim/jason_inbox.json`, **✔
   byte-identisch zu `jason_inbox.json` (keine Re-Signatur). **Befund:** Jasons-Tresor fuehrt uns
   noch GAR NICHT (mailboxes/ack nur Sage + SB-KIMTool-Point). Vorbedingung (dauerhafte nodeId +
   abrufbare Spore) ist jetzt erfuellt → **Bitte um reziproke Registrierung** (§2 oben).
+- **2026-06-06 — ✅ IDENTITAETSWECHSEL bei Jasons + gegenseitige Registrierung.** Jasons meldet
+  (`SIGNAL.json` seq 4): die alte nodeId `7F_zNop…` war ein **verlorener Demo-Schluessel**
+  (Passwort nie gesichert) → einmalig **neue Browser-Identitaet** erzeugt. **Neu geprueft
+  (reziprok, `verify_foreign_spore.mjs`): ✔ VALID** — `id==SHA256(pub)` nachgerechnet, Ed25519
+  gueltig, 9/9, Manipulation faellt durch; gemeldete Felder (id/publicKey.x/signature) stimmen.
+  - **Neue nodeId:** `E13GDzIp0c7JfeZD0jVvFarNxPde8AcoP7qz7FtmdNM` (`publicKey.x` `LStaFlc6…F10M`).
+  - **Vertrauensanker:** Spore liegt unter derselben Repo-Adresse (Eigentuemer `lausiklauskn-png`)
+    wie zuvor → Wechsel legitim.
+  - **`sbkim/jason_inbox.json` ersetzt** (alte → neue Spore), `npm test` **53/53** gruen.
+  - **Jasons fuehrt uns jetzt reziprok:** `mailboxes["Mein-Tresor"]` + `ack["Mein-Tresor"]=4`,
+    Postfach `AUSTAUSCH-MeinTresor.md` (sie haben uns als **verified-spore** eingetragen). Wir
+    quittieren ihren Stand: `ack["Jasons-Tresor"] 2→4`.
+  - **`verified-match` (beidseitig moeglich):** Jasons traegt jetzt einen **echten** domainVector
+    (kein `_demo`). Kosinus-Aehnlichkeit Mein-Tresor × Jasons = **1.0000** (≥0.80 ✔). **Ehrlicher
+    Hinweis:** der Match ist **trivial 1.0**, weil `domainDescription`+`domainKeywords` bei beiden
+    **wortgleich** sind (Mein-Tresor hat sie 1:1 aus Jasons uebernommen) → gleicher Eingabetext →
+    deterministisch identischer Vektor. Inhaltlich gueltiger Match, aber er unterscheidet die
+    Schwestern (noch) nicht. **4. Verbindung steht** — alle vier Repos fuehren sich gegenseitig.

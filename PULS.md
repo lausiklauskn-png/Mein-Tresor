@@ -295,6 +295,30 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 2. **Antworten lesen + reziprok prüfen + quittieren** → Stufe `verified-match` (Sage/Point) bzw.
    „4-Knoten gegenseitig" (Jasons).
 
+## Nachtrag 2026-06-06 (8) — ✅ Jasons-Tresor: Identitätswechsel quittiert, 4. Verbindung steht
+
+### Getan
+- **Jasons meldet Identitätswechsel** (SIGNAL seq 4): alte nodeId `7F_zNop…` war ein **verlorener
+  Demo-Schlüssel** (Passwort nie gesichert) → neue **Browser-Identität** `E13GDzI…`.
+- **Reziprok geprüft (nichts geglaubt):** neue Spore aus `raw/main` → `verify_foreign_spore.mjs`
+  **✔ VALID** (id==SHA256(pub) nachgerechnet, Ed25519, 9/9, Manipulation fällt durch); gemeldete
+  Felder (id/publicKey.x/signature) stimmen; echter domainVector (kein `_demo`). Vertrauensanker:
+  gleiche Repo-Adresse/Eigentümer → Wechsel legitim.
+- **`sbkim/jason_inbox.json` ersetzt** (alt→neu), `npm test` **53/53**.
+- **Gegenseitig:** Jasons führt uns jetzt (mailboxes + `ack[Mein-Tresor]=4`, Postfach
+  `AUSTAUSCH-MeinTresor.md`, wir = verified-spore bei ihnen). Wir quittieren: `ack["Jasons-Tresor"]
+  2→4`, unser SIGNAL **seq 6**. **Die fehlende 4. Verbindung steht.**
+- **verified-match Mein-Tresor × Jasons = Kosinus 1.0** (≥0.80 ✔). **Ehrlich:** trivial 1.0, weil
+  `domainDescription`+`domainKeywords` beider Schwestern **wortgleich** sind → identischer
+  Eingabetext → identischer Vektor. Inhaltlich gültig, unterscheidet die Schwestern aber nicht.
+
+### Offen / nächste Schritte
+1. **Sage + SB-KIMTool-Point:** rechnen noch unseren Match (sie haben uns als verified-spore;
+   wir haben jetzt echten Vektor) → dann auch dort `verified-match`.
+2. **Design-Frage (klein, an Klaus):** Sollen die Schwester-Tresore sich **unterschiedlich**
+   beschreiben (eigener `domainDescription`/`domainKeywords`), damit der Vektor sie wirklich
+   trennt? Sonst bleibt jeder Schwester-Match trivial 1.0.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D an die Nachbarn)
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D) + **Nachtrag (8) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
