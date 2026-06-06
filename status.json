@@ -49,7 +49,7 @@
       "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",
       "status": "real-browser-tauglich",
       "echt": true,
-      "hinweis": "self 'Mein-Tresor'; Peers Sage-Protokol, SB-KIMTool-Point, Jasons-Tresor (deren raw SIGNAL.json). Badge bei peer.seq > eigenem ack (App + Waechter lesen ack LIVE aus sbkim/SIGNAL.json). Briefkasten-Runde 2026-06-06: 5 Sporen frisch ✔ VALID; SB-KIMTool-Point seq 3 gelesen + quittiert (ack 2->3); Sage 12 / Jasons-Tresor 2 unveraendert; eigene SIGNAL seq 3. Browser-Lauf steht aus."
+      "hinweis": "AUSGEBAUT 2026-06-06 zum 'Live-Verbund-Briefkasten' (Jasons-Tresor §7, 1:1-Vorlage): self 'Mein-Tresor' + selfSpore; Peers Sage-Protokol, Jasons-Tresor, SB-KIMTool-Point (je inbox/mailbox/signal). Dialog zeigt Siegel-Kopf + pro Nachbar DREI EBENEN: (1) Spore verified-spore (id), (2) verified-match = Cosinus LIVE im Browser nachgerechnet (eigener domainVector x Nachbar-Inbox-Vektor), (3) Sync (peer.seq vs eigenes ack), unten 'X/3 verbunden'. Zero-dependency. Headless vorab nachgerechnet: Sage cos 0.8478, Jasons 1.0000, Point 0.8537 -> 3/3 verbunden. Badge (sbkim-mailbox-badge/hud-mailbox-badge) bei ungelesenem peer.seq. BROWSER-UNGEPRUEFT (wartet auf Klaus' Browser-Lauf)."
     },
     {
       "name": "Briefkasten-Waechter (.github/sbkim-watch.mjs + workflow, Cron 17 7 * * *)",
@@ -86,7 +86,7 @@
       "name": "SBKIM-Siegel + Briefkasten im neuen Gesicht (Tresorraum)",
       "status": "real-browser-tauglich",
       "echt": true,
-      "hinweis": "Briefkasten-Knopf '📬 Briefkasten' im Tresorraum -> oeffnet den geerbten Dialog (window.sbkimMailboxCheck) mit Nachbar-Stand (Sage/SB-KIMTool-Point/Jasons-Tresor). SBKIM-Siegel (assets/sbkim-siegel-wappen.svg, Band auf 'MEIN-TRESOR' personalisiert) + eigene nodeId aus sbkim/spore.json oben im Dialog. BROWSER-UNGEPRUEFT."
+      "hinweis": "Briefkasten-Knopf '📬 Briefkasten' im Tresorraum -> oeffnet den Live-Verbund-Dialog (window.sbkimMailboxCheck). Der Siegel-Kopf (assets/sbkim-siegel-wappen.svg, Band 'MEIN-TRESOR') + eigene nodeId werden seit 2026-06-06 vom Render SELBST oben im Dialog-Body gebaut (alte additive mt-seal-head-Injektion entfernt, §7 D -> kein Doppel-Siegel). BROWSER-UNGEPRUEFT."
     }
   ],
   "real_anteil_geschaetzt": "ca. 70% (Kern byte-gleich [53/53 Tests], eigene Spore ✔ VALID mit DAUERHAFTER nodeId UND ECHTEM eingebettetem domainVector [384-dim, L2=1], reziprok als 'verified-spore' bei Sage + SB-KIMTool-Point eingetragen, NEUES Gesicht bild-genau verankert mit bewiesener Oeffnen-Logik, Netz-Andock an ALLE 5 oeffentlichen SBKIM-Knoten reziprok ✔ VALID, Siegel+Briefkasten im Gesicht). OFFEN/ehrlich: Schale browser-ungeprueft; verified-match-Score rechnen die Nachbarn noch (Sage Modul 04 / Point, >=0.80); Pages nicht aktiv."

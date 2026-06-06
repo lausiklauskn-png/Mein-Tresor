@@ -318,6 +318,25 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 1. **Sage + SB-KIMTool-Point:** rechnen noch unseren Match (sie haben uns als verified-spore;
    wir haben jetzt echten Vektor) → dann auch dort `verified-match`.
 
+## Nachtrag 2026-06-06 (9) — Live-Verbund-Briefkasten nachgebaut (Jasons §7)
+
+### Getan
+- **Jasons §7 gelesen** (`…/Jasons-Tresor/main/sbkim/AUSTAUSCH-MeinTresor.md`) und den
+  **„Live-Verbund-Briefkasten" 1:1 in `index.html` nachgebaut** (additiv, Kern byte-gleich,
+  `npm test` 53/53): Siegel-Kopf + pro Nachbar **drei Ebenen** — ① Spore ✔, ② **verified-match
+  (Cosinus LIVE im Browser nachgerechnet)**, ③ Sync (ihr `seq` ↔ unser `ack`), unten „X/3 verbunden".
+  - **CONFIG ersetzt** (`window.SBKIM_MAILBOX`): self + `selfSpore` + 3 Nachbarn mit `inbox`/`mailbox`/`label`.
+  - **`sbkimCosine` + `sbkimMailboxCheck` ersetzt** (Vorlage §7 C, zero-dependency).
+  - **Doppel-Siegel entfernt** (§7 D): alte `mt-seal-head`-Injektion raus — der Render baut den Kopf selbst.
+  - Nachbar-Inboxen frisch geprüft: `sage_inbox`/`point_inbox`/`jason_inbox` alle `✔ VALID` + 384-dim.
+- **Headless vorab nachgerechnet** (= was der Browser zeigt): Sage cos **0.8478**, Jasons **1.0000**,
+  Point **0.8537** → **3/3 verbunden** (exakt wie Jasons' erwartetes Ergebnis in §7).
+
+### Offen / nächste Schritte
+1. **Klaus' Browser-Lauf:** 📬-Briefkasten öffnen (App neu laden) → drei Ebenen + „3/3 verbunden"
+   sichten → dann status.json-Eintrag „browser-geprüft". *(Browser-ungeprüft bis dahin.)*
+2. **Sage + SB-KIMTool-Point:** rechnen ihrerseits noch unseren Match (für ihren Netz-Stand).
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (**neuester**; Brief A/B/C/D) + **Nachtrag (8) oben**
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)+(9) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
