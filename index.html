@@ -3070,10 +3070,17 @@
   function nums(){ try{ return JSON.parse(localStorage.getItem('mt-fachnums')||'{}')||{}; }catch(e){ return {}; } }
   function saveNums(m){ try{ localStorage.setItem('mt-fachnums', JSON.stringify(m)); }catch(e){} }
   function labelFor(n){ var v=nums()['f-'+n]; return (v!=null && v!=='') ? v : ('0'+n).slice(-2); }
-  // Orientierung STABIL ueber matchMedia: flackert NICHT bei Ladephasen / Chrome-Leisten-
-  // Hoehenwechseln (anders als innerWidth>=innerHeight, das quer<->hoch kippen liess).
+  // Format nach dem TATSAECHLICH verfuegbaren Sichtfeld (Fenster/Panel), NICHT nach der
+  // Geraete-Ausrichtung: ein schmales Handy-/Split-Fenster nimmt die HOHE Wand (5x6 -> weniger
+  // Faecher pro Reihe, mehr Reihen), ein breites die quere (8x4). Totzone 0.90..1.12 + 150ms-
+  // Entprellung verhindern das Kippen durch die ein-/ausfahrende Chrome-Adressleiste.
   var mqLandscape = window.matchMedia ? window.matchMedia('(orientation: landscape)') : null;
-  function pickMode(){ return (mqLandscape ? mqLandscape.matches : (window.innerWidth >= window.innerHeight)) ? 'quer' : 'hoch'; }
+  function pickMode(){
+    var w=window.innerWidth, h=window.innerHeight, r=(h>0 ? w/h : 1);
+    if(curMode==='quer' && r>0.90) return 'quer';   // bleibe quer, bis deutlich hochkant
+    if(curMode==='hoch' && r<1.12) return 'hoch';   // bleibe hoch, bis deutlich quer
+    return r>=1.0 ? 'quer' : 'hoch';
+  }
   function buildGrid(){
     var mode=pickMode(), L=LAYOUT[mode]; curMode=mode;
     if(wall.getAttribute('src')!==L.img) wall.setAttribute('src', L.img);
