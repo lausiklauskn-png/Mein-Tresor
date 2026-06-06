@@ -6,8 +6,12 @@
 <title>Mein-Tresor — SBKIM-Andock (Identität im Browser)</title>
 <!--
   Andock-Werkzeug (Browser) — erzeugt die DAUERHAFTE SBKIM-Identität von Mein-Tresor
-  im Browser. Lädt die bewiesenen Module 01 (Storage) + 02 (Spore) aus web/tools/.
-  Der private Schlüssel verlässt den Browser NIE (kein PII/Secret ins Repo/Container).
+  EIGENSTÄNDIG mit WebCrypto (kein IndexedDB-Speichermodul -> kein Hängen).
+  - Ed25519-Schlüssel im Browser; privater Schlüssel verlässt den Browser NIE.
+  - Spore-Signatur in der kanonischen Form aus docs/ANDOCK §4 (== scripts/generate_spore.mjs,
+    headless durch scripts/verify_foreign_spore.mjs prüfbar).
+  - Sicherung im EXAKTEN Format von sbkim/node_key.enc.json (PBKDF2-SHA256 600k -> AES-256-GCM,
+    Tag separat, Klartext = base64(PKCS8-PEM)) -> von scripts/open_node_key.mjs öffenbar.
   Additiv, außerhalb des JasonLib-Kerns. Begleitet von docs/SYNC-VEREINBARUNG.md.
 -->
 <style>
@@ -21,7 +25,7 @@
     color:var(--ink); background:radial-gradient(1100px 600px at 80% -10%, #123 0%, transparent 60%), var(--bg);
     line-height:1.5; padding:18px; max-width:760px; margin:0 auto}
   h1{font-size:1.35rem; margin:.2em 0 .1em}
-  h2{font-size:1rem; margin:1.3em 0 .4em; color:var(--accent)}
+  h2{font-size:1rem; margin:1.2em 0 .4em; color:var(--accent)}
   p.lead{color:var(--muted); margin:.2em 0 1em}
   .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
     padding:14px 16px; margin:12px 0}
@@ -44,25 +48,26 @@
   input[type=password]{font:inherit; color:var(--ink); background:#06100f; border:1px solid var(--line);
     border-radius:8px; padding:10px 12px; min-width:200px}
   a.back{color:var(--muted); text-decoration:none; font-size:.9rem}
-  .step{counter-increment:step; }
   ol.steps{padding-left:1.2em} ol.steps li{margin:.3em 0}
+  #diag{font-family:ui-monospace,monospace; font-size:.78rem; white-space:pre-wrap; word-break:break-word;
+    background:#06100f; border:1px solid var(--line); border-radius:8px; padding:10px; max-height:200px; overflow:auto; color:var(--muted)}
 </style>
 </head>
 <body>
   <a class="back" href="../index.html">‹ zurück zum Tresor</a>
   <h1>🪪 SBKIM-Andock — Identität im Browser</h1>
   <p class="lead">Erzeugt die <b>dauerhafte</b> SBKIM-Identität von <b>Mein-Tresor</b> hier in
-  deinem Browser. Der private Schlüssel <b>verlässt diesen Browser nie</b> — er kommt nie ins
-  Repo, nie zu mir, nie in die Cloud. Du gibst mir nur die <b>öffentliche</b> <code>spore.json</code>.</p>
+  deinem Browser. Der private Schlüssel <b>verlässt diesen Browser nie</b>. Du gibst mir nur die
+  <b>öffentliche</b> <code>spore.json</code>; die verschlüsselte Sicherung bewahrst du selbst auf.</p>
 
   <div class="card">
-    <h2>So gehst du vor</h2>
+    <h2>So gehst du vor (Reihenfolge wichtig)</h2>
     <ol class="steps">
-      <li><b>① Identität anlegen</b> — einmal klicken. Es entsteht deine stabile <code>nodeId</code>.</li>
-      <li><b>② Identität sichern</b> — Passwort wählen, verschlüsselte Sicherung herunterladen + gut aufbewahren (gern in ein Fach von Mein-Tresor legen).</li>
-      <li><b>③ Spore erzeugen</b> — die <code>spore.json</code> wird gebaut, im Browser auf ✔ VALID geprüft, du lädst sie herunter <i>und</i> kopierst sie mir in den Chat.</li>
+      <li><b>① Identität anlegen</b> — einmal klicken → deine stabile <code>nodeId</code> erscheint.</li>
+      <li><b>② Identität sichern</b> — Passwort wählen → Datei <code>node_key.enc.json</code> herunterladen + gut aufbewahren.</li>
+      <li><b>③ Spore erzeugen</b> — wird gebaut, im Browser auf ✔ VALID geprüft → herunterladen <i>und</i> mir in den Chat kopieren.</li>
     </ol>
-    <p class="hint">Schritt ② vor ③: ohne Sicherung wäre die Identität bei einem Browser-Verlust weg (dann neue Identität nötig).</p>
+    <p class="hint">Nicht zwischendurch neu laden, bevor ② erledigt ist — sonst entsteht eine neue Identität.</p>
   </div>
 
   <div class="card">
@@ -75,13 +80,13 @@
   </div>
 
   <div class="card">
-    <h2>② Identität sichern (verschlüsselte Sicherung)</h2>
+    <h2>② Identität sichern (verschlüsselt, = node_key.enc.json)</h2>
     <div class="row">
       <input id="bk-pw" type="password" placeholder="Passwort (min. 8 Zeichen)" autocomplete="new-password" />
       <button id="btn-backup" type="button">🔒 Sicherung herunterladen</button>
     </div>
     <div id="bk-status" class="status"></div>
-    <p class="hint">AES-256-GCM / PBKDF2-SHA256 600k — dasselbe Schloss wie deine Tresor-Fächer. Passwort gut merken: ohne Passwort ist die Sicherung wertlos.</p>
+    <p class="hint">AES-256-GCM / PBKDF2-SHA256 600k — dasselbe Schloss wie deine Tresor-Fächer. Passwort gut merken: ohne Passwort ist die Sicherung wertlos. Mit dieser Datei + Passwort kann die Identität später auch am Rechner neu signieren.</p>
   </div>
 
   <div class="card">
@@ -96,128 +101,220 @@
     <p class="hint">Die Spore ist <b>öffentlich</b> (kein Geheimnis). Kopiere sie mir in den Chat — ich lege sie als <code>sbkim/spore.json</code> ab und melde uns zur <code>verified-spore</code> an.</p>
   </div>
 
-  <p class="hint" id="load-status">Lade Module …</p>
+  <div class="card">
+    <h2>Diagnose / Verlauf</h2>
+    <div id="diag">Starte …</div>
+  </div>
 
-<!-- Reihenfolge zählt: 01 Storage VOR 02 Spore (Modul 02 braucht SbkimStorage). -->
-<script src="../web/tools/sbkim-storage.js"></script>
-<script src="../web/tools/sbkim-spore.js"></script>
 <script>
 (function(){
   "use strict";
-  // CONFIG — öffentliche Identität von Mein-Tresor (Spiegel von scripts/generate_spore.mjs).
-  var META = {
+
+  // ---- CONFIG: öffentliche Identität von Mein-Tresor (Spiegel von scripts/generate_spore.mjs) ----
+  var CONFIG = {
     nodeName: "Mein-Tresor",
-    nodeType: "hybrid",                         // provider | seeker | hybrid
+    nodeType: "hybrid",
     domain: "Mein-Tresor-Bibliothek",
     domainDescription: "Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
     domainKeywords: ["Tresor","Bibliothek","JSON","SBKIM-Schlüssel","Verschlüsselung","Endknoten"],
     stammCategories: ["JSON-Tresor","Jasons-Bibliothek","Schlüssel-Backup","AES-256-GCM-Verschlüsselung"],
     guestCategories: ["Jason-Verwahrung","Schlüssel-Andock","Spore-Verifikation"],
-    endpoint: "https://lausiklauskn-png.github.io/Mein-Tresor/",   // mit Schrägstrich!
+    endpoint: "https://lausiklauskn-png.github.io/Mein-Tresor/",
     embeddingModel: "Xenova/multilingual-e5-small",
     protocolVersion: "0.1"
     // domainVector bewusst WEGGELASSEN -> Stufe verified-spore (kein vorgetäuschtes Wissen).
-    // Der echte 384-dim-Vektor kommt später (Modul 03 / Sage) -> Re-Sign -> verified-match.
   };
+  var KDF_ITER = 600000;
 
   var $ = function(id){ return document.getElementById(id); };
+  var identity = null;   // { privateKey, publicKey, jwk, rawPub, nodeId }
   var lastSpore = null;
+  var subtle = (window.crypto && window.crypto.subtle) ? window.crypto.subtle : null;
 
+  function log(msg){ var d=$("diag"); d.textContent += "\n" + msg; d.scrollTop = d.scrollHeight; }
   function setStatus(el, msg, cls){ el.textContent = msg; el.className = "status" + (cls ? " " + cls : ""); }
 
-  function ready(){
-    return (typeof window.SbkimStorage === "object" && typeof window.SbkimSpore === "object");
+  // Globale Fehler sichtbar machen (Klaus hat keine Konsole am Gerät).
+  window.addEventListener("error", function(e){ log("✘ Fehler: " + (e && e.message ? e.message : e)); });
+  window.addEventListener("unhandledrejection", function(e){ log("✘ Promise-Fehler: " + (e && e.reason && e.reason.message ? e.reason.message : e.reason)); });
+
+  // ---- base64 / base64url ----
+  function bufToB64(buf){
+    var b = new Uint8Array(buf), s = "";
+    for (var i=0;i<b.length;i++) s += String.fromCharCode(b[i]);
+    return btoa(s);
+  }
+  function bufToB64url(buf){ return bufToB64(buf).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+  function b64urlToBuf(str){
+    var pad = str.length % 4 === 0 ? "" : "====".slice(str.length % 4);
+    var s = (str.replace(/-/g,"+").replace(/_/g,"/") + pad);
+    var bin = atob(s), out = new Uint8Array(bin.length);
+    for (var i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
+    return out.buffer;
+  }
+
+  // ---- kanonische Form (identisch zu scripts/generate_spore.mjs) ----
+  function canonicalize(v){
+    if (v === null) return null;
+    if (Array.isArray(v)) return v.map(canonicalize);
+    if (typeof v === "object"){ var o={}; Object.keys(v).sort().forEach(function(k){ o[k]=canonicalize(v[k]); }); return o; }
+    return v;
+  }
+  function canonicalBytes(obj){ return new TextEncoder().encode(JSON.stringify(canonicalize(obj))); }
+
+  function needSubtle(){
+    if (!subtle) throw new Error("WebCrypto (crypto.subtle) nicht verfügbar — bitte die Seite über https (Pages) öffnen, nicht als Datei.");
+  }
+
+  // ---- ① Identität ----
+  async function ensureIdentity(){
+    if (identity) return identity;
+    needSubtle();
+    var kp;
+    try {
+      kp = await subtle.generateKey({ name:"Ed25519" }, true, ["sign","verify"]);
+    } catch(e){
+      throw new Error("Ed25519 wird von diesem Browser nicht unterstützt (" + (e && e.message || e) + "). Bitte aktuellen Chrome/Edge nutzen.");
+    }
+    var rawPub = await subtle.exportKey("raw", kp.publicKey);
+    var hash = await subtle.digest("SHA-256", rawPub);
+    var nodeId = bufToB64url(hash);
+    var jwk = await subtle.exportKey("jwk", kp.publicKey);
+    identity = { privateKey: kp.privateKey, publicKey: kp.publicKey, x: jwk.x, rawPub: rawPub, nodeId: nodeId };
+    log("✔ Identität erzeugt — nodeId " + nodeId);
+    return identity;
+  }
+
+  // ---- ③ Spore bauen + signieren ----
+  async function buildSpore(){
+    var id = await ensureIdentity();
+    var publicKeyJwk = { alg:"Ed25519", crv:"Ed25519", ext:true, key_ops:["verify"], kty:"OKP", x:id.x };
+    var unsigned = {
+      createdAt: new Date().toISOString(),
+      domain: CONFIG.domain,
+      domainDescription: CONFIG.domainDescription,
+      domainKeywords: CONFIG.domainKeywords,
+      embeddingModel: CONFIG.embeddingModel,
+      endpoint: CONFIG.endpoint,
+      guestCategories: CONFIG.guestCategories,
+      stammCategories: CONFIG.stammCategories,
+      id: id.nodeId,
+      nodeName: CONFIG.nodeName,
+      nodeType: CONFIG.nodeType,
+      protocolVersion: CONFIG.protocolVersion,
+      publicKey: publicKeyJwk
+    };
+    var sig = await subtle.sign({ name:"Ed25519" }, id.privateKey, canonicalBytes(unsigned));
+    var spore = canonicalize(unsigned);
+    spore.signature = bufToB64url(sig);
+    return spore;
+  }
+
+  // ---- Selbsttest (Spiegel von scripts/verify_foreign_spore.mjs) ----
+  async function selfVerify(spore){
+    var REQUIRED = ["createdAt","domain","embeddingModel","endpoint","id","nodeType","protocolVersion","publicKey","signature"];
+    for (var i=0;i<REQUIRED.length;i++){ if (!(REQUIRED[i] in spore)) return { valid:false, reason:"Pflichtfeld fehlt: "+REQUIRED[i] }; }
+    var rawPub = b64urlToBuf(spore.publicKey.x);
+    var idCalc = bufToB64url(await subtle.digest("SHA-256", rawPub));
+    if (idCalc !== spore.id) return { valid:false, reason:"nodeId != SHA256(pubkey)" };
+    var pub = await subtle.importKey("jwk", { kty:"OKP", crv:"Ed25519", x:spore.publicKey.x }, { name:"Ed25519" }, false, ["verify"]);
+    var unsigned = {}; Object.keys(spore).forEach(function(k){ if (k!=="signature") unsigned[k]=spore[k]; });
+    var ok = await subtle.verify({ name:"Ed25519" }, pub, b64urlToBuf(spore.signature), canonicalBytes(unsigned));
+    return { valid: ok, reason: ok ? "OK" : "Signatur ungültig" };
+  }
+
+  // ---- ② verschlüsselte Sicherung (Format = sbkim/node_key.enc.json) ----
+  function derToPem(der){
+    var b64 = bufToB64(der), lines = [];
+    for (var i=0;i<b64.length;i+=64) lines.push(b64.slice(i,i+64));
+    return "-----BEGIN PRIVATE KEY-----\n" + lines.join("\n") + "\n-----END PRIVATE KEY-----\n";
+  }
+  async function makeBackupEnvelope(password){
+    var id = await ensureIdentity();
+    var der = await subtle.exportKey("pkcs8", id.privateKey);
+    var pem = derToPem(der);
+    var keyPlainB64 = btoa(pem);                              // == node: base64(utf8(PEM))
+    var plaintext = new TextEncoder().encode(keyPlainB64);    // == node: cipher.update(keyPlain,"utf8")
+    var salt = window.crypto.getRandomValues(new Uint8Array(16));
+    var iv = window.crypto.getRandomValues(new Uint8Array(12));
+    var baseKey = await subtle.importKey("raw", new TextEncoder().encode(password), { name:"PBKDF2" }, false, ["deriveKey"]);
+    var dk = await subtle.deriveKey({ name:"PBKDF2", salt:salt, iterations:KDF_ITER, hash:"SHA-256" },
+                                    baseKey, { name:"AES-GCM", length:256 }, false, ["encrypt"]);
+    var encBuf = await subtle.encrypt({ name:"AES-GCM", iv:iv, tagLength:128 }, dk, plaintext);
+    var enc = new Uint8Array(encBuf);
+    var ct = enc.slice(0, enc.length - 16);                   // ciphertext OHNE Tag
+    var tag = enc.slice(enc.length - 16);                     // 16-Byte GCM-Tag separat
+    return {
+      version: 1,
+      zweck: "Verschluesselter SBKIM_NODE_KEY (privater Knoten-Schluessel). Nur mit Klaus-Passwort zu oeffnen. Inhalt = base64(PKCS8-PEM).",
+      nodeId: id.nodeId,
+      kdf: { algorithm:"PBKDF2", hash:"SHA-256", iterations:KDF_ITER, salt: bufToB64(salt) },
+      cipher: { algorithm:"AES-256-GCM", iv: bufToB64(iv), tag: bufToB64(tag) },
+      ciphertext: bufToB64(ct)
+    };
   }
 
   function download(name, text){
-    var blob = new Blob([text], { type: "application/json" });
+    var blob = new Blob([text], { type:"application/json" });
     var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url; a.download = name;
+    var a = document.createElement("a"); a.href = url; a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
   }
 
-  async function showIdentity(){
-    var r = await window.SbkimSpore.getOrCreateIdentity();
-    $("id-box").hidden = false;
-    $("id-box").textContent = "nodeId: " + r.nodeId;
-    setStatus($("id-status"), "✔ Identität bereit (dauerhaft in diesem Browser gespeichert).", "ok");
-    return r;
-  }
-
-  // ---- Init ----
-  async function init(){
-    if (!ready()){
-      $("load-status").innerHTML = '<span class="bad">Module nicht geladen. Bitte die Seite über die App/Pages öffnen (Pfad ../web/tools/ muss erreichbar sein).</span>';
-      return;
-    }
-    try {
-      if (typeof window.SbkimStorage.init === "function") await window.SbkimStorage.init();
-      if (typeof window.SbkimSpore.init === "function") await window.SbkimSpore.init();
-    } catch(e){ /* init ist tolerant; getOrCreateIdentity ruft ensureReady selbst */ }
-    $("load-status").innerHTML = '<span class="ok">✔ Module 01 (Storage) + 02 (Spore) geladen.</span>';
-    // Falls schon eine Identität existiert, anzeigen (legt keine neue an, wenn vorhanden).
-    try {
-      var existing = await window.SbkimSpore.getOrCreateIdentity();
-      if (existing && existing.nodeId){
-        $("id-box").hidden = false;
-        $("id-box").textContent = "nodeId: " + existing.nodeId;
-        setStatus($("id-status"), "Identität in diesem Browser vorhanden.", "ok");
-      }
-    } catch(e){ /* noch keine Identität — normal */ }
-  }
-
-  // ---- ① Identität ----
+  // ---- Knöpfe ----
   $("btn-id").addEventListener("click", async function(){
     setStatus($("id-status"), "Lege Identität an …");
-    try { await showIdentity(); }
-    catch(e){ setStatus($("id-status"), "Fehler: " + (e && e.message || e), "bad"); }
+    try {
+      var id = await ensureIdentity();
+      $("id-box").hidden = false; $("id-box").textContent = "nodeId: " + id.nodeId;
+      setStatus($("id-status"), "✔ Identität bereit (dauerhaft in dieser Sitzung).", "ok");
+    } catch(e){ setStatus($("id-status"), "Fehler: " + (e && e.message || e), "bad"); log("✘ "+(e&&e.message||e)); }
   });
 
-  // ---- ② Sicherung ----
   $("btn-backup").addEventListener("click", async function(){
     var pw = $("bk-pw").value || "";
     if (pw.length < 8){ setStatus($("bk-status"), "Passwort muss mindestens 8 Zeichen haben.", "warn"); return; }
     setStatus($("bk-status"), "Erzeuge verschlüsselte Sicherung …");
     try {
-      await window.SbkimSpore.getOrCreateIdentity();           // sicherstellen, dass es eine gibt
-      var blob = await window.SbkimSpore.exportBackup(pw);
-      download("mein-tresor-identitaet-backup.json", JSON.stringify(blob, null, 2) + "\n");
+      var env = await makeBackupEnvelope(pw);
+      download("node_key.enc.json", JSON.stringify(env, null, 2) + "\n");
       $("bk-pw").value = "";
-      setStatus($("bk-status"), "✔ Sicherung heruntergeladen. Passwort + Datei sicher aufbewahren!", "ok");
-    } catch(e){ setStatus($("bk-status"), "Fehler: " + (e && e.message || e), "bad"); }
+      setStatus($("bk-status"), "✔ node_key.enc.json heruntergeladen (nodeId " + env.nodeId + "). Datei + Passwort sicher aufbewahren!", "ok");
+      log("✔ Sicherung erstellt (node_key.enc.json).");
+    } catch(e){ setStatus($("bk-status"), "Fehler: " + (e && e.message || e), "bad"); log("✘ "+(e&&e.message||e)); }
   });
 
-  // ---- ③ Spore ----
   $("btn-spore").addEventListener("click", async function(){
     setStatus($("spore-status"), "Erzeuge + prüfe Spore …");
     try {
-      var spore = await window.SbkimSpore.generateOwnSpore(META);
+      var spore = await buildSpore();
       lastSpore = spore;
-      var pretty = JSON.stringify(spore, null, 2) + "\n";
-      $("spore-out").hidden = false; $("spore-out").value = pretty;
+      $("spore-out").hidden = false; $("spore-out").value = JSON.stringify(spore, null, 2) + "\n";
       $("btn-dl").hidden = false; $("btn-copy").hidden = false;
-      // Selbsttest im Browser
-      var check = await window.SbkimSpore.verifyForeignSpore(spore);
-      if (check && check.valid){
-        setStatus($("spore-status"), "✔ Spore erzeugt und im Browser geprüft: VALID — nodeId " + spore.id, "ok");
-      } else {
-        setStatus($("spore-status"), "⚠ Spore erzeugt, aber Selbsttest meldet: " + (check && check.reason || "unbekannt"), "warn");
-      }
-    } catch(e){ setStatus($("spore-status"), "Fehler: " + (e && e.message || e), "bad"); }
+      var chk = await selfVerify(spore);
+      if (chk.valid){ setStatus($("spore-status"), "✔ Spore erzeugt + im Browser geprüft: VALID — nodeId " + spore.id, "ok"); log("✔ Spore VALID."); }
+      else { setStatus($("spore-status"), "⚠ Spore erzeugt, Selbsttest: " + chk.reason, "warn"); log("⚠ Selbsttest: "+chk.reason); }
+    } catch(e){ setStatus($("spore-status"), "Fehler: " + (e && e.message || e), "bad"); log("✘ "+(e&&e.message||e)); }
   });
 
-  $("btn-dl").addEventListener("click", function(){
-    if (lastSpore) download("spore.json", JSON.stringify(lastSpore, null, 2) + "\n");
-  });
+  $("btn-dl").addEventListener("click", function(){ if (lastSpore) download("spore.json", JSON.stringify(lastSpore, null, 2) + "\n"); });
   $("btn-copy").addEventListener("click", async function(){
-    try { await navigator.clipboard.writeText($("spore-out").value); setStatus($("spore-status"), "📋 In die Zwischenablage kopiert — jetzt in den Chat einfügen.", "ok"); }
+    try { await navigator.clipboard.writeText($("spore-out").value); setStatus($("spore-status"), "📋 Kopiert — jetzt in den Chat einfügen.", "ok"); }
     catch(e){ $("spore-out").focus(); $("spore-out").select(); setStatus($("spore-status"), "Bitte den markierten Text manuell kopieren.", "warn"); }
   });
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
+  // ---- Selbstprüfung beim Laden ----
+  (function init(){
+    var d = $("diag"); d.textContent = "Andock-Werkzeug geladen.";
+    log(window.isSecureContext ? "✔ Sicherer Kontext (https) — WebCrypto verfügbar." : "⚠ KEIN sicherer Kontext — über die Pages-https-Adresse öffnen.");
+    log(subtle ? "✔ crypto.subtle vorhanden." : "✘ crypto.subtle FEHLT.");
+    if (subtle && subtle.generateKey){
+      subtle.generateKey({ name:"Ed25519" }, true, ["sign","verify"])
+        .then(function(){ log("✔ Ed25519 wird unterstützt — bereit für ①."); })
+        .catch(function(e){ log("✘ Ed25519 NICHT unterstützt: " + (e&&e.message||e) + " — bitte aktuellen Chrome/Edge."); });
+    }
+  })();
 })();
 </script>
 </body>
