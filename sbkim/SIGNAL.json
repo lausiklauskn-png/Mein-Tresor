@@ -15,7 +15,7 @@
   ],
   "ack": {
     "Sage-Protokol": 14,
-    "SB-KIMTool-Point": 3,
+    "SB-KIMTool-Point": 8,
     "Jasons-Tresor": 2
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
