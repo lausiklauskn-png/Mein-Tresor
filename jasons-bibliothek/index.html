@@ -2889,7 +2889,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   /* ===== EINGANG: Dreh-Safe — %-Koordinaten in festem Rahmen (verspringt nie) ===== */
-  var WHEELS={ c:{x:.50,y:.52,d:.30}, tl:{x:.285,y:.29,d:.17}, tr:{x:.68,y:.30,d:.17}, br:{x:.66,y:.73,d:.17} };
+  var WHEELS={ c:{x:.4994,y:.4975,d:.3960}, tl:{x:.2928,y:.3091,d:.2160}, tr:{x:.7092,y:.3073,d:.2160}, br:{x:.7077,y:.6959,d:.2120} };
   var wheelEls={}, rot={}, done={}, DONE_DEG=120;
   [].forEach.call(entry.querySelectorAll('.mt-wheel'), function(el){
     var k=el.getAttribute('data-wheel'); wheelEls[k]=el; rot[k]=0; done[k]=false;
