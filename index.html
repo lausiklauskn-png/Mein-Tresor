@@ -2975,10 +2975,16 @@
     quer:{ img:'assets/safe/tresorwand-quer.png', ar:1536/1024, cols:8, rows:4, x0:.035, x1:.965, y0:.050, y1:.950 }
   };
   var N=30, curMode=null, editNums=false;
+  // Beide Wandbilder einmal vorladen -> ein Orientierungswechsel zeigt nie eine schwarze
+  // (noch ladende) Wand mehr; das neue Bild kommt sofort aus dem Cache.
+  ['hoch','quer'].forEach(function(m){ var im=new Image(); im.src=LAYOUT[m].img; });
   function nums(){ try{ return JSON.parse(localStorage.getItem('mt-fachnums')||'{}')||{}; }catch(e){ return {}; } }
   function saveNums(m){ try{ localStorage.setItem('mt-fachnums', JSON.stringify(m)); }catch(e){} }
   function labelFor(n){ var v=nums()['f-'+n]; return (v!=null && v!=='') ? v : ('0'+n).slice(-2); }
-  function pickMode(){ return (window.innerWidth >= window.innerHeight) ? 'quer' : 'hoch'; }
+  // Orientierung STABIL ueber matchMedia: flackert NICHT bei Ladephasen / Chrome-Leisten-
+  // Hoehenwechseln (anders als innerWidth>=innerHeight, das quer<->hoch kippen liess).
+  var mqLandscape = window.matchMedia ? window.matchMedia('(orientation: landscape)') : null;
+  function pickMode(){ return (mqLandscape ? mqLandscape.matches : (window.innerWidth >= window.innerHeight)) ? 'quer' : 'hoch'; }
   function buildGrid(){
     var mode=pickMode(), L=LAYOUT[mode]; curMode=mode;
     if(wall.getAttribute('src')!==L.img) wall.setAttribute('src', L.img);
@@ -3031,7 +3037,14 @@
     new MutationObserver(function(){ if(bookdemo.hasAttribute('hidden')||bookdemo.style.display==='none') refreshLocks(); })
       .observe(bookdemo, {attributes:true, attributeFilter:['hidden','style']});
   }
-  window.addEventListener('resize', function(){ if(!room.hasAttribute('hidden') && pickMode()!==curMode) buildGrid(); });
+  // Neu bauen NUR bei echtem Orientierungswechsel, entprellt (150 ms) -> kein Flackern/Neuladen.
+  var rebuildT=null;
+  function maybeRebuild(){ if(rebuildT) clearTimeout(rebuildT);
+    rebuildT=setTimeout(function(){ rebuildT=null; if(!room.hasAttribute('hidden') && pickMode()!==curMode) buildGrid(); }, 150); }
+  if(mqLandscape){ if(mqLandscape.addEventListener) mqLandscape.addEventListener('change', maybeRebuild);
+    else if(mqLandscape.addListener) mqLandscape.addListener(maybeRebuild); }
+  window.addEventListener('resize', maybeRebuild);
+  window.addEventListener('orientationchange', maybeRebuild);
   buildGrid();
   try{ if(sessionStorage.getItem(GATE)==='1'){ opened=true; entry.setAttribute('hidden',''); showRoom(); } }catch(e){}
 })();

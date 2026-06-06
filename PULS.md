@@ -337,6 +337,23 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
    sichten → dann status.json-Eintrag „browser-geprüft". *(Browser-ungeprüft bis dahin.)*
 2. **Sage + SB-KIMTool-Point:** rechnen ihrerseits noch unseren Match (für ihren Netz-Stand).
 
+## Nachtrag 2026-06-06 (10) — Tresorwand-Fehler behoben (Orientierungs-Flackern)
+
+### Getan
+- **Bug von Klaus gemeldet** (3 Screenshots): Raum lädt im Querformat korrekt, **kippt dann kurz
+  hoch↔quer** und endet mit **schwarzer Wand** (nur Fach-Nummern auf Schwarz). Ursache: `pickMode()`
+  nutzte die flackernde Grenze `innerWidth>=innerHeight`; beim Zurückkippen wurde das Wand-`src`
+  neu geladen → kurzzeitig schwarz, im ungünstigen Moment dauerhaft.
+- **Fix (additiv, Kern byte-gleich, `npm test` 53/53):**
+  1. Orientierung STABIL über `matchMedia('(orientation: landscape)')` statt Pixel-Vergleich.
+  2. **Beide Wandbilder beim Start vorgeladen** → Umschalten zeigt nie mehr eine schwarze Wand.
+  3. Neuaufbau **entprellt** + nur bei echtem Orientierungswechsel (`change`/`orientationchange`).
+- **BROWSER-UNGEPRÜFT** — wartet auf Klaus' Hard-Reload-Test (Quer/Hoch + Drehen).
+
+### Offen / nächste Schritte
+1. **Klaus testet:** Hard-Reload im Quer- und Hochformat → Wand bleibt stabil, Fächer sitzen.
+2. Falls noch Pixel-Versatz: Fach-Positionen (`LAYOUT.x0/x1/y0/y1`) nachjustieren.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)+(9) oben**
+→ `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)+(9)+(10) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).
