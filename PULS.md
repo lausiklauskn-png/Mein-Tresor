@@ -100,6 +100,33 @@
 4. Optional: Fach-Raster per Kalibrier-Werkzeug exakt (LAYOUT.hoch/quer), Öffnen-Overlay
    auf `fach.png` umskinnen.
 
+## Nachtrag 2026-06-06 — Briefkasten-Runde + Sage-Netz-Karte gelesen
+
+### Getan
+- **Briefkasten-Runde (Arbeitsregel Schritt 3) vollzogen** (`npm test` 53/53, Kern byte-gleich):
+  - **Alle 5 Nachbar-Sporen frisch** aus `raw/main` geholt + über `verify_foreign_spore.mjs`
+    geprüft → **alle ✔ VALID**, byte-identisch zu unseren `*_inbox.json` (keine Re-Signatur).
+  - **3 SIGNAL.json gelesen:** Sage **seq 12** (= unser ack, nichts Neues), **SB-KIMTool-Point
+    seq 3** (NEU — „Siegel + Lampen in der Statusleiste, Andock-Modal", Rundbrief `forNodes:*`),
+    Jasons-Tresor **seq 2** (= unser ack, nichts Neues).
+  - **Quittiert:** `ack["SB-KIMTool-Point"] 2→3` in `sbkim/SIGNAL.json`; unsere **seq 2→3**
+    (Headline + history). Postfach `AUSTAUSCH-SBKIMTool.md` nachgezogen. App-Briefkasten + Wächter
+    lesen unser ack **live** aus der SIGNAL.json → Badge räumt sich nach Push selbst auf.
+- **Sages Netz-Karte `sbkim/NETZ-STAND.md` gelesen** (raw/main; Pages-Host blockt die Netz-Policy):
+  **Mein-Tresor ist dort noch NICHT gelistet** → bestätigt: reziproke Registrierung der Nachbarn
+  steht aus, bis unsere **dauerhafte nodeId + Pages** stehen.
+  - Ehrlicher Nebenbefund: Sage führt für **Rezeptbuch/Mixarium andere nodeIds** (aus
+    Live-Channel-Handshakes 05-16/17) als die heutigen **statischen** Sporen in deren Repos, die
+    wir geprüft haben. Nicht unser zu lösen; nur vermerkt.
+
+### Offen / wartet auf Klaus (unverändert Priorität)
+1. **Dauerhafte Identität** — nur Klaus kann das: lokal `SBKIM_KEY_PW='<Passwort>' npm run key`
+   → `sbkim/node_key.enc.json` (bleibt lokal, **nie** ins Repo) → stabile nodeId. Danach signiere
+   ich die Spore neu + committe, und melde uns reziprok bei den Nachbarn.
+2. **Pages** sind laut Klaus aktiv (Gesicht live). Für die reziproke Registrierung zählt die
+   stabile nodeId — Schritt 1 zuerst.
+3. **Klaus' Browser-„Kleinigkeiten"** + Fach-Öffnen-Lauf → dann status.json „browser-geprüft".
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_sbkim-netz-und-feinschliff.md` (umfassend: alles Gebaute + SBKIM-Netz +
-Arbeitsregel „lesen→denken→mit Knoten kommunizieren→mit Klaus abgleichen→Code" + Aufgaben).
+→ `docs/sessions/BRIEF_briefkasten-runde-identitaet.md` (jüngster; Vorgänger:
+`BRIEF_sbkim-netz-und-feinschliff.md`).

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-06-05",
+  "lastUpdated": "2026-06-06",
   "repo": "Mein-Tresor",
   "protocolVersion": "0.1",
   "prinzip": "Ehrlicher Real-Anteil (analog Sage 'X % real'). Trennt klar, was echt headless-/browser-tauglich ist, was nur Demo/provisorisch ist und was noch auf Klaus wartet (Browser-Lauf, Schluessel-Secret, Pages, echte Bilder fuer die Schale).",
@@ -49,7 +49,7 @@
       "name": "SBKIM-Briefkasten (Knopf in index.html: window.SBKIM_MAILBOX self + Peers)",
       "status": "real-browser-tauglich",
       "echt": true,
-      "hinweis": "self 'Mein-Tresor'; Peers Sage-Protokol, SB-KIMTool-Point, Jasons-Tresor (deren raw SIGNAL.json). Badge bei peer.seq > eigenem ack. Browser-Lauf steht aus."
+      "hinweis": "self 'Mein-Tresor'; Peers Sage-Protokol, SB-KIMTool-Point, Jasons-Tresor (deren raw SIGNAL.json). Badge bei peer.seq > eigenem ack (App + Waechter lesen ack LIVE aus sbkim/SIGNAL.json). Briefkasten-Runde 2026-06-06: 5 Sporen frisch ✔ VALID; SB-KIMTool-Point seq 3 gelesen + quittiert (ack 2->3); Sage 12 / Jasons-Tresor 2 unveraendert; eigene SIGNAL seq 3. Browser-Lauf steht aus."
     },
     {
       "name": "Briefkasten-Waechter (.github/sbkim-watch.mjs + workflow, Cron 17 7 * * *)",
