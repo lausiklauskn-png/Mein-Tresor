@@ -100,6 +100,26 @@
 4. Optional: Fach-Raster per Kalibrier-Werkzeug exakt (LAYOUT.hoch/quer), Öffnen-Overlay
    auf `fach.png` umskinnen.
 
+## Nachtrag 2026-06-07 — Vorgänger-Brief rekonstruiert (Mein-Rezeptbuch-Briefkasten)
+
+### Getan
+- **Befund:** Die Sitzung auf Branch `claude/mein-rezeptbuch-mailbox-setup-qHN7C` (Aufgabe:
+  Mein-Rezeptbuch-Briefkasten) wurde von Klaus ins Archiv verschoben. **In Git keine Spur:**
+  Branch == Vorgänger-Commit (`471fbf6`), Reflog ohne Arbeit, nichts nicht-committetes. Der
+  Original-Brief ist **nicht wiederherstellbar** (existiert nirgends mehr) — ehrlich vermerkt.
+- **Rekonstruktion** aus Belegen (Branch-Name + Vorgänger-Brief §6b/§6d + Repo-Stand) als
+  `docs/sessions/BRIEF_rezeptbuch-briefkasten.md` angelegt, klar als REKONSTRUIERT markiert.
+- Aktueller Stand bestätigt: `SIGNAL.json` führt weiter nur 3 Mailbox-Nachbarn; Mein-Rezeptbuch
+  hat **kein Postfach/SIGNAL** bei uns (nur verifizierte Spore). Kein Code geändert, `npm test` unberührt.
+
+### Nächste Schritte
+1. **Mein-Rezeptbuch-Briefkasten aufbauen** nach dem rekonstruierten Brief (zuerst prüfen, ob
+   Mein-Rezeptbuch ein `SIGNAL.json` hat) — Postfach + SIGNAL/ack + App/Wächter-Eintrag.
+2. Dauerhafte Identität (`npm run key`) + reziproke Registrierung bei den Nachbarn.
+3. Browser-Lauf + Klaus' „Kleinigkeiten" am Gesicht.
+
 ## Aktiver Übergabe-Brief
-→ `docs/sessions/BRIEF_sbkim-netz-und-feinschliff.md` (umfassend: alles Gebaute + SBKIM-Netz +
-Arbeitsregel „lesen→denken→mit Knoten kommunizieren→mit Klaus abgleichen→Code" + Aufgaben).
+→ `docs/sessions/BRIEF_rezeptbuch-briefkasten.md` (REKONSTRUIERT 2026-06-07: Aufgabe
+Mein-Rezeptbuch-Briefkasten + mitgeführte offene Punkte).
+→ Vorgänger/Kontext: `docs/sessions/BRIEF_sbkim-netz-und-feinschliff.md` (umfassend: alles
+Gebaute + SBKIM-Netz + Arbeitsregel + Aufgaben).
