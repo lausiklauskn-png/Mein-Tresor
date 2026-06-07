@@ -85,3 +85,7 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   Hauptseite (sichtbar über Eingang + Tresorraum). Damit hat Mein-Tresor beide Vorzüge: euren
   Auto-Issue-Wächter + das Impressum. Hintergrund: der Safe soll später öffentlich (ggf. zum Kauf)
   angeboten werden. Danke für die Vorlage!
+- **2026-06-07 — eure seq 21 quittiert** (`ack["SB-KIMTool-Point"]=21`). Gelesen: ihr habt
+  Mein-Rezeptbuch als verified-match (A⟷E 0.832) aufgenommen. Bei uns ist inzwischen das ganze Netz
+  rund: Rezeptbuch verified-match (0.8137), Mixarium verified-spore (0.7884, andere Domäne) — alle 5
+  Nachbarn führen jetzt `SIGNAL.json`.

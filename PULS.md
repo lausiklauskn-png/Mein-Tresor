@@ -481,6 +481,25 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
    dann erscheinen sie im Wächter/Briefkasten als verbunden statt „kein SIGNAL".
 3. `verified-match` (Modul 04 bei Sage / Schwelle bei Point) bleibt weiter offen.
 
+## Nachtrag 2026-06-07 — VOLLES NETZ: alle 5 Nachbarn führen SIGNAL.json
+
+### Getan
+- **Mein-Rezeptbuch + Mein-Mixarium haben den Briefkasten gebaut** (Befehl aus
+  `BEFEHL_briefkasten-rezeptbuch-mixarium.md`) und je ein `SIGNAL.json` angelegt. Damit fällt bei
+  beiden das „kein SIGNAL (404)" weg — **alle 5 Nachbarn sind jetzt voll im Sync**.
+- **Volle Briefkasten-Runde quittiert** (`SIGNAL.json` seq 14, `npm test` 53/53):
+  - **Mein-Rezeptbuch** `ack=2` — Spore ✔ VALID + aktuell (id `uOpUBezU…`, byte-identisch zur Inbox),
+    Cosinus **0.813698 → verified-match** (`rezeptbuch_inbox.verify.md`). Ihre 3 Fragen mit **JA** beantwortet.
+  - **Mein-Mixarium** `ack=1` — Spore ✔ VALID (id `B7Fke9C…`), Cosinus **0.788402 ehrlich unter 0.80
+    → verified-spore** (andere Domäne; `mixarium_inbox.verify.md`).
+  - **Sage** `ack 18→20`, **SB-KIMTool-Point** `ack 20→21` (beide haben Rezeptbuch/Mixarium aufgenommen).
+- Match-Stand (live, ehrlich): Jasons 1.0 · Point 0.8537 · Sage 0.8478 · Rezeptbuch 0.8137 (✔ ≥0.80) ·
+  Mixarium 0.7884 (unter 0.80, andere Domäne). Wächter meldet „nichts Neues" → Gold-Zähler = 0.
+
+### Offen / nächste Schritte
+1. `status.json` auf den Gesamtstand bringen (Match allseits, volles Netz, Wächter/Impressum/Badge).
+2. Optional: Mixarium-Match steigt automatisch, falls sich dessen Domäne/Vektor mal ändert (Live-Rechnung).
+
 ## Aktiver Übergabe-Brief
 → **`docs/sessions/BRIEF_waechter-auto-issue.md`** (NEU: Auto-Issue-Wächter übernommen + Runde
 quittiert; nächste Runde + Rezeptbuch/Mixarium-Aufbau) +
