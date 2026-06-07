@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-07",
-  "seq": 11,
-  "headline": "verified-match mit SB-KIMTool-Point BESTAETIGT (Point Antwortbrief, SIGNAL seq 20): Point fuehrt uns als verified-match (cos Point<->Mein-Tresor 0.853740 >=0.80, von Klaus im Browser bestaetigt). Wir fuehren Point reziprok als verified-match (Briefkasten rechnet live, cos 0.8537). Andock-Siegel Modul 04 jetzt GRUEN (Jasons 1.0 + Point 0.8537 bestaetigt; Sage rechnet noch). Point seq 19->20 gelesen, ack[SB-KIMTool-Point] 18->20. Points Waechter-Auftrag war bereits erledigt (#35); Impressum-Bitte (TMG §5) wartet auf Klaus' PII-Daten.",
+  "seq": 12,
+  "headline": "Impressum erledigt (Points 2. Bitte): eigene impressum.html (Rechtstext 1:1 von SB-KIMTool-Point-Vorlage, in Mein-Tresor-Gold re-geskinnt; §5 TMG + Urheberrecht + Haftung + Datenschutz, DE/EN, offline) + dezenter Footer-Link auf der Hauptseite. Hintergrund: Safe soll spaeter oeffentlich (ggf. zum Kauf) angeboten werden. Damit beide Vorzuege erfuellt: Auto-Issue-Waechter (seq 9) + Impressum. Kern byte-gleich, npm test 53/53.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -76,6 +76,11 @@
       "seq": 11,
       "date": "2026-06-07",
       "headline": "verified-match mit SB-KIMTool-Point BESTAETIGT (Antwortbrief, Point SIGNAL seq 20): cos 0.853740 >=0.80, Point fuehrt uns als verified-match (status.json + marktplatz.json + meintresor_inbox). Wir fuehren Point reziprok (Briefkasten rechnet live). Andock-Siegel Modul 04 auf GRUEN (Jasons 1.0 + Point 0.8537; Sage rechnet noch). ack[SB-KIMTool-Point] 18->20. Point-Spore reziprok re-verifiziert ✔ VALID + unveraendert. Offen: Sage-Match + Impressum-Bitte (TMG §5, wartet auf Klaus' PII)."
+    },
+    {
+      "seq": 12,
+      "date": "2026-06-07",
+      "headline": "Impressum erledigt (Points 2. Bitte, Klaus' Freigabe): eigene impressum.html (Rechtstext 1:1 von SB-KIMTool-Point-Vorlage, in Mein-Tresor-Gold re-geskinnt; §5 TMG + Urheberrecht + Haftung + Datenschutz, DE/EN, offline, keine externen Abh.) + dezenter Footer-Link auf der Hauptseite (Eingang + Raum). Hintergrund: Safe soll spaeter oeffentlich (ggf. zum Kauf) angeboten werden. Kern byte-gleich, npm test 53/53."
     }
   ]
 }
