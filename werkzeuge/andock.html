@@ -71,6 +71,15 @@
   </div>
 
   <div class="card">
+    <h2>① ½ Beschreibung (Semantik) — für besseres Finden</h2>
+    <textarea id="domain-desc" placeholder="Beschreibe deine App neu oder kopiere die Beschreibung / README hier hinein."></textarea>
+    <p class="hint">Je konkreter, desto besser findet dich das Mycel. Beschreibe in eigenen Worten:
+    was die App/Seite ist, wofür man sie nutzt, welche Themen/Stichworte sie abdeckt, für wen sie
+    gedacht ist. Ein gut gefüllter Absatz (ca. 3–8 Sätze) ist ideal — gern auch die README
+    hineinkopieren. Vermeide reine Schlagwort-Listen ohne Kontext.</p>
+  </div>
+
+  <div class="card">
     <h2>② Echten domainVector erzeugen (Modul 03)</h2>
     <p class="hint">Lädt beim ersten Mal das Sprachmodell (~30&nbsp;MB, braucht Internet) und rechnet
     den 384-dim Vektor aus unserem Domänen-Text. Danach im Browser-Cache.</p>
@@ -117,7 +126,7 @@
   "use strict";
   var CONFIG = {
     nodeName:"Mein-Tresor", nodeType:"hybrid", domain:"Mein-Tresor-Bibliothek",
-    domainDescription:"Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
+    domainDescription:"Mein-Tresor ist ein Endknoten im SBKIM-Mycel zum sicheren Verwahren: er verschlüsselt und speichert JSON-Dateien und SBKIM-Schlüssel offline im Browser (AES-256-GCM), Tresor und Bibliothek zugleich. Backups lassen sich passwortgeschützt exportieren und auf einem anderen Gerät zurückspielen; der private Schlüssel verlässt den Browser nie. Verwandt mit dem Schwester-Tresor Jasons-Tresor und angedockt ans Netz aus Sage, SB-KIMTool-Point, Rezeptbuch und Mixarium.",
     domainKeywords:["Tresor","Bibliothek","JSON","SBKIM-Schlüssel","Verschlüsselung","Endknoten"],
     stammCategories:["JSON-Tresor","Jasons-Bibliothek","Schlüssel-Backup","AES-256-GCM-Verschlüsselung"],
     guestCategories:["Jason-Verwahrung","Schlüssel-Andock","Spore-Verifikation"],
@@ -125,6 +134,8 @@
     embeddingModel:"Xenova/multilingual-e5-small", protocolVersion:"0.1"
   };
   var DOMAIN_TEXT = CONFIG.domainDescription + " " + CONFIG.domainKeywords.join(", ");
+  // Beschreibung aus dem Textfeld (Teil B ①½); leer -> heutiges Verhalten (CONFIG-Default).
+  function descRaw(){ var t=document.getElementById("domain-desc"); return (t && t.value.trim()) ? t.value.trim() : ""; }
   var KDF_ITER = 600000;
   var subtle = (window.crypto && window.crypto.subtle) ? window.crypto.subtle : null;
   var $ = function(id){ return document.getElementById(id); };
@@ -159,7 +170,8 @@
   async function buildSpore(withVector){
     if(!identity) throw new Error("Erst eine Identität laden (Teil B ①) oder anlegen (Teil A).");
     var publicKeyJwk={alg:"Ed25519",crv:"Ed25519",ext:true,key_ops:["verify"],kty:"OKP",x:identity.x};
-    var u={ createdAt:new Date().toISOString(), domain:CONFIG.domain, domainDescription:CONFIG.domainDescription,
+    var desc = descRaw() || CONFIG.domainDescription;   // Textfeld-Inhalt, sonst Default (kein neuer Krypto-Pfad)
+    var u={ createdAt:new Date().toISOString(), domain:CONFIG.domain, domainDescription:desc,
       domainKeywords:CONFIG.domainKeywords, embeddingModel:CONFIG.embeddingModel, endpoint:CONFIG.endpoint,
       guestCategories:CONFIG.guestCategories, stammCategories:CONFIG.stammCategories, id:identity.nodeId,
       nodeName:CONFIG.nodeName, nodeType:CONFIG.nodeType, protocolVersion:CONFIG.protocolVersion, publicKey:publicKeyJwk };
@@ -218,8 +230,9 @@
     setS($("vec-status"),"Starte Modell (erster Lauf lädt ~30 MB) …");
     try{
       if(!window.SbkimEmbedding) throw new Error("Embedding-Modul nicht geladen (web/tools/sbkim-embedding.js).");
-      log("Domänen-Text: "+DOMAIN_TEXT);
-      var vec=await window.SbkimEmbedding.embedPassage(DOMAIN_TEXT);   // Float32Array(384)
+      var embedText = descRaw() || DOMAIN_TEXT;                        // Textfeld-Inhalt, sonst heutiges Verhalten
+      log("Domänen-Text: "+embedText);
+      var vec=await window.SbkimEmbedding.embedPassage(embedText);     // Float32Array(384)
       var arr=Array.prototype.slice.call(vec);
       var l2=Math.sqrt(arr.reduce(function(a,x){return a+x*x;},0));
       if(arr.length!==384) throw new Error("Erwartet 384 Floats, bekommen "+arr.length);
@@ -293,6 +306,14 @@
   // ---- Selbstprüfung beim Laden ----
   (function init(){
     $("diag").textContent="Andock-Werkzeug geladen.";
+    // Beschreibungs-Textfeld vorbefüllen + auto-wachsen lassen (style.height = scrollHeight).
+    var dd=$("domain-desc");
+    if(dd){
+      dd.value = CONFIG.domainDescription;
+      var grow=function(){ dd.style.height="auto"; dd.style.height=dd.scrollHeight+"px"; };
+      dd.addEventListener("input", grow);
+      setTimeout(grow, 0);
+    }
     log(window.isSecureContext?"✔ Sicherer Kontext (https).":"⚠ KEIN sicherer Kontext — Pages-https nutzen.");
     log(subtle?"✔ crypto.subtle vorhanden.":"✘ crypto.subtle FEHLT.");
     log(window.SbkimEmbedding?"✔ Embedding-Modul (Modul 03) geladen.":"⚠ Embedding-Modul fehlt.");
