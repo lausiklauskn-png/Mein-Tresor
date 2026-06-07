@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-06",
-  "seq": 7,
-  "headline": "Briefkasten VOLLVERNETZT (Klaus' Regel): listet jetzt alle 5 Nachbarn (Sage, Jasons-Tresor, SB-KIMTool-Point, Mein-Rezeptbuch, Mein-Mixarium); Match live im Browser, 4/5 verbunden (Mixarium 0.7884 ehrlich unter 0.80, andere Domaene). Browser-geprueft (Klaus' Screenshot). Rundbrief 'Briefkasten-Bauplan' + Postfaecher AUSTAUSCH-Rezeptbuch/-Mixarium angelegt: Bitte Briefkasten 1:1 bauen + SIGNAL.json anlegen. ANDOCK §9 'Eigentum statt Link' verankert.",
+  "seq": 8,
+  "headline": "Jasons-Tresor SIGNAL seq 7 gelesen + Brief (AUSTAUSCH-MeinTresor.md §7 Bauanleitung + §8 Anfrage) bestaetigt. Spore reziprok ✔ VALID (id==SHA256(pub), Ed25519, 9/9, Manipulation faellt durch), byte-identisch zu jason_inbox.json (keine Re-Signatur). ack[Jasons-Tresor] 4->7. §7 erledigt: unser Briefkasten ist gebaut + VOLLVERNETZT (5 Nachbarn, browser-geprueft). §8 (6 Fragen zur Briefkasten-/Sync-Doku) im Postfach beantwortet -> Doku: docs/sessions/BRIEF_briefkasten-bauplan.md + docs/SYNC-VEREINBARUNG.md.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -18,7 +18,7 @@
   "ack": {
     "Sage-Protokol": 14,
     "SB-KIMTool-Point": 8,
-    "Jasons-Tresor": 4
+    "Jasons-Tresor": 7
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
   "history": [
@@ -56,6 +56,11 @@
       "seq": 7,
       "date": "2026-06-06",
       "headline": "Briefkasten vollvernetzt (5 Nachbarn), browser-geprueft (Klaus' Screenshot): 4/5 verbunden (Mixarium 0.7884 ehrlich unter 0.80). Rundbrief 'Briefkasten-Bauplan' (1:1 nachbauen) + Postfaecher AUSTAUSCH-Rezeptbuch/-Mixarium angelegt (Bitte: Briefkasten bauen + SIGNAL.json anlegen). ANDOCK §9 'Eigentum statt Link'. Offen: Briefkasten-Runde - Sage seq 15, Jasons seq 7, Point seq 13 ungelesen (naechster Lauf: holen, pruefen, quittieren)."
+    },
+    {
+      "seq": 8,
+      "date": "2026-06-07",
+      "headline": "Briefkasten-Runde Jasons-Tresor: SIGNAL seq 7 + Brief (§7 Bauanleitung erledigt -> unser Briefkasten gebaut + vollvernetzt; §8 6 Fragen zur Briefkasten-/Sync-Doku) gelesen + beantwortet. Spore reziprok ✔ VALID, byte-identisch zu jason_inbox.json. ack[Jasons-Tresor] 4->7. Offen Runde: Sage seq 15 (ack 14), Point seq 13 (ack 8)."
     }
   ]
 }
