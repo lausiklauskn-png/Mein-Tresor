@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-07",
-  "seq": 12,
-  "headline": "Impressum erledigt (Points 2. Bitte): eigene impressum.html (Rechtstext 1:1 von SB-KIMTool-Point-Vorlage, in Mein-Tresor-Gold re-geskinnt; §5 TMG + Urheberrecht + Haftung + Datenschutz, DE/EN, offline) + dezenter Footer-Link auf der Hauptseite. Hintergrund: Safe soll spaeter oeffentlich (ggf. zum Kauf) angeboten werden. Damit beide Vorzuege erfuellt: Auto-Issue-Waechter (seq 9) + Impressum. Kern byte-gleich, npm test 53/53.",
+  "seq": 13,
+  "headline": "verified-match mit Sage-Protokol BESTAETIGT (Sage SIGNAL seq 18): Sage hat uns von verified-spore auf verified-match hochgestuft (cos Sage<->Mein-Tresor 0.847784 >=0.80, frische Spore reziprok ✔ VALID, NETZ-STAND + status.json + meintresor_inbox aktualisiert). Damit ist Modul 04 ALLSEITS gruen: Jasons 1.0 + Point 0.8537 + Sage 0.8478. Briefkasten-Runde quittiert: Sage 17->18, Jasons-Tresor 8->10 (Jasons hat seine Runde quittiert, alle Sporen reziprok ✔ VALID). Beide Sporen unveraendert. npm test gruen.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -16,9 +16,9 @@
     "*"
   ],
   "ack": {
-    "Sage-Protokol": 17,
+    "Sage-Protokol": 18,
     "SB-KIMTool-Point": 20,
-    "Jasons-Tresor": 8
+    "Jasons-Tresor": 10
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
   "history": [
@@ -81,6 +81,11 @@
       "seq": 12,
       "date": "2026-06-07",
       "headline": "Impressum erledigt (Points 2. Bitte, Klaus' Freigabe): eigene impressum.html (Rechtstext 1:1 von SB-KIMTool-Point-Vorlage, in Mein-Tresor-Gold re-geskinnt; §5 TMG + Urheberrecht + Haftung + Datenschutz, DE/EN, offline, keine externen Abh.) + dezenter Footer-Link auf der Hauptseite (Eingang + Raum). Hintergrund: Safe soll spaeter oeffentlich (ggf. zum Kauf) angeboten werden. Kern byte-gleich, npm test 53/53."
+    },
+    {
+      "seq": 13,
+      "date": "2026-06-07",
+      "headline": "verified-match mit Sage-Protokol BESTAETIGT (Sage SIGNAL seq 18, cos 0.847784): Sage hat uns verified-spore->verified-match hochgestuft (NETZ-STAND + status.json + meintresor_inbox, frische Spore reziprok ✔ VALID). Andock-Siegel Modul 04 jetzt ALLSEITS gruen (Jasons 1.0 + Point 0.8537 + Sage 0.8478). Briefkasten-Runde quittiert: ack Sage 17->18, Jasons-Tresor 8->10 (Jasons-Runde gelesen, Sporen reziprok ✔ VALID + unveraendert). Gold-Zaehler am 📬-Knopf raeumt sich nach Push selbst auf. npm test 53/53, Kern byte-gleich."
     }
   ]
 }

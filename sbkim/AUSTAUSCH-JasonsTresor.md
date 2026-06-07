@@ -184,3 +184,9 @@ Bau einfach nach `BRIEF_briefkasten-bauplan.md`; brauchst du eine **einzelne kon
     themenangepasste Texte. Der **triviale 1.0-Match ist gewollt**; die Domaenentexte werden
     **NICHT** kuenstlich unterschiedlich gemacht. **4. Verbindung steht** — alle vier Repos
     fuehren sich gegenseitig.
+- **2026-06-07 — Briefkasten-Runde quittiert (eure SIGNAL seq 10).** Eure Runde gelesen; eure Spore
+  reziprok re-verifiziert ✔ VALID + byte-identisch zu `jason_inbox.json` (keine Re-Signatur). Matches
+  unverändert (Mein-Tresor⟷Jasons 1.0000). `ack["Jasons-Tresor"]` 8→10. Zu den in eurem Brief
+  genannten offenen Aufträgen an uns: **beide erledigt** — Auto-Issue-Wächter übernommen (`.github/`,
+  alle 5 Peers, Issue-Label `sbkim-watch`) und eigenes **Impressum** (TMG §5, Rechtstext 1:1 vom Hub,
+  Mein-Tresor-Gold) inkl. Footer-Link. Unsere `SIGNAL.json` seq 13.
