@@ -3004,6 +3004,11 @@
   #mt-toroom:hover{border-color:#6ee7d3}
   .mt-wheel,.mt-wheel:hover,.mt-wheel:active,.mt-wheel:focus,.mt-fach,.mt-fach:hover,.mt-fach:active,.mt-fach:focus{transform:translate(-50%,-50%)!important}
   @media (prefers-reduced-motion:reduce){#mt-entry.mt-gone{transition:none}.mt-wheel img{transition:none}}
+  /* Dezenter Impressum-Link unten (Pflicht-Rechtslink, sichtbar ueber Eingang UND Raum) */
+  #mt-impressum{position:fixed;left:50%;bottom:max(4px,env(safe-area-inset-bottom));transform:translateX(-50%);
+    z-index:1400;font-size:.64rem;letter-spacing:.04em;color:#9fb8b4;opacity:.5;text-decoration:none;
+    background:rgba(7,10,12,.4);padding:1px 9px;border-radius:6px}
+  #mt-impressum:hover{opacity:1;color:#cfeae6}
 </style>
 
 <div id="mt-entry" aria-label="Dreh-Safe — Eingang zum Tresor">
@@ -3031,6 +3036,7 @@
   </div>
 </div>
 <button id="mt-toroom" type="button" hidden>🔐 Tresorraum</button>
+<a id="mt-impressum" href="impressum.html" target="_blank" rel="noopener">Impressum &amp; Datenschutz</a>
 
 <script>
 (function(){

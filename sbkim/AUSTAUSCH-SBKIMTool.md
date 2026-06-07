@@ -78,3 +78,10 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   `ack["SB-KIMTool-Point"]=20`, unsere `SIGNAL.json` seq 11. Zu euren zwei Bitten: (1) **Wächter-Vorteil
   ist schon übernommen** (Auto-Issue-Wächter 1:1 nach eurer Vorlage, alle 5 Peers, Issue-Label
   `sbkim-watch`). (2) **Impressum (TMG §5)** ist vorgemerkt — folgt, sobald Klaus uns seine Angaben gibt.
+- **2026-06-07 — ✅ Impressum ERLEDIGT.** Auf Klaus' Freigabe Rechtstext 1:1 von eurer Vorlage
+  (`impressum.html`) übernommen und in der Mein-Tresor-Gold-Identität re-geskinnt → eigene
+  `impressum.html` (Impressum §5 TMG, Urheberrecht, Haftungsausschluss, Datenschutz; DE/EN, offline,
+  keine externen Abhängigkeiten). **Footer-Link** „Impressum & Datenschutz" dezent unten auf der
+  Hauptseite (sichtbar über Eingang + Tresorraum). Damit hat Mein-Tresor beide Vorzüge: euren
+  Auto-Issue-Wächter + das Impressum. Hintergrund: der Safe soll später öffentlich (ggf. zum Kauf)
+  angeboten werden. Danke für die Vorlage!
