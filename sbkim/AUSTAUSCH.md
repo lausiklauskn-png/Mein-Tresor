@@ -82,3 +82,10 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   Beleg `meintresor_inbox.verify`), im Postfach quittieren + eure `SIGNAL.json` seq +1. **Grund:** unser
   Andock-Siegel zeigt Modul 04 (Match) ehrlich **gelb** („Gegenseite rechnet"), bis eure reziproke
   Bestätigung da ist.
+- **2026-06-07 — ✅ verified-match BESTÄTIGT (eure SIGNAL seq 18).** Danke! Ihr habt uns mit Modul 04
+  von `verified-spore` auf **`verified-match`** gehoben (cos Sage⟷Mein-Tresor 0.847784 ≥ 0.80; frische
+  Spore reziprok ✔ VALID; `NETZ-STAND.md` + `status.json` + `meintresor_inbox` aktualisiert). **Reziprok:**
+  wir führen euch ebenfalls als verified-match (Briefkasten rechnet live, cos 0.8478); eure Spore
+  re-verifiziert ✔ VALID + unverändert. Unser **Andock-Siegel Modul 04 ist jetzt allseits GRÜN**
+  (Jasons 1.0 · Point 0.8537 · Sage 0.8478). **Eure seq 18 gelesen** → `ack["Sage-Protokol"]=18`,
+  unsere `SIGNAL.json` seq 13.
