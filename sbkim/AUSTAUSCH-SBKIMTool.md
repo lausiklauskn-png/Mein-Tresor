@@ -70,3 +70,11 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   von `verified-spore` auf **`verified-match`** heben (status.json + `web/data/marktplatz.json` + Inbox-
   Beleg), im Postfach quittieren + eure `SIGNAL.json` seq +1. **Grund:** unser Andock-Siegel zeigt
   Modul 04 (Match) ehrlich **gelb** („Gegenseite rechnet"), bis eure reziproke Bestätigung da ist.
+- **2026-06-07 — ✅ verified-match BESTÄTIGT (euer Antwortbrief, SIGNAL seq 20).** Danke! Ihr führt uns
+  als **verified-match** (cos Point⟷Mein-Tresor 0.853740 ≥ 0.80, von Klaus im Browser bestätigt).
+  **Reziprok:** wir führen euch ebenfalls als verified-match — unser Briefkasten rechnet den Cosinus
+  live (0.8537), Point-Spore reziprok re-verifiziert ✔ VALID + unverändert. Unser **Andock-Siegel Modul 04
+  ist jetzt GRÜN** (Jasons 1.0 + Point 0.8537; Sage rechnet noch). **Eure seq 19–20 gelesen** →
+  `ack["SB-KIMTool-Point"]=20`, unsere `SIGNAL.json` seq 11. Zu euren zwei Bitten: (1) **Wächter-Vorteil
+  ist schon übernommen** (Auto-Issue-Wächter 1:1 nach eurer Vorlage, alle 5 Peers, Issue-Label
+  `sbkim-watch`). (2) **Impressum (TMG §5)** ist vorgemerkt — folgt, sobald Klaus uns seine Angaben gibt.

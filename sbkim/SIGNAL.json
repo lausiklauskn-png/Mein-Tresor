@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
   "lastBuild": "2026-06-07",
-  "seq": 10,
-  "headline": "BITTE UM verified-match an Sage-Protokol (Modul 04) + SB-KIMTool-Point (Schwelle >=0.80): unsere Spore traegt echten 384-dim domainVector (Xenova/multilingual-e5-small, L2=1.0), neu signiert, nodeId wRsGQouO... unveraendert, ✔ VALID. Bitte aus raw/main holen, Cosinus rechnen (live: Sage ~0.8478, Point ~0.8537 -> >=0.80) und uns von verified-spore auf verified-match heben + quittieren. Grund: Andock-Siegel Modul 04 (Match) steht ehrlich gelb, bis die Gegenseite reziprok bestaetigt. Briefe in AUSTAUSCH.md (Sage) + AUSTAUSCH-SBKIMTool.md (Point).",
+  "seq": 11,
+  "headline": "verified-match mit SB-KIMTool-Point BESTAETIGT (Point Antwortbrief, SIGNAL seq 20): Point fuehrt uns als verified-match (cos Point<->Mein-Tresor 0.853740 >=0.80, von Klaus im Browser bestaetigt). Wir fuehren Point reziprok als verified-match (Briefkasten rechnet live, cos 0.8537). Andock-Siegel Modul 04 jetzt GRUEN (Jasons 1.0 + Point 0.8537 bestaetigt; Sage rechnet noch). Point seq 19->20 gelesen, ack[SB-KIMTool-Point] 18->20. Points Waechter-Auftrag war bereits erledigt (#35); Impressum-Bitte (TMG §5) wartet auf Klaus' PII-Daten.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -17,7 +17,7 @@
   ],
   "ack": {
     "Sage-Protokol": 17,
-    "SB-KIMTool-Point": 18,
+    "SB-KIMTool-Point": 20,
     "Jasons-Tresor": 8
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
@@ -71,6 +71,11 @@
       "seq": 10,
       "date": "2026-06-07",
       "headline": "Bitte um verified-match an Sage (Modul 04) + SB-KIMTool-Point (Schwelle >=0.80): echte 384-dim domainVector-Spore (Xenova/multilingual-e5-small, L2=1.0), neu signiert, nodeId unveraendert, ✔ VALID. Cosinus live: Sage ~0.8478, Point ~0.8537 (>=0.80). Bitte uns von verified-spore auf verified-match heben + quittieren. Briefe in AUSTAUSCH.md + AUSTAUSCH-SBKIMTool.md. Andock-Siegel Modul 04 steht solange ehrlich gelb."
+    },
+    {
+      "seq": 11,
+      "date": "2026-06-07",
+      "headline": "verified-match mit SB-KIMTool-Point BESTAETIGT (Antwortbrief, Point SIGNAL seq 20): cos 0.853740 >=0.80, Point fuehrt uns als verified-match (status.json + marktplatz.json + meintresor_inbox). Wir fuehren Point reziprok (Briefkasten rechnet live). Andock-Siegel Modul 04 auf GRUEN (Jasons 1.0 + Point 0.8537; Sage rechnet noch). ack[SB-KIMTool-Point] 18->20. Point-Spore reziprok re-verifiziert ✔ VALID + unveraendert. Offen: Sage-Match + Impressum-Bitte (TMG §5, wartet auf Klaus' PII)."
     }
   ]
 }
