@@ -1648,7 +1648,7 @@
       body.innerHTML = head + cards.join("") + foot;
     }
 
-    for (const id of ["sbkim-mailbox-badge", "hud-mailbox-badge"]) {
+    for (const id of ["sbkim-mailbox-badge", "hud-mailbox-badge", "mt-room-mail-badge"]) {
       const badge = document.getElementById(id);
       if (!badge) continue;
       if (unread) { badge.textContent = String(unread); badge.hidden = false; } else { badge.hidden = true; }
@@ -3009,6 +3009,13 @@
     z-index:1400;font-size:.64rem;letter-spacing:.04em;color:#9fb8b4;opacity:.5;text-decoration:none;
     background:rgba(7,10,12,.4);padding:1px 9px;border-radius:6px}
   #mt-impressum:hover{opacity:1;color:#cfeae6}
+  /* Gold-Zaehler am GESCHLOSSENEN Briefkasten: Anzahl neuer/unbearbeiteter Briefe.
+     Eck-Platzierung (wie Jasons) damit auch ohne Text sichtbar; Sage-Gold-Optik. */
+  #mt-room-mail{position:relative}
+  #mt-room-mail-badge{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9px;background:#C9A961;color:#1e1707;font-size:.7rem;font-weight:700;line-height:18px;
+    text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.55);pointer-events:none}
+  #mt-room-mail-badge[hidden]{display:none}
 </style>
 
 <div id="mt-entry" aria-label="Dreh-Safe — Eingang zum Tresor">
@@ -3171,8 +3178,10 @@
   var bar=document.getElementById('mt-room-bar'); if(!bar) return;
   var room=document.getElementById('mt-room');
   var mail=document.createElement('button'); mail.type='button'; mail.id='mt-room-mail';
-  mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span>';
+  mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span><span id="mt-room-mail-badge" hidden></span>';
   bar.insertBefore(mail, bar.firstChild);
+  // Geschlossener Briefkasten: Anzahl neuer/unbearbeiteter Briefe sofort still pruefen + Badge setzen.
+  if(typeof window.sbkimMailboxCheck==='function'){ try{ window.sbkimMailboxCheck(true); }catch(e){} }
 
   // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog).
   // Klick -> ERKLAERT das Siegel (was/warum), Andock + Identitaet/Spore — NICHT der Briefkasten
