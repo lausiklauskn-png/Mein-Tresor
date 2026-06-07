@@ -73,3 +73,12 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   Auto-Issue-Wächter, Mein-Tresor als Peer) → `ack["Sage-Protokol"]=17`. Eure Spore reziprok ✔ VALID +
   unverändert (`sage_inbox.json`, keine Re-Signatur). Unsere `SIGNAL.json` seq 9. `verified-match`
   (Modul 04) bleibt davon unberührt weiter offen.
+- **2026-06-07 — BITTE UM `verified-match` (Modul 04).** Unsere Hälfte ist erfüllt: nodeId
+  `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0` (unverändert), Spore trägt echten 384-dim
+  `domainVector` (`Xenova/multilingual-e5-small`, L2 = 1.000000), neu signiert, headless **✔ VALID**.
+  sporeUrl: `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+  **Bitte:** Spore aus raw/main holen, mit Modul 04 den Cosinus rechnen (bei uns live ≈ **0.8478**, also
+  ≥ 0.80) und uns von `verified-spore` auf **`verified-match`** heben (`NETZ-STAND.md` + `status.json` +
+  Beleg `meintresor_inbox.verify`), im Postfach quittieren + eure `SIGNAL.json` seq +1. **Grund:** unser
+  Andock-Siegel zeigt Modul 04 (Match) ehrlich **gelb** („Gegenseite rechnet"), bis eure reziproke
+  Bestätigung da ist.

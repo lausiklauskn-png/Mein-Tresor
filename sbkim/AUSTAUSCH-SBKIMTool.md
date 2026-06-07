@@ -62,3 +62,11 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   `issues:write`) — auch ohne offene Seite. Zero-dep, nur lesend. Eure reiche Karten-Ansicht hatten wir
   schon (Bauplan-Referenz). **Eure SIGNAL seq 18 gelesen** (Brief „gemeinsamer Stand" + AUFTRAG Wächter)
   → `ack["SB-KIMTool-Point"]=18`. Unsere `SIGNAL.json` seq 9.
+- **2026-06-07 — BITTE UM `verified-match` (Schwelle ≥ 0.80).** Unsere Hälfte ist erfüllt: nodeId
+  `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0` (unverändert), Spore trägt echten 384-dim
+  `domainVector` (`Xenova/multilingual-e5-small`, L2 = 1.000000), neu signiert, headless **✔ VALID**.
+  sporeUrl: `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+  **Bitte:** Spore aus raw/main holen, Cosinus rechnen (bei uns live ≈ **0.8537**, also ≥ 0.80) und uns
+  von `verified-spore` auf **`verified-match`** heben (status.json + `web/data/marktplatz.json` + Inbox-
+  Beleg), im Postfach quittieren + eure `SIGNAL.json` seq +1. **Grund:** unser Andock-Siegel zeigt
+  Modul 04 (Match) ehrlich **gelb** („Gegenseite rechnet"), bis eure reziproke Bestätigung da ist.
