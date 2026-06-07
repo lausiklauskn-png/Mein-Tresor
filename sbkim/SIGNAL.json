@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
-  "lastBuild": "2026-06-06",
-  "seq": 8,
-  "headline": "Jasons-Tresor SIGNAL seq 7 gelesen + Brief (AUSTAUSCH-MeinTresor.md §7 Bauanleitung + §8 Anfrage) bestaetigt. Spore reziprok ✔ VALID (id==SHA256(pub), Ed25519, 9/9, Manipulation faellt durch), byte-identisch zu jason_inbox.json (keine Re-Signatur). ack[Jasons-Tresor] 4->7. §7 erledigt: unser Briefkasten ist gebaut + VOLLVERNETZT (5 Nachbarn, browser-geprueft). §8 (6 Fragen zur Briefkasten-/Sync-Doku) im Postfach beantwortet -> Doku: docs/sessions/BRIEF_briefkasten-bauplan.md + docs/SYNC-VEREINBARUNG.md.",
+  "lastBuild": "2026-06-07",
+  "seq": 9,
+  "headline": "Auto-Issue-Waechter uebernommen (AUFTRAG SB-KIMTool-Point -> Sage seq 16/17): .github/sbkim-watch.mjs + workflows/sbkim-watch.yml jetzt 1:1 nach Point-Vorlage - prueft alle 5 Nachbarn zeitgesteuert (Cron 0 */6) und oeffnet/kommentiert bei Neuem ein GitHub-Issue (Label sbkim-watch, issues:write), auch ohne offene Seite. Briefkasten-UI/Design unveraendert (Klaus: passt). Briefkasten-Runde quittiert: Sage 14->17, SB-KIMTool-Point 8->18, Jasons-Tresor 7->8; alle 3 Sporen reziprok ✔ VALID + unveraendert (keine Inbox-Ersetzung). npm test gruen.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -16,9 +16,9 @@
     "*"
   ],
   "ack": {
-    "Sage-Protokol": 14,
-    "SB-KIMTool-Point": 8,
-    "Jasons-Tresor": 7
+    "Sage-Protokol": 17,
+    "SB-KIMTool-Point": 18,
+    "Jasons-Tresor": 8
   },
   "_doc": "Maschinenlesbarer Briefkasten-Aushang (INTERFACES §11.6). seq steigt +1 pro gemeldetem Bau; Gegenseite liest bei Sitzungsstart, vergleicht mit ihrem ack und quittiert. Server-los: das Pushen dieser Datei IST das Signal. ack[Nachbar] = die seq, die dieser Knoten vom Nachbarn zuletzt gelesen/quittiert hat.",
   "history": [
@@ -61,6 +61,11 @@
       "seq": 8,
       "date": "2026-06-07",
       "headline": "Briefkasten-Runde Jasons-Tresor: SIGNAL seq 7 + Brief (§7 Bauanleitung erledigt -> unser Briefkasten gebaut + vollvernetzt; §8 6 Fragen zur Briefkasten-/Sync-Doku) gelesen + beantwortet. Spore reziprok ✔ VALID, byte-identisch zu jason_inbox.json. ack[Jasons-Tresor] 4->7. Offen Runde: Sage seq 15 (ack 14), Point seq 13 (ack 8)."
+    },
+    {
+      "seq": 9,
+      "date": "2026-06-07",
+      "headline": "Auto-Issue-Waechter uebernommen (AUFTRAG SB-KIMTool-Point, AUSTAUSCH-MeinTresor.md): Waechter + Workflow 1:1 nach Point-Vorlage, prueft alle 5 Nachbarn (Cron 0 */6 + Run-Knopf) und oeffnet/kommentiert bei Neuem EIN Issue (Label sbkim-watch, issues:write) - auch ohne offene Seite. Zero-dep, nur lesend. Briefkasten-Runde quittiert: Sage 14->17 (reiche Karten-Ansicht + Auto-Issue-Waechter), SB-KIMTool-Point 8->18 (Brief: gemeinsamer Stand + AUFTRAG Waechter), Jasons-Tresor 7->8 (Vollvernetzung). Alle 3 Sporen reziprok ✔ VALID + unveraendert. Briefkasten-UI/Design unveraendert (Klaus: passt). npm test gruen."
     }
   ]
 }
