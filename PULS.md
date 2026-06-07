@@ -457,8 +457,34 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
   (PR #31). Alle gemergt.
 - **Übergabe-Brief an die nächste Sitzung:** `docs/sessions/BRIEF_briefkasten-vollverbund.md`.
 
+## Nachtrag 2026-06-07 — Auto-Issue-Wächter übernommen + Briefkasten-Runde quittiert
+
+### Getan
+- **Wächter-Verbesserung übernommen** (AUFTRAG SB-KIMTool-Point → Sage seq 16/17; Klaus' Wunsch:
+  „Verbesserungen übernehmen, insbesondere für den Wächter"). `.github/sbkim-watch.mjs` +
+  `.github/workflows/sbkim-watch.yml` **1:1 nach Point-Vorlage** ersetzt:
+  - prüft **alle 5 Nachbarn** zeitgesteuert (Cron `0 */6 * * *` + „Run workflow"-Knopf),
+  - **öffnet/kommentiert bei Neuem ein GitHub-Issue** (Label `sbkim-watch`, `issues:write`) —
+    auch wenn niemand die Seite offen hat (Auto-Issue-Wächter). Zero-dep, nur lesend.
+  - Lokal getestet: nach Quittierung „nichts Neues"; Rezeptbuch/Mixarium ehrlich „kein SIGNAL (404)".
+- **Briefkasten-Runde quittiert** (alle 3 aktiven Nachbarn): `ack` **Sage 14→17**, **SB-KIMTool-Point
+  8→18**, **Jasons-Tresor 7→8**. Alle 3 Sporen frisch geholt → reziprok **✔ VALID + unverändert**
+  (keine Inbox-Ersetzung). `SIGNAL.json` seq **8→9** (Headline + history). Postfächer Sage + Point
+  mit Verlaufs-Eintrag nachgezogen.
+- **Briefkasten-UI/Design unberührt** (Klaus: „Design ist so in Ordnung … Funktionsweise perfekt") —
+  `index.html` nicht angefasst, Kern byte-gleich (`a98a704c…`), `npm test` **53/53 grün**.
+
+### Offen / nächste Schritte
+1. **Klaus:** prüfen, ob der Wächter-Workflow nach dem Merge im Actions-Tab erscheint (1× „Run
+   workflow" zum Test); bei Neuem entsteht ein Issue mit Label `sbkim-watch`.
+2. **Mein-Rezeptbuch + Mein-Mixarium** mit dem Bauplan-Befehl aufbauen (eigene `SIGNAL.json`),
+   dann erscheinen sie im Wächter/Briefkasten als verbunden statt „kein SIGNAL".
+3. `verified-match` (Modul 04 bei Sage / Schwelle bei Point) bleibt weiter offen.
+
 ## Aktiver Übergabe-Brief
-→ **`docs/sessions/BRIEF_briefkasten-vollverbund.md`** (NEU: Runde lesen/quittieren + Rückläufe +
+→ **`docs/sessions/BRIEF_waechter-auto-issue.md`** (NEU: Auto-Issue-Wächter übernommen + Runde
+quittiert; nächste Runde + Rezeptbuch/Mixarium-Aufbau) +
+**`docs/sessions/BRIEF_briefkasten-vollverbund.md`** (Runde lesen/quittieren + Rückläufe +
 Gesicht-Feinschliff) + `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1
 nachbauen) + `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(14) oben**
 (+ `docs/SYNC-VEREINBARUNG.md`).

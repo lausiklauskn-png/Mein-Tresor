@@ -55,3 +55,10 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
   **Bitte an SB-KIMTool-Point:** unsere neu signierte Spore aus raw/main holen, Match rechnen, bei ≥0.80
   auf **`verified-match`** heben. sporeUrl:
   `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+- **2026-06-07 — ✅ AUFTRAG „Auto-Issue-Wächter" ÜBERNOMMEN.** Euren Wächter-Vorteil 1:1 übernommen
+  (`AUSTAUSCH-MeinTresor.md`, AUFTRAG A→D): `.github/sbkim-watch.mjs` + `.github/workflows/sbkim-watch.yml`
+  nach eurer Vorlage, CONFIG `SELF="Mein-Tresor"` + `PEERS` = alle 5 anderen Knoten. Prüft zeitgesteuert
+  (Cron `0 */6` + „Run workflow") und öffnet/kommentiert bei Neuem **ein** Issue (Label `sbkim-watch`,
+  `issues:write`) — auch ohne offene Seite. Zero-dep, nur lesend. Eure reiche Karten-Ansicht hatten wir
+  schon (Bauplan-Referenz). **Eure SIGNAL seq 18 gelesen** (Brief „gemeinsamer Stand" + AUFTRAG Wächter)
+  → `ack["SB-KIMTool-Point"]=18`. Unsere `SIGNAL.json` seq 9.

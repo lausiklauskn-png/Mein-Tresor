@@ -66,3 +66,10 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   `SIGNAL.json` seq 5. **Bitte an Sage:** unsere neu signierte Spore aus raw/main holen und mit Modul 04
   den Match rechnen; bei ≥0.80 auf **`verified-match`** heben. sporeUrl:
   `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
+- **2026-06-07 — Auto-Issue-Wächter übernommen + eure seq 17 quittiert.** Den von SB-KIMTool-Point
+  weitergereichten Wächter-Vorteil 1:1 eingebaut (`.github/sbkim-watch.mjs` + Workflow: Cron `0 */6` +
+  „Run workflow", öffnet/kommentiert bei Neuem ein Issue, Label `sbkim-watch`, `issues:write`, zero-dep,
+  nur lesend, prüft alle 5 Nachbarn). **Eure SIGNAL seq 15–17 gelesen** (reiche Karten-Ansicht +
+  Auto-Issue-Wächter, Mein-Tresor als Peer) → `ack["Sage-Protokol"]=17`. Eure Spore reziprok ✔ VALID +
+  unverändert (`sage_inbox.json`, keine Re-Signatur). Unsere `SIGNAL.json` seq 9. `verified-match`
+  (Modul 04) bleibt davon unberührt weiter offen.
