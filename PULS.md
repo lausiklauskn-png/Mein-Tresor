@@ -500,6 +500,43 @@ Danach (später): echter `domainVector` via Browser/Sage → Re-Sign → `verifi
 1. `status.json` auf den Gesamtstand bringen (Match allseits, volles Netz, Wächter/Impressum/Badge).
 2. Optional: Mixarium-Match steigt automatisch, falls sich dessen Domäne/Vektor mal ändert (Live-Rechnung).
 
+## Nachtrag 2026-06-07 — Semantik-Textfeld (Andock) + Mycel-Erklärseite (aus Sage)
+
+### Auftrag (reduziert)
+Nur zwei Sage-Neuerungen holen: (1) ein Semantik-Beschreibungs-Textfeld im Andock-Werkzeug
+(für besseres Finden), (2) die Mycel-/Sicherheits-Erklärung als eigene Seite + ein minimaler
+Link. **Nicht** angetastet: Siegel-Dialog-Design/-Prosa, Krypto-/Signier-Pfad, Module 16/18.
+
+### Stolperstein (ehrlich vermerkt)
+Die Sitzung startete auf einem **veralteten Branch** (41 Commits hinter `main`); dort fehlten
+`werkzeuge/andock.html`, `web/tools/sbkim-embedding.js`, `#mt-seal-dialog`. **Korrigiert:** alle
+Arbeit auf **frischem `main`** neu aufgesetzt — wo das echte Browser-Andock-Werkzeug existiert,
+ließ sich Schritt (1) wie in Sage über den **vorhandenen** Pfad bauen (keine neue Krypto).
+
+### Getan
+- **(1) `werkzeuge/andock.html`** — neues auto-wachsendes `<textarea id="domain-desc">` in Teil B
+  (zwischen ① und ②), vorbefüllt mit `CONFIG.domainDescription` (auf reichen Default gesetzt),
+  Hinweis + Placeholder wortgleich aus Sage. **Verdrahtung über den bestehenden Pfad:**
+  `#btn-vec` bettet jetzt den Textfeld-Inhalt ein (`embedPassage`), leer → heutiges `DOMAIN_TEXT`;
+  `buildSpore` schreibt `domainDescription` aus dem Textfeld, leer → `CONFIG.domainDescription`.
+  Reihenfolge unverändert: ① laden → (tippen) → ② Vektor → ③ neu signieren. **Gleiche nodeId,
+  keine neue Krypto.** Reicher Default auch in `scripts/generate_spore.mjs` (konsistent).
+- **(2) `sicherheit.html`** (neu, Repo-Root, Mein-Tresor-Skin, offline): Mycel-Erklärung
+  **wortgleich** aus Sage. „zurück"-Link blendet sich im Overlay selbst aus.
+- **(2) Ein minimaler Link** im `#mt-seal-dialog` (direkt unter „🔑 Eigene Identität …", gleicher
+  Stil): „🛡 So funktioniert das Mycel & wie du geschützt bist →". Öffnet als **In-Page-Overlay**
+  (`<dialog id="mt-mycel-overlay">` + iframe; ✕/Esc/Backdrop schließt; Rückfall neuer Tab).
+  **Siegel-Design/-Prosa sonst unberührt.**
+- **`npm test` 53/53 grün** (Kern byte-gleich; Test prüft den Beschreibungstext nicht).
+
+### Offen / wartet auf Klaus
+1. **Sichtprüfung im Browser** (Galaxy Tab S6) — *ungeprüft, wartet auf Klaus*:
+   a) Andock-Werkzeug: Textfeld erscheint, wächst beim Tippen; ②→③ erzeugt Spore mit der neuen
+   Beschreibung. b) Siegel öffnen → „🛡 …Mycel…" → Overlay zeigt `sicherheit.html`, schließt sauber.
+2. **Spore neu signieren**, damit die reiche Beschreibung veröffentlicht ist: Andock-Werkzeug
+   Teil B (Identität laden → ② → ③) ODER `SBKIM_NODE_KEY=… npm run demo`. Hier bewusst **nicht**
+   gelaufen (kein Secret im Repo; flüchtige nodeId wäre falsch).
+
 ## Aktiver Übergabe-Brief
 → **`docs/sessions/BRIEF_waechter-auto-issue.md`** (NEU: Auto-Issue-Wächter übernommen + Runde
 quittiert; nächste Runde + Rezeptbuch/Mixarium-Aufbau) +

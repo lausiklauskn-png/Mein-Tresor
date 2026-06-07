@@ -22,7 +22,8 @@ const CONFIG = {
   nodeName: "Mein-Tresor",
   nodeType: "hybrid",                       // provider | seeker | hybrid
   domain: "Mein-Tresor-Bibliothek",
-  domainDescription: "Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
+  // Semantik-Beschreibung (für besseres Finden im Mycel) — gleich gehalten mit werkzeuge/andock.html.
+  domainDescription: "Mein-Tresor ist ein Endknoten im SBKIM-Mycel zum sicheren Verwahren: er verschlüsselt und speichert JSON-Dateien und SBKIM-Schlüssel offline im Browser (AES-256-GCM), Tresor und Bibliothek zugleich. Backups lassen sich passwortgeschützt exportieren und auf einem anderen Gerät zurückspielen; der private Schlüssel verlässt den Browser nie. Verwandt mit dem Schwester-Tresor Jasons-Tresor und angedockt ans Netz aus Sage, SB-KIMTool-Point, Rezeptbuch und Mixarium.",
   domainKeywords: ["Tresor", "Bibliothek", "JSON", "SBKIM-Schlüssel", "Verschlüsselung", "Endknoten"],
   // Stamm = unser Kern-Angebot, Gast = was Forker/Gäste hier tun (Sage-Hinweis B, ANDOCK §2)
   stammCategories: ["JSON-Tresor", "Jasons-Bibliothek", "Schlüssel-Backup", "AES-256-GCM-Verschlüsselung"],
