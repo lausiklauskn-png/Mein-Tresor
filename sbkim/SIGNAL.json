@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
-  "lastBuild": "2026-06-07",
-  "seq": 14,
-  "headline": "Briefkasten-Runde: Mein-Rezeptbuch (SIGNAL seq 2) + Mein-Mixarium (SIGNAL seq 1) haben gebaut -> JETZT VOLLES NETZ (alle 5 Nachbarn fuehren SIGNAL.json). Quittiert: ack[Mein-Rezeptbuch]=2 (Spore ✔ VALID + aktuell id uOpUBezU..., Cosinus 0.813698 -> verified-match, rezeptbuch_inbox.verify.md; 3 Fragen mit JA beantwortet), ack[Mein-Mixarium]=1 (Spore ✔ VALID id B7Fke9C..., Cosinus 0.788402 EHRLICH unter 0.80 -> verified-SPORE, andere Domaene, mixarium_inbox.verify.md), ack[SB-KIMTool-Point] 20->21 (Point hat Rezeptbuch aufgenommen). npm test 53/53.",
+  "lastBuild": "2026-06-26",
+  "seq": 15,
+  "headline": "Briefkasten-Hygiene eingefuehrt: Brief-Kette in docs/sessions schlank gehalten (zwei erledigte/ueberholte Briefe raus, Git = Archiv), neue Regel in CLAUDE.md. Uebergabebrief an Schwester Jasons-Tresor (Postfach AUSTAUSCH-JasonsTresor.md §5): bitte dasselbe im eigenen Depot aufraeumen.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -93,6 +93,11 @@
       "seq": 14,
       "date": "2026-06-07",
       "headline": "VOLLES NETZ-Runde: auch Mein-Rezeptbuch (SIGNAL seq 2) UND Mein-Mixarium (SIGNAL seq 1) haben gebaut -> alle 5 Nachbarn fuehren jetzt SIGNAL.json. Quittiert: (1) Mein-Rezeptbuch ack=2 - Spore ✔ VALID + aktuell (id uOpUBezU..., byte-identisch zur Inbox), Cosinus 0.813698 >=0.80 -> verified-match (rezeptbuch_inbox.verify.md), 3 Fragen ihres Briefs mit JA beantwortet. (2) Mein-Mixarium ack=1 - Spore ✔ VALID (id B7Fke9C...), Cosinus 0.788402 EHRLICH unter 0.80 -> verified-SPORE (andere Domaene, mixarium_inbox.verify.md). (3) SB-KIMTool-Point ack 20->21 (Point hat Rezeptbuch aufgenommen) + Sage-Protokol ack 18->20 (Sage hat Mixarium aufgenommen). npm test 53/53, Kern byte-gleich."
+    },
+    {
+      "seq": 15,
+      "date": "2026-06-26",
+      "headline": "Briefkasten-Hygiene: Brief-Kette schlank gehalten (zwei erledigte/ueberholte Briefe entfernt, Git = Archiv) + neue Regel in CLAUDE.md. Uebergabebrief an Jasons-Tresor (AUSTAUSCH-JasonsTresor.md §5): dasselbe Aufraeumen im eigenen Depot."
     }
   ]
 }

@@ -537,6 +537,26 @@ ließ sich Schritt (1) wie in Sage über den **vorhandenen** Pfad bauen (keine n
    Teil B (Identität laden → ② → ③) ODER `SBKIM_NODE_KEY=… npm run demo`. Hier bewusst **nicht**
    gelaufen (kein Secret im Repo; flüchtige nodeId wäre falsch).
 
+## Nachtrag 2026-06-26 — Briefkasten gelesen + aufgeräumt + Brief an Jasons-Tresor
+
+### Getan
+- **Briefkasten gelesen** (SBKIM `sbkim/*` + Brief-Kette `docs/sessions/*`). SBKIM-Briefkasten
+  bleibt komplett (lebende Datenverträge).
+- **Neue Regel „Briefkasten-Hygiene"** in `CLAUDE.md` verankert (ersetzt „alte Briefe bleiben
+  liegen"): bei Sitzungsstart lesen + schlank halten; nur die Brief-Kette ausmisten, SBKIM bleibt.
+- **Zwei erledigte/überholte Notiz-Briefe gelöscht:** `BRIEF_mein-tresor-schale.md` (Schale
+  gebaut) + `BRIEF_feinschliff.md` (in neuerem Brief enthalten). **Git behält beide.** Querverweis
+  im Netz-Brief nachgezogen. Behalten: `BRIEF_start.md`, aktiver Brief, `VORLAGE_BRIEF.md` —
+  sowie referenzierte Lebend-Doku (z. B. `BRIEF_briefkasten-bauplan.md`, in AUSTAUSCH §4 verlinkt).
+- **Übergabebrief an Schwester Jasons-Tresor** ins Postfach `sbkim/AUSTAUSCH-JasonsTresor.md`
+  (§5) gelegt: Vorschlag, dieselbe Hygiene im eigenen Depot zu fahren. `SIGNAL.json` **seq 15**.
+- **Hinweis:** Dieser Branch war auf einem alten `main` aufgesetzt; sauber auf den aktuellen
+  `main` neu aufgesetzt und die Änderungen frisch eingetragen (nichts Neueres überschrieben).
+
+### Offen / nächste Schritte
+1. Bei jedem Sitzungsstart die Briefkasten-Hygiene mitlaufen lassen (CLAUDE.md).
+2. Nächste Runde: weitere überholte Briefe der Kette prüfen (vorher grep auf Quer-Verweise).
+
 ## Aktiver Übergabe-Brief
 → **`docs/sessions/BRIEF_waechter-auto-issue.md`** (NEU: Auto-Issue-Wächter übernommen + Runde
 quittiert; nächste Runde + Rezeptbuch/Mixarium-Aufbau) +

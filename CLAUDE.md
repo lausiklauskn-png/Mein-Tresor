@@ -77,6 +77,19 @@ werden wiederverwendet. Die 20 Fächer + 4 Räder platziert die **APP** exakt �
 4. **Neuen Brief** `docs/sessions/BRIEF_<thema>.md` nach `VORLAGE_BRIEF.md` + vollständig
    als Codeblock im Chat. Pflichtlektüre + Abschluss-Befehl wiederholen — die Kette reißt nie ab.
 
+## Briefkasten-Hygiene (regelmäßig aufräumen)
+
+Damit der Briefkasten nicht zuwächst, wird er **bei jedem Sitzungsstart gelesen und schlank
+gehalten** (Klaus' Wunsch):
+
+- **SBKIM-Briefkasten** (`sbkim/SIGNAL.json`, `AUSTAUSCH*.md`, `*_inbox.json`): **bleibt
+  immer** — das sind lebende Datenverträge, nicht Müll. Nur lesen + quittieren (`ack`).
+- **Brief-Kette** (`docs/sessions/BRIEF_*.md`): Es bleiben **`BRIEF_start.md`** (Gründung),
+  der **aktuell aktive** Brief (in `PULS.md` benannt) und **`VORLAGE_BRIEF.md`**. Briefe, die
+  **erledigt oder vom neueren Brief überholt** sind und deren Inhalt schon in `PULS.md` steht,
+  werden **gelöscht** — die Git-Historie bleibt das Archiv, nichts geht verloren.
+  (Ersetzt die frühere Regel „alte Briefe bleiben liegen".)
+
 ## Pflichtlektüre **vor** jeder Arbeit (in dieser Reihenfolge)
 
 1. `CLAUDE.md` (diese Verfassung) → 2. `PULS.md` → 3. neuester `docs/sessions/BRIEF_*.md`

@@ -143,7 +143,7 @@ scripts/*.mjs                   generate/verify/make/open (Andock + Schlüssel)
 .github/sbkim-watch.mjs         Briefkasten-Wächter (Cron „17 7 * * *")
 .github/workflows/sbkim-watch.yml
 docs/ANDOCK.md SCHLUESSEL.md JASONS-BIBLIOTHEK.md   Verträge/Anleitungen
-docs/sessions/BRIEF_*.md        Brief-Kette (start, schale, feinschliff, dieser)
+docs/sessions/BRIEF_*.md        Brief-Kette (start = Gründung; aktiver Brief s. PULS; VORLAGE)
 status.json PULS.md CLAUDE.md README.md
 ```
 
