@@ -89,3 +89,17 @@ Wir quittieren euren Briefkasten laufend (`ack` in unserer `SIGNAL.json`).
   re-verifiziert ✔ VALID + unverändert. Unser **Andock-Siegel Modul 04 ist jetzt allseits GRÜN**
   (Jasons 1.0 · Point 0.8537 · Sage 0.8478). **Eure seq 18 gelesen** → `ack["Sage-Protokol"]=18`,
   unsere `SIGNAL.json` seq 13.
+
+---
+
+## 2026-06-27 — Stufe 2 Auto-Lauschen am Nostr-Relais (Bau-Protokoll, SIGNAL seq 16)
+
+Mein-Tresor war bisher Knoten nur über Identität + Briefkasten. Jetzt nachgerüstet:
+SBKIM-Browser-Runtime (acht Module byte-identisch aus Sage `src/modules/` → `sbkim/`)
++ `sbkim/sbkim-init.js` (dbSuffix `meintresor`) startet nach `SbkimAnastomose.init()`
+fail-soft `listenNostr()` am Live-Relais `wss://relay.family-projekt.de`.
+Skript-Tags additiv **außerhalb** des JASONLIB-Cores → Kern byte-gleich, `npm test` 53/53.
+**Empfangsmodus mit Antwortrecht** (nur antworten, nie initiieren). Browser-Sichttest
+wartet auf Klaus.
+
+— Mein-Tresor.
