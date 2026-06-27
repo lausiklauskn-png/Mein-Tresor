@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
-  "lastBuild": "2026-06-26",
-  "seq": 15,
-  "headline": "Briefkasten-Hygiene eingefuehrt: Brief-Kette in docs/sessions schlank gehalten (zwei erledigte/ueberholte Briefe raus, Git = Archiv), neue Regel in CLAUDE.md. Uebergabebrief an Schwester Jasons-Tresor (Postfach AUSTAUSCH-JasonsTresor.md §5): bitte dasselbe im eigenen Depot aufraeumen.",
+  "lastBuild": "2026-06-27",
+  "seq": 16,
+  "headline": "Stufe 2 Auto-Lauschen am Nostr-Relais (wss://relay.family-projekt.de): SBKIM-Browser-Runtime nachgeruestet — acht Module (01/02/03/04/05/05b/07 + noble) byte-identisch aus Sage src/modules/ nach sbkim/ kopiert + sbkim/sbkim-init.js (dbSuffix meintresor) startet nach Anastomose.init() fail-soft listenNostr(). Skript-Tags additiv ausserhalb des JASONLIB-Cores (Kern byte-gleich, npm test 53/53). Empfangsmodus mit Antwortrecht. Browser-Sichttest wartet auf Klaus.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -98,6 +98,11 @@
       "seq": 15,
       "date": "2026-06-26",
       "headline": "Briefkasten-Hygiene: Brief-Kette schlank gehalten (zwei erledigte/ueberholte Briefe entfernt, Git = Archiv) + neue Regel in CLAUDE.md. Uebergabebrief an Jasons-Tresor (AUSTAUSCH-JasonsTresor.md §5): dasselbe Aufraeumen im eigenen Depot."
+    },
+    {
+      "seq": 16,
+      "date": "2026-06-27",
+      "headline": "Stufe 2 Auto-Lauschen am Nostr-Relais (wss://relay.family-projekt.de): SBKIM-Browser-Runtime nachgeruestet — acht Module (01/02/03/04/05/05b/07 + noble) byte-identisch aus Sage src/modules/ nach sbkim/ + sbkim/sbkim-init.js (dbSuffix meintresor) startet nach Anastomose.init() fail-soft listenNostr(). Additiv ausserhalb JASONLIB-Core (byte-gleich, npm test 53/53). Empfangsmodus mit Antwortrecht. Browser-Sichttest wartet auf Klaus."
     }
   ]
 }
