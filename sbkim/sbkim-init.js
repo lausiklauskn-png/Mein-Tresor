@@ -45,6 +45,21 @@
         if (!window.SbkimStorage) return; // Module nicht geladen — still aussteigen.
         await SbkimStorage.init({ dbSuffix: DB_SUFFIX });
 
+        // Modul 17 Floating-Widget — schlankes Lampen-Design (LEBT/VERKEHR/FREMD),
+        // self-mountend, verschiebbar, schließbar. KEIN Siegel-Slot: das volle
+        // Siegel bleibt das vorhandene statische #sbkim-siegel-badge dieses
+        // Tresors (kein ID-Konflikt). Klick auf VERKEHR zeigt die letzten 10
+        // Handshakes/Knoten. Fail-soft.
+        if (window.SbkimWidget && typeof SbkimWidget.init === "function") {
+          try {
+            await SbkimWidget.init({
+              slots: ["lebt", "verkehr", "fremd"],
+              allowedOrigins: ["https://lausiklauskn-png.github.io"],
+              repoUrl: "https://github.com/lausiklauskn-png/Mein-Tresor",
+            });
+          } catch (e) { console.warn("[MT-SBKIM] Widget-Init übersprungen:", e); }
+        }
+
         // Modul 07 Apoptose stellt die aktive Knoten-Identität sicher
         // (Ed25519 lokal in IndexedDB — nichts verlässt das Gerät).
         if (window.SbkimApoptose && typeof SbkimApoptose.init === "function") {
@@ -63,7 +78,11 @@
             window.SbkimNostrRelay) {
           try {
             SbkimAnastomose.listenNostr()
-              .then(function () { console.info("[MT-SBKIM] Auto-Lauschen aktiv (Empfangsmodus mit Antwortrecht)."); })
+              .then(function () {
+                console.info("[MT-SBKIM] Auto-Lauschen aktiv (Empfangsmodus mit Antwortrecht).");
+                // Sichtbar im Widget: VERKEHR-Lampe ruhig grün (= lauscht).
+                try { window.dispatchEvent(new CustomEvent("sbkim:nostr-listening", { detail: { active: true } })); } catch (e) {}
+              })
               .catch(function (e) { console.warn("[MT-SBKIM] Auto-Lauschen übersprungen:", e); });
           } catch (e) { console.warn("[MT-SBKIM] Auto-Lauschen übersprungen:", e); }
         }
