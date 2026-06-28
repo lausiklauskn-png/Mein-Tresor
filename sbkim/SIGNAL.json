@@ -1,8 +1,8 @@
 {
   "node": "Mein-Tresor",
-  "lastBuild": "2026-06-27",
-  "seq": 16,
-  "headline": "Stufe 2 Auto-Lauschen am Nostr-Relais (wss://relay.family-projekt.de): SBKIM-Browser-Runtime nachgeruestet — acht Module (01/02/03/04/05/05b/07 + noble) byte-identisch aus Sage src/modules/ nach sbkim/ kopiert + sbkim/sbkim-init.js (dbSuffix meintresor) startet nach Anastomose.init() fail-soft listenNostr(). Skript-Tags additiv ausserhalb des JASONLIB-Cores (Kern byte-gleich, npm test 53/53). Empfangsmodus mit Antwortrecht. Browser-Sichttest wartet auf Klaus.",
+  "lastBuild": "2026-06-28",
+  "seq": 17,
+  "headline": "Modul 23 RENDEZVOUS + oeffentlicher Knopf Mit dem Netz verbinden ausgerollt. sbkim/23_rendezvous.js + 23_rendezvous_ui.js byte-1:1 aus Sage; index.html laedt beide vor sbkim-init.js, das SbkimRendezvousUI mountet (nodeName Mein Tresor, createIdentity ueber vorhandenes Embedding+Spore mit Tresor-Domaenen-Beschreibung). Nutzt den vorhandenen Stack (01-05/05b/07) - kein Doppel-Laden, JASONLIB-Kern unangetastet. Loest die Adress-Wand per Raum sbkim-rdv. npm test 53/53, Headless 7/7. Verfassungstreu (nutzer-ausgeloest). Branch vorher frisch auf origin/main gesetzt (Achtsamkeit). Browser-Live-Test wartet auf Klaus.",
   "sporeUrl": "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json",
   "nodeId": "wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0",
   "mailboxes": {
@@ -103,6 +103,11 @@
       "seq": 16,
       "date": "2026-06-27",
       "headline": "Stufe 2 Auto-Lauschen am Nostr-Relais (wss://relay.family-projekt.de): SBKIM-Browser-Runtime nachgeruestet — acht Module (01/02/03/04/05/05b/07 + noble) byte-identisch aus Sage src/modules/ nach sbkim/ + sbkim/sbkim-init.js (dbSuffix meintresor) startet nach Anastomose.init() fail-soft listenNostr(). Additiv ausserhalb JASONLIB-Core (byte-gleich, npm test 53/53). Empfangsmodus mit Antwortrecht. Browser-Sichttest wartet auf Klaus."
+    },
+    {
+      "seq": 17,
+      "date": "2026-06-28",
+      "headline": "Modul 23 Rendezvous + oeffentlicher Knopf ausgerollt (sbkim/23_rendezvous(.ui).js byte-1:1 aus Sage; index.html + sbkim-init.js mountet UI, nodeName Mein Tresor). Vorhandener Stack genutzt, JASONLIB-Kern unangetastet. npm test 53/53, Headless 7/7. Browser-Sichttest wartet auf Klaus."
     }
   ]
 }
