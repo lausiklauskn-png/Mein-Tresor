@@ -4,8 +4,8 @@ Leitfaden für jede Sitzung an **Mein-Tresor**.
 
 > Re-Skin von `Jasons-Tresor/CLAUDE.md` (1:1-Leitplanken übernommen, Repo-Spezifika
 > angepasst). Die Leitplanken sind **unverändert**: Ehrlichkeit, echte Krypto,
-> `npm test` = Beweis, kein PII, offline, „Merge entscheidet Klaus", Plan-vor-Code,
-> Brief-Kette.
+> `npm test` = Beweis, kein PII, offline, Selbst-Merge nach Freibrief (Klaus
+> 2026-06-28, netzweit), Plan-vor-Code, Brief-Kette.
 
 ## Was dieses Repo ist
 
@@ -52,8 +52,17 @@ npm run verify   # eigene Spore reziprok verifizieren (✔ VALID)
 ## Branch & PR-Workflow (verbindlich)
 
 - Entwicklung auf `claude/<scope>`. Ein Commit pro abgegrenzter Aufgabe, semantische Nachricht.
-- Draft-PR mit Test-Plan. **Merge entscheidet Klaus.** Niemals auf einen anderen als den
-  vorgegebenen Branch pushen ohne ausdrückliche Erlaubnis.
+- **Selbst-Merge-Freibrief (Klaus 2026-06-28, netzweit für ALLE Repos — Mixarium und
+  andere eingeschlossen):** Die Sitzung merget ihre **eigenen** PRs **selbstständig**
+  in `main`, sobald sie getestet (`npm test`/Headless grün; bei reinen Doku-/byte-Kopie-
+  Änderungen Drift-Guard grün), abgegrenzt und nicht architektonisch zweifelhaft sind —
+  **ohne auf „X mergen" zu warten** (Draft-PR → ready → squash-merge). **NICHT** automatisch
+  mergen bei echtem Zweifel (Richtungsentscheid, schwer umkehrbar, mehrere gleich gute Wege)
+  ODER wenn Klaus ausdrücklich vorher draufschauen will. Klaus' Browser-Sichttest bleibt davon
+  unberührt (headless ersetzt ihn nicht); die Leitplanken (Ehrlichkeit, echte Krypto,
+  `npm test`/Beweis, kein PII, offline, Plan-vor-Code, Brief-Kette) bleiben **immer** unberührt
+  — der Freibrief betrifft nur den Merge-Schritt. Niemals auf einen anderen als den vorgegebenen
+  Branch pushen ohne ausdrückliche Erlaubnis.
 
 ## Schale (das NEUE Gesicht) — erst nach Klaus' Bildern
 
