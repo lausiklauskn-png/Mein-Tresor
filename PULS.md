@@ -3,6 +3,29 @@
 > Kurz-Puls für den nächsten Sitzungsstart: **was getan, was offen, nächste Schritte.**
 > Wahrheitsquelle für den Real-Anteil bleibt `status.json`. Datum `YYYY-MM-DD`.
 
+## Stand: 2026-06-28 — Modul 23 Rendezvous + öffentlicher „🌐 Mit dem Netz verbinden"-Knopf
+
+Branch `claude/module-23-rendezvous-rollout-zqaa8u` (zuerst frisch auf `origin/main`
+gesetzt — Achtsamkeit). Rollout des gemeinsamen Raums (Modul 23 aus Sage) auf den
+vorhandenen Andock-Stack:
+
+- `sbkim/23_rendezvous.js` + `sbkim/23_rendezvous_ui.js` — **byte-1:1** aus
+  `Sage-Protokol/src/modules/23_rendezvous(.ui).js`.
+- `index.html` lädt beide vor `sbkim/sbkim-init.js`; `sbkim-init.js` mountet
+  `SbkimRendezvousUI` **unabhängig** von der Andock-Kette (nodeName „Mein Tresor",
+  `createIdentity` über vorhandenes `SbkimEmbedding`+`SbkimSpore` mit der Tresor-
+  Domänen-Beschreibung → echter `domainVector` statt Demo-Stub beim Verbinden).
+- **Kein Doppel-Laden**, der Stack (01–05/05b/07) war schon da; **JASONLIB-Kern
+  unangetastet** (nur sbkim-Skript-Tags + sbkim/-Dateien dazu).
+- Löst die Adress-Wand per Raum `sbkim-rdv`.
+- **Verifikation:** `npm test` **53/53** grün (Tresor-Logik/Kern intakt),
+  Headless-Chromium **7/7** (Knopf mountet, Panel toggelt, `_meta.nodeName`
+  „Mein Tresor"). §11.6 SIGNAL seq 17.
+
+**Offen:** Browser-Live-Test durch Klaus (z. B. Mein-Tresor ↔ Jasons-Tresor
+[Schwester, hoher Match] oder ↔ Sage → „ETABLIERT"). Verfassungstreu (nutzer-
+ausgelöst). Schwester **Jasons-Tresor** als Nächstes (nahezu identisch).
+
 ## Stand: 2026-06-05 — Bootstrap (erste Sitzung)
 
 ### Getan

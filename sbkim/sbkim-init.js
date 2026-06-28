@@ -92,9 +92,48 @@
     })();
   }
 
+  // ── Modul 23 Rendezvous — öffentlicher Floating-Knopf „🌐 Mit dem Netz
+  // verbinden" (Klaus' Festlegung 2026-06-28: sofort öffentlich, eigener kleiner
+  // Floating-Knopf). UNABHÄNGIG von der Andock-Kette gemountet (soll immer
+  // erscheinen). Mechanik = geteiltes Modul 23 (SbkimRendezvous), das den
+  // vorhandenen Stack lazy nutzt; createIdentity erzeugt die lebende Spore bei
+  // Bedarf (Modul 03 Embedding + Modul 02 generateOwnSpore) mit der Tresor-
+  // Domänen-Beschreibung. Verfassungstreu: nutzer-ausgelöst, kein Auto-Connect.
+  var RDV_CFG = {
+    nodeName: "Mein Tresor",
+    domain: "Mein-Tresor-Bibliothek",
+    endpoint: "https://lausiklauskn-png.github.io/Mein-Tresor/",
+    nodeType: "hybrid",
+    domainDescription: "Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
+    domainKeywords: ["Tresor", "Verschlüsselung", "AES", "Geheimfach", "Bibliothek", "Offline", "Datenschutz", "JSON", "Schlüssel"],
+  };
+  function rdvCreateIdentity() {
+    if (!window.SbkimEmbedding || !window.SbkimSpore) {
+      return Promise.reject(new Error("Module 02/03 nicht geladen."));
+    }
+    return window.SbkimEmbedding.init()
+      .then(function () {
+        return window.SbkimEmbedding.embedPassage(RDV_CFG.domainDescription + ". " + RDV_CFG.domainKeywords.join(", "));
+      })
+      .then(function (vec) {
+        return window.SbkimSpore.generateOwnSpore({
+          domain: RDV_CFG.domain, endpoint: RDV_CFG.endpoint, nodeType: RDV_CFG.nodeType, nodeName: RDV_CFG.nodeName,
+          domainDescription: RDV_CFG.domainDescription, domainKeywords: RDV_CFG.domainKeywords, domainVector: Array.from(vec),
+        });
+      });
+  }
+  function mountRendezvous() {
+    if (!window.SbkimRendezvousUI) return;
+    try {
+      window.SbkimRendezvousUI.init({ nodeName: RDV_CFG.nodeName, corner: "bl", createIdentity: rdvCreateIdentity });
+      console.info("[MT-SBKIM] Rendezvous-UI gemountet (öffentlicher 🌐-Knopf).");
+    } catch (e) { console.warn("[MT-SBKIM] Rendezvous-UI übersprungen:", e); }
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
+    document.addEventListener("DOMContentLoaded", function () { boot(); mountRendezvous(); });
   } else {
     boot();
+    mountRendezvous();
   }
 })();
