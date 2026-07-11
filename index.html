@@ -3240,6 +3240,10 @@
      des JASONLIB-Cores. Acht Module byte-identisch aus Sage src/modules/ kopiert.
      05b als type=module (importiert noble relativ). sbkim-init.js startet nach
      Anastomose.init() fail-soft listenNostr() — Empfangsmodus mit Antwortrecht. -->
+<!-- Identitäts-Isolierung: eigene IndexedDB-Schublade "sbkim_meintresor", VOR dem
+     ersten SBKIM-Modul, damit Modul 01 die richtige DB öffnet (keine Kollision auf
+     dem geteilten GitHub-Pages-Origin). -->
+<script>window.SBKIM_DB_SUFFIX="meintresor";</script>
 <script src="sbkim/01_storage.js"></script>
 <script src="sbkim/02_spore.js"></script>
 <script src="sbkim/03_embedding.js"></script>
