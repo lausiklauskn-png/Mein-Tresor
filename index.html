@@ -3245,6 +3245,11 @@
      dem geteilten GitHub-Pages-Origin). -->
 <script>window.SBKIM_DB_SUFFIX="meintresor";</script>
 <script src="sbkim/01_storage.js"></script>
+<!-- Modul 20 Schlüssel-Safe: verschlüsselte Geheimnis-Ablage (putSecret/getSecret,
+     PBKDF2-600k+AES-GCM-256). Der KI-Richter im 🌐-Raum-Panel (Modul 23 UI) nutzt
+     ihn für „🔒 im Tresor merken / 🔓 entsperren" des BYOK-KI-Schlüssels. Byte-1:1
+     aus Sage src/modules/20_schluessel_safe.js. Ohne Modul 20 fail-soft (Feature aus). -->
+<script src="sbkim/20_schluessel_safe.js"></script>
 <script src="sbkim/02_spore.js"></script>
 <script src="sbkim/03_embedding.js"></script>
 <script src="sbkim/04_match.js"></script>
