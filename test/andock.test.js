@@ -45,7 +45,7 @@ test("eigene Spore traegt die 9 Pflichtfelder + Tresor-Identitaet", () => {
     assert.ok(f in spore, `Pflichtfeld fehlt: ${f}`);
   }
   assert.equal(spore.nodeName, "Mein-Tresor");
-  assert.equal(spore.protocolVersion, "0.1");
+  assert.equal(spore.protocolVersion, "0.2");
   // domainVector ist fuer verified-spore OPTIONAL (Sage/Point bestaetigt); Pflicht erst fuer
   // verified-match. Wenn vorhanden, muss er 384-dim sein. Unsere browser-signierte Identitaet
   // (sbkim/spore.json) traegt ihn (noch) nicht -> Stufe verified-spore.
