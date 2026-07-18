@@ -15,6 +15,7 @@
  *   getNodeId() -> Promise<string>
  *   getPublicKeyJwk() -> Promise<JsonWebKey>
  *   generateOwnSpore(meta, key?) -> Promise<SporeJson>
+ *   regenerateOwnSpore(updates, key?) -> Promise<SporeJson>  // gleiche nodeId, neu signiert
  *   getOwnSpore(key?) -> Promise<SporeJson | null>
  *   verifyForeignSpore(spore) -> Promise<{ valid, reason? }>
  *   setActiveIdentity(key) -> Promise<void>
@@ -46,8 +47,17 @@
 (function (global) {
   "use strict";
 
-  var PROTOCOL_VERSION = "0.1";
+  // Spore v0.2 (Spec-Sitzung 2026-07-14): Bump 0.1 → 0.2 (MINOR, gleiche
+  // Hauptversion "0"). A10 fügt optional `snippetVectors` hinzu; A6 schließt
+  // den echten domainVector verbindlich. Sanfter Übergang: verifyForeignSpore
+  // vergleicht nur die Hauptversion → 0.1- und 0.2-Sporen bleiben gegenseitig
+  // handshake-kompatibel. Spiegelt INTERFACES §0 PROTOCOL_VERSION.
+  var PROTOCOL_VERSION = "0.2";
   var EMBEDDING_MODEL = "Xenova/multilingual-e5-small";
+  // A10 „Schnipsel-Mittel" (Spore v0.2). Spiegelt INTERFACES §0 SPORE_SNIPPET_MAX.
+  // Obergrenze für snippetVectors[]; Modul 02 kürzt hart darauf (kein Throw).
+  var SPORE_SNIPPET_MAX = 20;
+  var SPORE_SNIPPET_VEC_DIM = 384;
   var DEFAULT_IDENTITY_KEY = "main";
   var KEYS_STORE = "sbkim_keys";
   var SPORE_STORE = "sbkim_spore";
@@ -640,6 +650,42 @@
     }
   }
 
+  // --- A10: snippetVectors bereinigen (Spore v0.2) -------------------------
+  // Nimmt meta.snippetVectors (Array<{vec:number[384]|Float32Array, text?}>)
+  // und liefert kanonisch signierbare Einträge {vec:number[384], text?}.
+  // HARTE Kürzung auf SPORE_SNIPPET_MAX (überzählige VOR dem Signieren
+  // verworfen, KEIN Throw). Defensiver Schema-Check: vec-Länge ≠ 384 →
+  // InvalidSporeMetaError. Reihenfolge bleibt erhalten. `text` optional
+  // (kurzer Domänen-Satz für Anzeige, KEIN PII).
+  function sanitizeSnippetVectors(list) {
+    var out = [];
+    for (var i = 0; i < list.length && out.length < SPORE_SNIPPET_MAX; i++) {
+      var e = list[i];
+      if (!e || typeof e !== "object") {
+        throw makeError("InvalidSporeMetaError", "snippetVectors[" + i + "] ist kein Objekt.");
+      }
+      var v = e.vec;
+      var arr = null;
+      if (Array.isArray(v)) {
+        arr = v;
+      } else if (v && typeof v.length === "number" && typeof v !== "string") {
+        arr = Array.prototype.slice.call(v); // Float32Array o.ä. → Array
+      }
+      if (!arr || arr.length !== SPORE_SNIPPET_VEC_DIM) {
+        throw makeError(
+          "InvalidSporeMetaError",
+          "snippetVectors[" + i + "].vec muss Länge " + SPORE_SNIPPET_VEC_DIM + " haben.",
+        );
+      }
+      var num = [];
+      for (var d = 0; d < arr.length; d++) num.push(Number(arr[d]));
+      var entry = { vec: num };
+      if (typeof e.text === "string" && e.text.length > 0) entry.text = e.text;
+      out.push(entry);
+    }
+    return out;
+  }
+
   async function generateOwnSpore(meta, key) {
     validateSporeMeta(meta);
     var slotKey = key || await getActiveIdentityKey();
@@ -669,6 +715,24 @@
     if (typeof meta.domainDescription === "string") unsigned.domainDescription = meta.domainDescription;
     if (Array.isArray(meta.domainKeywords)) unsigned.domainKeywords = meta.domainKeywords.slice();
     if (Array.isArray(meta.domainVector)) unsigned.domainVector = meta.domainVector.slice();
+    // M04-Erweiterung (Brief 03) + inhalts-treuer Vektor (2026-06-28): die
+    // beiden Vektor-Felder + Provenienz-Marker in die Allow-List aufnehmen,
+    // sonst würden sie still ignoriert (wie stammCategories vor 2026-05-15).
+    // embeddingSource = "content" | "description" (wie der domainVector
+    // entstand); embeddingVersion = Re-Embedding-Zähler (Drift-Erkennung).
+    if (Array.isArray(meta.embeddingCapabilities)) unsigned.embeddingCapabilities = meta.embeddingCapabilities.slice();
+    if (Array.isArray(meta.embeddingNeeds)) unsigned.embeddingNeeds = meta.embeddingNeeds.slice();
+    // A10 (Spore v0.2): optionale Schnipsel-Vektoren additiv aufnehmen. Harte
+    // Kürzung + Längen-Check in sanitizeSnippetVectors; leer → Feld weglassen
+    // (0.1-kompatible Sporen bleiben byte-identisch, kein leeres Array).
+    if (Array.isArray(meta.snippetVectors)) {
+      var sv = sanitizeSnippetVectors(meta.snippetVectors);
+      if (sv.length > 0) unsigned.snippetVectors = sv;
+    }
+    if (typeof meta.embeddingSource === "string") unsigned.embeddingSource = meta.embeddingSource;
+    if (typeof meta.embeddingVersion === "number" && isFinite(meta.embeddingVersion)) {
+      unsigned.embeddingVersion = meta.embeddingVersion;
+    }
     if (Array.isArray(meta.stammCategories)) unsigned.stammCategories = meta.stammCategories.slice();
     if (Array.isArray(meta.guestCategories)) unsigned.guestCategories = meta.guestCategories.slice();
     if (meta.endpointPaths && typeof meta.endpointPaths === "object") {
@@ -700,6 +764,76 @@
     var stored = await storage.get(SPORE_STORE, slotKey);
     if (!stored) return null;
     return stored.sporeJson || null;
+  }
+
+  // --- Sporen-Regeneration (Modul 18 Sub f, Brief 2026-06-28) ---------------
+  // Erzeugt die Spore mit der BESTEHENDEN Identität (gleiche nodeId) neu —
+  // kein neuer Schlüssel. `updates` überschreibt einzelne Felder; alle nicht
+  // genannten Felder werden aus der vorhandenen Spore übernommen (sonst gingen
+  // z.B. embeddingNeeds beim Neu-Signieren verloren). Typischer Einsatz: der
+  // Endknoten hat seinen domainVector inhalts-treu neu gerechnet (Modul 03
+  // embedContentVector) und reicht ihn als updates.domainVector +
+  // embeddingSource:"content" herein.
+  //
+  // embeddingVersion-Logik: ändert sich der domainVector (updates.domainVector
+  // ist ein Array), wird die Version hochgezählt (Drift-Marker); sonst bleibt
+  // sie erhalten. Ein explizites updates.embeddingVersion gewinnt immer.
+  async function regenerateOwnSpore(updates, key) {
+    updates = (updates && typeof updates === "object") ? updates : {};
+    var slotKey = key || await getActiveIdentityKey();
+    var existing = await getOwnSpore(slotKey);
+    var base = existing || {};
+
+    function pickStr(u, b) { return typeof u === "string" ? u : b; }
+    function pickArr(u, b) {
+      if (Array.isArray(u)) return u;
+      if (Array.isArray(b)) return b;
+      return undefined;
+    }
+
+    var meta = {
+      domain: pickStr(updates.domain, base.domain),
+      nodeType: pickStr(updates.nodeType, base.nodeType),
+      endpoint: pickStr(updates.endpoint, base.endpoint),
+      embeddingModel: pickStr(updates.embeddingModel, base.embeddingModel),
+      protocolVersion: typeof base.protocolVersion === "string" ? base.protocolVersion : PROTOCOL_VERSION,
+      nodeName: pickStr(updates.nodeName, base.nodeName),
+      domainDescription: pickStr(updates.domainDescription, base.domainDescription),
+      domainKeywords: pickArr(updates.domainKeywords, base.domainKeywords),
+      stammCategories: pickArr(updates.stammCategories, base.stammCategories),
+      guestCategories: pickArr(updates.guestCategories, base.guestCategories),
+      embeddingCapabilities: pickArr(updates.embeddingCapabilities, base.embeddingCapabilities),
+      embeddingNeeds: pickArr(updates.embeddingNeeds, base.embeddingNeeds),
+    };
+    if (updates.endpointPaths && typeof updates.endpointPaths === "object") {
+      meta.endpointPaths = updates.endpointPaths;
+    } else if (base.endpointPaths && typeof base.endpointPaths === "object") {
+      meta.endpointPaths = base.endpointPaths;
+    }
+
+    var vectorChanged = Array.isArray(updates.domainVector);
+    var newVector = vectorChanged ? updates.domainVector : base.domainVector;
+    if (Array.isArray(newVector)) meta.domainVector = newVector;
+
+    // A10 (Spore v0.2): snippetVectors beim Neu-Signieren erhalten (updates
+    // gewinnt, sonst aus der bestehenden Spore übernehmen — sonst gingen die
+    // Schnipsel bei jedem regenerate verloren). generateOwnSpore bereinigt sie.
+    var newSnippets = pickArr(updates.snippetVectors, base.snippetVectors);
+    if (Array.isArray(newSnippets)) meta.snippetVectors = newSnippets;
+
+    var src = pickStr(updates.embeddingSource, base.embeddingSource);
+    if (typeof src === "string") meta.embeddingSource = src;
+
+    var prevVer = (typeof base.embeddingVersion === "number") ? base.embeddingVersion : 0;
+    if (typeof updates.embeddingVersion === "number") {
+      meta.embeddingVersion = updates.embeddingVersion;
+    } else if (vectorChanged) {
+      meta.embeddingVersion = prevVer + 1;
+    } else if (typeof base.embeddingVersion === "number") {
+      meta.embeddingVersion = base.embeddingVersion;
+    }
+
+    return generateOwnSpore(meta, slotKey);
   }
 
   function checkRequiredFields(spore) {
@@ -873,6 +1007,24 @@
     // den listIdentities nicht enthält (sollte nicht passieren, weil
     // setActiveIdentity validiert), nehmen wir den ersten Slot.
     if (!activeEntry) activeEntry = identities[0];
+
+    // B1b (Klaus-Entscheid 2026-07-17, „Weg A"): Export VERLANGT die Spore.
+    // importBackup wirft je Identität, wenn identities[i].spore fehlt — ein
+    // Backup ohne Spore ließe sich anlegen, aber NIE zurückspielen (stiller
+    // Fehlschlag). Statt ein unbrauchbares Backup zu erzeugen, hier ein KLARER
+    // Fehler VOR der Verschlüsselung — symmetrisch zu importBackup. Real nur
+    // bei einer frisch erzeugten Identität, die noch nie eine Spore signiert
+    // hat (nie angedockt); Behebung: zuerst Spore erzeugen, dann Backup.
+    for (var se = 0; se < identities.length; se++) {
+      if (!identities[se].spore || typeof identities[se].spore !== "object") {
+        throw makeError(
+          "SporeMissingError",
+          "Identität '" + identities[se].key + "' hat noch keine Spore — ein Backup ohne " +
+            "Spore ließe sich nicht wiederherstellen. Bitte zuerst eine Spore erzeugen " +
+            "(Andock-Wizard), dann das Backup anlegen.",
+        );
+      }
+    }
 
     var payload = {
       "active-identity": activeEntry.key,
@@ -1115,6 +1267,7 @@
     getNodeId: getNodeId,
     getPublicKeyJwk: getPublicKeyJwk,
     generateOwnSpore: generateOwnSpore,
+    regenerateOwnSpore: regenerateOwnSpore,
     getOwnSpore: getOwnSpore,
     verifyForeignSpore: verifyForeignSpore,
     setActiveIdentity: setActiveIdentity,
@@ -1137,6 +1290,8 @@
       // Heartbeat-Fallback (Karte 17 § Anti-Greenwashing-Klausel).
       get ready() { return ready; },
       protocolVersion: PROTOCOL_VERSION,
+      sporeSnippetMax: SPORE_SNIPPET_MAX,
+      sporeSnippetVecDim: SPORE_SNIPPET_VEC_DIM,
       defaultIdentityKey: DEFAULT_IDENTITY_KEY,
       keysStore: KEYS_STORE,
       sporeStore: SPORE_STORE,
@@ -1159,7 +1314,7 @@
   if (typeof console !== "undefined" && console.info) {
     console.info(
       "MODUL 02 SPORE bereit, Funktionen: " +
-        "init/getOrCreateIdentity/getNodeId/getPublicKeyJwk/generateOwnSpore/getOwnSpore/" +
+        "init/getOrCreateIdentity/getNodeId/getPublicKeyJwk/generateOwnSpore/regenerateOwnSpore/getOwnSpore/" +
         "verifyForeignSpore/setActiveIdentity/getActiveIdentityKey/listIdentities/" +
         "removeIdentity/resetIdentityCache/exportBackup/importBackup",
     );
