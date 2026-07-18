@@ -131,7 +131,7 @@
     stammCategories:["JSON-Tresor","Jasons-Bibliothek","Schlüssel-Backup","AES-256-GCM-Verschlüsselung"],
     guestCategories:["Jason-Verwahrung","Schlüssel-Andock","Spore-Verifikation"],
     endpoint:"https://lausiklauskn-png.github.io/Mein-Tresor/",
-    embeddingModel:"Xenova/multilingual-e5-small", protocolVersion:"0.1"
+    embeddingModel:"Xenova/multilingual-e5-small", protocolVersion:"0.2"
   };
   var DOMAIN_TEXT = CONFIG.domainDescription + " " + CONFIG.domainKeywords.join(", ");
   // Beschreibung aus dem Textfeld (Teil B ①½); leer -> heutiges Verhalten (CONFIG-Default).
@@ -141,6 +141,7 @@
   var $ = function(id){ return document.getElementById(id); };
   var identity = null;     // { privateKey, x, nodeId }
   var realVector = null;   // Array(384)
+  var realSnippets = [];   // [{vec:Array(384), text:String}] — Spore v0.2 Satz-Schnipsel (fail-soft)
   var lastSpore = null;
 
   function log(m){ var d=$("diag"); d.textContent += "\n"+m; d.scrollTop=d.scrollHeight; }
@@ -175,7 +176,7 @@
       domainKeywords:CONFIG.domainKeywords, embeddingModel:CONFIG.embeddingModel, endpoint:CONFIG.endpoint,
       guestCategories:CONFIG.guestCategories, stammCategories:CONFIG.stammCategories, id:identity.nodeId,
       nodeName:CONFIG.nodeName, nodeType:CONFIG.nodeType, protocolVersion:CONFIG.protocolVersion, publicKey:publicKeyJwk };
-    if(withVector){ if(!realVector) throw new Error("Erst domainVector erzeugen (②)."); u.domainVector=realVector; }
+    if(withVector){ if(!realVector) throw new Error("Erst domainVector erzeugen (②)."); u.domainVector=realVector; u.snippetVectors=realSnippets; }
     var sig=await subtle.sign({name:"Ed25519"}, identity.privateKey, cbytes(u));
     var spore=canonicalize(u); spore.signature=bufToB64url(sig); return spore;
   }
@@ -237,6 +238,8 @@
       var l2=Math.sqrt(arr.reduce(function(a,x){return a+x*x;},0));
       if(arr.length!==384) throw new Error("Erwartet 384 Floats, bekommen "+arr.length);
       realVector=arr;
+      realSnippets=[];
+      try { if (window.SbkimEmbedding.embedSnippets){ var snips=await window.SbkimEmbedding.embedSnippets(embedText); realSnippets=(snips||[]).map(function(s){return {vec:Array.from(s.vec),text:s.text};}); } } catch(e){ realSnippets=[]; }
       $("vec-bar").style.width="100%";
       setS($("vec-status"),"✔ domainVector erzeugt — 384 Floats, L2="+l2.toFixed(4)+" (≈1).","ok");
       log("✔ domainVector fertig (L2="+l2.toFixed(5)+").");
