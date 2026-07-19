@@ -433,17 +433,8 @@
     box-shadow:0 0 10px #ff3b30, 0 0 22px rgba(255,59,48,.95); animation:panik-blink-red .6s steps(1,end) infinite}
   @keyframes panik-blink{0%,100%{opacity:.5} 50%{opacity:1}}
   @keyframes panik-blink-red{0%,49%{opacity:1} 50%,100%{opacity:.25}}
-  /* SBKIM-Siegel (Modul 16) — Wappen 1:1 aus Sage-Protokol; Klick öffnet Andock */
-  #sbkim-siegel-badge{width:38px; height:38px; border-radius:50%; background:transparent; border:none;
-    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; overflow:visible; padding:0;
-    transition:filter .25s ease-out, transform .25s ease-out}
-  #sbkim-siegel-badge img{width:38px; height:38px; display:block; pointer-events:none}
-  #sbkim-siegel-badge:hover{filter:drop-shadow(0 0 8px rgba(201,169,97,.55)); transform:scale(1.06)}
-  #sbkim-siegel-badge:focus-visible{outline:2px solid #C9A961; outline-offset:3px}
-  #sbkim-siegel-badge.first-boot{animation:siegel-first-boot 600ms ease-out}
-  @keyframes siegel-first-boot{0%{transform:scale(.7); opacity:0}
-    60%{transform:scale(1.12); opacity:1; filter:drop-shadow(0 0 14px rgba(201,169,97,.55))}
-    100%{transform:scale(1); opacity:1}}
+  /* SBKIM-Siegel: kommt jetzt aus dem Floating-Widget (Modul 17) + dynamischem
+     Modul 16 — kein statischer HUD-Badge mehr (einheitlich mit den anderen Apps). */
   #andock{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg2); color:var(--ink);
     max-width:470px; width:92%; padding:18px}
   #andock::backdrop{background:rgba(0,0,0,.6)}
@@ -743,9 +734,6 @@
 <!-- HUD: Wächter-Lampe · Siegel · Notfall (Panik) — Erlebnis-Schicht -->
 <div id="hud">
   <span class="hud-lamp" title="Wächter: ruhig — keine Fremdzugriffe erkannt" aria-label="Wächter ruhig"></span>
-  <button id="sbkim-siegel-badge" type="button" title="SBKIM-Siegel — Andock zum Werkzeug öffnen" aria-label="SBKIM-Siegel — Andock öffnen">
-    <img src="assets/sbkim-siegel-wappen.svg" alt="" decoding="async" />
-  </button>
   <button id="hud-panik" class="hud-panik" type="button" title="Notfall — schnell verriegeln">🛑 Notfall</button>
 </div>
 
@@ -3258,12 +3246,21 @@
 <!-- Modul 17 Floating-Widget (schlankes Lampen-Design): LEBT/VERKEHR/FREMD.
      Das volle Siegel bleibt das vorhandene statische #sbkim-siegel-badge. -->
 <script src="sbkim/17_floating_widget.js"></script>
+<!-- Modul 15 (Membran/Fremd-Wächter) + 16 (Selbst-Siegel) — NACH 17 geladen;
+     schutz-init.js initt in Pflicht-Reihenfolge 17→15→16→07. -->
+<script src="sbkim/15_membran.js"></script>
+<script src="sbkim/16_siegel.js"></script>
 <script type="module" src="sbkim/05b_nostr_relay.js"></script>
 <!-- Modul 23 Rendezvous (gemeinsamer Raum) + öffentlicher 🌐-Knopf. Byte-1:1
      aus Sage src/modules/23_rendezvous(.ui).js. Vor sbkim-init.js (das mountet). -->
 <script src="sbkim/23_rendezvous.js"></script>
 <script src="sbkim/23_rendezvous_ui.js"></script>
 <script src="sbkim/sbkim-init.js"></script>
+<!-- Voller-Knoten-Init (17→15→16→07) + Andock-Werkzeug IM Siegel-Modal (aus Sage,
+     nach Skill »status-leiste-siegel«). Ersetzt den alten statischen Siegel/Andock:
+     Identität · Spore signieren+⬇ · Backup · Wiederherstellen · Wechsler · ✍ Semantik. -->
+<script src="assets/schutz-init.js"></script>
+<script src="assets/siegel-inhalt.js"></script>
 
 </body>
 </html>
