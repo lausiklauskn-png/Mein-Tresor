@@ -527,6 +527,10 @@
     <span id="sbkim-mailbox-badge" hidden
           style="position:absolute;top:-.5em;right:-.5em;min-width:1.4em;height:1.4em;padding:0 .3em;border-radius:.7em;background:#c0392b;color:#fff;font-size:.75em;line-height:1.4em;text-align:center"></span>
   </button>
+  <button id="hard-reload-btn" type="button" onclick="hardReloadApp()"
+          title="Aktualisieren / Cache leeren &amp; neu laden"
+          aria-label="Aktualisieren — Cache leeren und neu laden"
+          style="position:relative;float:right;margin-right:.5em;font:inherit;padding:.4em .7em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;opacity:.65">↻</button>
   <h1><span class="glyph">▤</span> Jasons-Bibliothek</h1>
   <p class="sub">Deine Bibliothek fuer Dateien (alle Formate) — laden, benennen, ordnen, exportieren, wieder einlesen.</p>
   <p><span class="chip">offline</span> <span class="chip">Scheibe 2</span>
@@ -3261,6 +3265,20 @@
      Identität · Spore signieren+⬇ · Backup · Wiederherstellen · Wechsler · ✍ Semantik. -->
 <script src="assets/schutz-init.js"></script>
 <script src="assets/siegel-inhalt.js"></script>
+<script>
+/* Dezenter Hard-Reload — Service-Worker + Caches leeren, dann neu laden (fail-soft, App-Glue, ausserhalb JASONLIB-CORE). */
+function hardReloadApp(){
+  const done=()=>{ try{location.reload(true);}catch(_e){try{location.reload();}catch(__e){}} };
+  let fired=false; const go=()=>{ if(fired)return; fired=true; done(); };
+  try{
+    const to=setTimeout(go,2500);
+    const tasks=[];
+    if('serviceWorker' in navigator){ tasks.push(navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))).catch(()=>{})); }
+    if(window.caches && caches.keys){ tasks.push(caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))).catch(()=>{})); }
+    Promise.all(tasks).then(()=>{ clearTimeout(to); go(); }).catch(()=>{ clearTimeout(to); go(); });
+  }catch(_e){ go(); }
+}
+</script>
 
 </body>
 </html>
