@@ -104,8 +104,13 @@
     domain: "Mein-Tresor-Bibliothek",
     endpoint: "https://lausiklauskn-png.github.io/Mein-Tresor/",
     nodeType: "hybrid",
-    domainDescription: "Verwahrt und verschlüsselt JSON-Dateien und SBKIM-Schlüssel offline; Bibliothek/Tresor.",
-    domainKeywords: ["Tresor", "Verschlüsselung", "AES", "Geheimfach", "Bibliothek", "Offline", "Datenschutz", "JSON", "Schlüssel"],
+    // Stufe 0d — die reiche, app-eigene Beschreibung (identisch zum Andock-Wizard
+    // in assets/siegel-inhalt.js WIZ). Vorher stand hier der generische Satz, der
+    // in BEIDEN Tresoren zeichengleich war → identischer Einbettungs-Text →
+    // Live-Spore-Cosinus exakt 1,0 (der 🌐-Anmelde-Pfad las die reiche Beschreibung
+    // nie). Jetzt eine Quelle je App; der einzige Text-Unterschied trägt in den Vektor.
+    domainDescription: "Mein-Tresor ist ein Endknoten im SBKIM-Mycel zum sicheren Verwahren: er verschlüsselt und speichert JSON-Dateien und SBKIM-Schlüssel offline im Browser (AES-256-GCM), Tresor und Bibliothek zugleich. Backups lassen sich passwortgeschützt exportieren und auf einem anderen Gerät zurückspielen; der private Schlüssel verlässt den Browser nie. Verwandt mit dem Schwester-Tresor Jasons-Tresor und angedockt ans Netz aus Sage, SB-KIMTool-Point, Rezeptbuch und Mixarium.",
+    domainKeywords: ["Tresor", "Bibliothek", "JSON", "SBKIM-Schlüssel", "Verschlüsselung", "Endknoten"],
   };
   function rdvCreateIdentity() {
     if (!window.SbkimEmbedding || !window.SbkimSpore) {
