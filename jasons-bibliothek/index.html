@@ -1,4 +1,14 @@
 <!doctype html>
+<!-- FP-COPYRIGHT
+  ╔═══════════════════════════════════════════════════════════════════╗
+  ║  Mein-Tresor  ©  2026  Klaus Nitzsche                             ║
+  ║  info@family-projekt.de                                           ║
+  ║  Alle Rechte vorbehalten. Unautorisierte Vervielfaeltigung,       ║
+  ║  Verbreitung oder Bearbeitung ist untersagt.                      ║
+  ║  All rights reserved. Unauthorized reproduction prohibited.       ║
+  ║  https://github.com/lausiklauskn-png/Mein-Tresor                  ║
+  ╚═══════════════════════════════════════════════════════════════════╝
+-->
 <!--
   Jasons-Bibliothek — SBKIM Tool-Point
   Version 0.1.0 (Scheibe 1) · 2026 · Quelle: SB-KIMTool-Point
@@ -8,6 +18,7 @@
 -->
 <html lang="de">
 <head>
+<script>/* FP-COPYRIGHT */window._CR=Object.freeze({c:'\u00a9 2026 Klaus Nitzsche',m:'info@family-projekt.de',r:'All rights reserved',repo:'Mein-Tresor'});</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Mein-Tresor</title>
@@ -17,9 +28,9 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Jasons-Bibliothek" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1416'/%3E%3Cpath d='M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z' fill='none' stroke='%232dd4bf' stroke-width='3'/%3E%3Cpath d='M24 26h14M24 32h14M24 38h9' stroke='%232dd4bf' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
-<link rel="manifest" href='data:application/manifest+json,{"name":"Jasons-Bibliothek","short_name":"Jasons","start_url":".","scope":".","display":"standalone","background_color":"%230b1416","theme_color":"%230b1416","lang":"de","icons":[{"src":"data:image/svg+xml,%253Csvg xmlns=%2527http://www.w3.org/2000/svg%2527 viewBox=%25270 0 64 64%2527%253E%253Crect width=%252764%2527 height=%252764%2527 rx=%252714%2527 fill=%2527%25230b1416%2527/%253E%253Cpath d=%2527M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z%2527 fill=%2527none%2527 stroke=%2527%25232dd4bf%2527 stroke-width=%25273%2527/%253E%253C/svg%253E","sizes":"any","type":"image/svg+xml"}]}' />
+<meta name="apple-mobile-web-app-title" content="Mein-Tresor" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1416'/%3E%3Cpath d='M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z' fill='none' stroke='%23c9a961' stroke-width='3'/%3E%3Cpath d='M24 26h14M24 32h14M24 38h9' stroke='%23c9a961' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="manifest" href='data:application/manifest+json,{"name":"Mein-Tresor","short_name":"Mein-Tresor","id":"/Mein-Tresor/","start_url":".","scope":".","display":"standalone","background_color":"%230b1416","theme_color":"%230b1416","lang":"de","icons":[{"src":"data:image/svg+xml,%253Csvg xmlns=%2527http://www.w3.org/2000/svg%2527 viewBox=%25270 0 64 64%2527%253E%253Crect width=%252764%2527 height=%252764%2527 rx=%252714%2527 fill=%2527%25230b1416%2527/%253E%253Cpath d=%2527M16 18h22a6 6 0 0 1 6 6v22H22a6 6 0 0 1-6-6z%2527 fill=%2527none%2527 stroke=%2527%2523c9a961%2527 stroke-width=%25273%2527/%253E%253C/svg%253E","sizes":"any","type":"image/svg+xml"}]}' />
 <style>
   :root{
     --bg:#0b1416; --bg2:#0f1b1e; --card:#11252a; --card2:#0e1f23;
@@ -433,17 +444,8 @@
     box-shadow:0 0 10px #ff3b30, 0 0 22px rgba(255,59,48,.95); animation:panik-blink-red .6s steps(1,end) infinite}
   @keyframes panik-blink{0%,100%{opacity:.5} 50%{opacity:1}}
   @keyframes panik-blink-red{0%,49%{opacity:1} 50%,100%{opacity:.25}}
-  /* SBKIM-Siegel (Modul 16) — Wappen 1:1 aus Sage-Protokol; Klick öffnet Andock */
-  #sbkim-siegel-badge{width:38px; height:38px; border-radius:50%; background:transparent; border:none;
-    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; overflow:visible; padding:0;
-    transition:filter .25s ease-out, transform .25s ease-out}
-  #sbkim-siegel-badge img{width:38px; height:38px; display:block; pointer-events:none}
-  #sbkim-siegel-badge:hover{filter:drop-shadow(0 0 8px rgba(201,169,97,.55)); transform:scale(1.06)}
-  #sbkim-siegel-badge:focus-visible{outline:2px solid #C9A961; outline-offset:3px}
-  #sbkim-siegel-badge.first-boot{animation:siegel-first-boot 600ms ease-out}
-  @keyframes siegel-first-boot{0%{transform:scale(.7); opacity:0}
-    60%{transform:scale(1.12); opacity:1; filter:drop-shadow(0 0 14px rgba(201,169,97,.55))}
-    100%{transform:scale(1); opacity:1}}
+  /* SBKIM-Siegel: kommt jetzt aus dem Floating-Widget (Modul 17) + dynamischem
+     Modul 16 — kein statischer HUD-Badge mehr (einheitlich mit den anderen Apps). */
   #andock{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg2); color:var(--ink);
     max-width:470px; width:92%; padding:18px}
   #andock::backdrop{background:rgba(0,0,0,.6)}
@@ -478,21 +480,21 @@
      pulsendem Türkis → warmer Lichtblitz → Bibliothek. Bilder lokal/offline. -->
 <div id="threshold" role="dialog" aria-label="Eingang zum Tresor">
   <div class="th-stage" id="th-stage">
-    <img class="th-door" decoding="async" src="../assets/erlebnis/bilder/tuer-zu.webp"
+    <img class="th-door" decoding="async" src="assets/erlebnis/bilder/tuer-zu.webp"
          alt="Verschlossene Tresortür mit glühendem Schlüsselloch" />
     <!-- Schlüssel-Pulsen, 1:1 aus der Sage-Einladung (.vp-key-pulse) — lebendiger Klick-Hinweis -->
     <div class="th-keyglow" aria-hidden="true"></div>
     <div class="th-lock-seq" id="th-lock-seq" aria-hidden="true">
-      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-1.webp" alt="Das Schloss lädt sich auf" />
-      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-2.webp" alt="" />
-      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-3.webp" alt="" />
-      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-4.webp" alt="" />
-      <img decoding="async" src="../assets/erlebnis/bilder/schloss-frame-5.webp" alt="Das Schloss öffnet sich, Gold flutet aus" />
+      <img decoding="async" src="assets/erlebnis/bilder/schloss-frame-1.webp" alt="Das Schloss lädt sich auf" />
+      <img decoding="async" src="assets/erlebnis/bilder/schloss-frame-2.webp" alt="" />
+      <img decoding="async" src="assets/erlebnis/bilder/schloss-frame-3.webp" alt="" />
+      <img decoding="async" src="assets/erlebnis/bilder/schloss-frame-4.webp" alt="" />
+      <img decoding="async" src="assets/erlebnis/bilder/schloss-frame-5.webp" alt="Das Schloss öffnet sich, Gold flutet aus" />
     </div>
     <div class="th-flash" id="th-flash"></div>
     <img class="th-burst" id="th-burst" decoding="async" aria-hidden="true" alt=""
-         src="../assets/erlebnis/bilder/licht-blitz.webp" />
-    <img class="th-open" decoding="async" src="../assets/erlebnis/bilder/tuer-offen.webp"
+         src="assets/erlebnis/bilder/licht-blitz.webp" />
+    <img class="th-open" decoding="async" src="assets/erlebnis/bilder/tuer-offen.webp"
          alt="Die Tür steht offen — Blick in die Bibliothek" />
   </div>
   <button class="th-skip" id="th-skip" type="button">überspringen</button>
@@ -501,7 +503,7 @@
 <!-- ===== Regal-Ansicht (Szene 1): der Tresor als navigierbares Bücherregal-Safe.
      Fackeln links/rechts = Navigation (rechte gespiegelt). Bücher folgen mit den Rücken. -->
 <div id="regal" aria-label="Tresor — Bücherregal">
-  <img id="regal-bg" alt="" decoding="async" src="../assets/erlebnis/bilder/regal-ebene1.webp" />
+  <img id="regal-bg" alt="" decoding="async" src="assets/erlebnis/bilder/regal-ebene1.webp" />
   <!-- Bücher auf den frontalen Ebenen (Reihen per JS gefüllt; sichtbar via .has-books) -->
   <div id="regal-books" aria-label="Bücher im Regal"></div>
   <button id="regal-prev" class="regal-torch left" type="button" aria-label="eine Ansicht nach links"></button>
@@ -530,7 +532,7 @@
 
 <header>
   <button id="sbkim-mailbox-btn" type="button" onclick="sbkimMailboxCheck(false)"
-          title="Briefkasten der Nachbar-Knoten (Sage + SB-KIMTool-Point) jetzt prüfen"
+          title="Briefkasten — alle Nachbar-Knoten (Vollvernetzung) jetzt prüfen"
           style="position:relative;float:right;font:inherit;padding:.4em .8em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">
     📬 Briefkasten
     <span id="sbkim-mailbox-badge" hidden
@@ -636,10 +638,10 @@
   <div class="bd-backdrop" id="bd-backdrop"></div>
   <div class="bd-stage" role="dialog" aria-label="Muster-Buch" aria-modal="true">
     <div class="bd-book" id="bd-book" role="button" tabindex="0" aria-label="Buch öffnen oder schließen">
-      <img class="bd-zu" decoding="async" src="../assets/erlebnis/bilder/buch-zu.webp" alt="Verschlossenes Buch mit Schlüsselloch" />
-      <img class="bd-auf" decoding="async" src="../assets/erlebnis/bilder/buch-auf.webp" alt="Geöffnetes Buch, Goldlicht flutet heraus" />
-      <img class="bd-energy" decoding="async" aria-hidden="true" alt="" src="../assets/erlebnis/bilder/buch-energie.webp" />
-      <img class="bd-key" decoding="async" aria-hidden="true" alt="" src="../assets/erlebnis/bilder/buch-schluessel.webp" />
+      <img class="bd-zu" decoding="async" src="assets/erlebnis/bilder/buch-zu.webp" alt="Verschlossenes Buch mit Schlüsselloch" />
+      <img class="bd-auf" decoding="async" src="assets/erlebnis/bilder/buch-auf.webp" alt="Geöffnetes Buch, Goldlicht flutet heraus" />
+      <img class="bd-energy" decoding="async" aria-hidden="true" alt="" src="assets/erlebnis/bilder/buch-energie.webp" />
+      <img class="bd-key" decoding="async" aria-hidden="true" alt="" src="assets/erlebnis/bilder/buch-schluessel.webp" />
       <span class="bd-title" id="bd-title">Mein erstes Jason</span>
       <span class="bd-hint" id="bd-hint">mit dem Schlüssel öffnen</span>
     </div>
@@ -741,15 +743,12 @@
      freigestellten Schlüssel; tauschbar gegen ein transparentes PNG. -->
 <button id="btn-replay-intro" class="key-fab" type="button"
         title="Intro & Tür nochmal ansehen" aria-label="Intro und Tür nochmal ansehen">
-  <img decoding="async" src="../assets/erlebnis/bilder/schluessel.webp" alt="Schlüssel — Intro nochmal ansehen" />
+  <img decoding="async" src="assets/erlebnis/bilder/schluessel.webp" alt="Schlüssel — Intro nochmal ansehen" />
 </button>
 
 <!-- HUD: Wächter-Lampe · Siegel · Notfall (Panik) — Erlebnis-Schicht -->
 <div id="hud">
   <span class="hud-lamp" title="Wächter: ruhig — keine Fremdzugriffe erkannt" aria-label="Wächter ruhig"></span>
-  <button id="sbkim-siegel-badge" type="button" title="SBKIM-Siegel — Andock zum Werkzeug öffnen" aria-label="SBKIM-Siegel — Andock öffnen">
-    <img src="../assets/sbkim-siegel-wappen.svg" alt="" decoding="async" />
-  </button>
   <button id="hud-panik" class="hud-panik" type="button" title="Notfall — schnell verriegeln">🛑 Notfall</button>
 </div>
 
@@ -759,11 +758,20 @@
   <p style="color:var(--muted); margin:.2em 0 1em; font-size:.9rem">Dieser Tresor ist ein bezeugter SBKIM-Endknoten am Sage-Protokoll.</p>
   <div class="andock-row"><span>Endknoten</span><code>Mein-Tresor</code></div>
   <div class="andock-row"><span>Endpunkt</span><a href="https://lausiklauskn-png.github.io/Mein-Tresor/" target="_blank" rel="noopener">…github.io/Mein-Tresor/ ↗</a></div>
-  <div class="andock-row"><span>nodeId</span><code>7F_zNopFgYLPCmEFhVlRUDnQVKk3y-RHNr139Z_3hCs</code></div>
+  <div class="andock-row"><span>nodeId</span><code>wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0</code></div>
   <div class="andock-row"><span>Spore</span><a href="sbkim/spore.json" target="_blank" rel="noopener">sbkim/spore.json ↗</a></div>
   <p style="margin:1.1em 0 0"><a class="andock-tool" href="https://lausiklauskn-png.github.io/SB-KIMTool-Point/" target="_blank" rel="noopener">SBKIM-Werkzeug öffnen ↗</a></p>
   <p style="color:var(--muted); font-size:.78rem; margin:.9em 0 0">Siegel-Wappen + Andock-Verbindung sind 1:1 aus dem Sage-Protokoll. Die vollständige Bezeugungs-Prüfung (Modul-Chain) folgt in einer eigenen Sitzung.</p>
   <div class="row-end" style="margin-top:12px"><button id="andock-close" class="btn-ghost" type="button">Schließen</button></div>
+</dialog>
+
+<!-- Mycel-Erklärung als In-Page-Overlay (iframe auf sicherheit.html). Notlösung wäre ein neuer Tab. -->
+<dialog id="mt-mycel-overlay" aria-label="So funktioniert das Mycel" style="max-width:880px; width:96%; height:88vh; padding:0; overflow:hidden">
+  <button id="mt-mycel-close" type="button" aria-label="Schließen" title="Schließen (Esc)"
+    style="position:absolute; top:8px; right:10px; z-index:2; width:34px; height:34px; border-radius:50%;
+    background:var(--card); color:var(--ink); border:1px solid var(--line); cursor:pointer; font-size:1rem">✕</button>
+  <iframe id="mt-mycel-frame" title="Sicherheit &amp; Mycel" src="about:blank"
+    style="border:0; width:100%; height:100%; background:var(--bg)"></iframe>
 </dialog>
 
 <dialog id="panik">
@@ -1490,15 +1498,92 @@
   </form>
 </dialog>
 
+<!-- SBKIM-Siegel — was bedeutet das? Erklaerung + Andock + Identitaet/Spore
+     (Funktion & Aufbau wie im Sage-Protokoll, Inhalte an Mein-Tresor angepasst). -->
+<dialog id="mt-seal-dialog" style="max-width:34em;border:none;border-radius:.8em;padding:1.2em">
+  <div style="text-align:center;margin:.1em 0 .7em">
+    <img src="assets/sbkim-siegel-wappen.svg" alt="SBKIM-Siegel" decoding="async" style="width:84px;height:84px;display:block;margin:0 auto .3em"/>
+    <h3 style="margin:0">SBKIM-Siegel — was bedeutet das?</h3>
+  </div>
+
+  <p style="font-size:.9rem;line-height:1.55;margin:.2em 0 .8em">
+    Dieses Siegel bezeugt: <b>Mein-Tresor ist ein echter SBKIM-Endknoten</b> am Sage-Protokoll.
+    Es ist keine Zierde, sondern steht für eine <b>kryptografisch geprüfte Identität</b> (Ed25519)
+    und eine <b>echt signierte Spore</b> — die fälschungssichere Visitenkarte dieses Knotens.
+  </p>
+  <p style="font-size:.9rem;line-height:1.55;margin:0 0 .9em">
+    <b>Warum wichtig?</b> Ohne Siegel könnte jeder behaupten, dieser Tresor zu sein. Mit ihm können
+    andere Werkzeuge (Sage-Protokol, SB-KIMTool-Point, Schwester Jasons-Tresor) die Echtheit
+    <b>selbst nachprüfen</b> und sich verbinden — die Identität ist reziprok bestätigt.
+  </p>
+
+  <a href="werkzeuge/andock.html" target="_blank" rel="noopener"
+     style="display:block;text-align:center;font:inherit;text-decoration:none;padding:.6em 1em;margin:0 0 .9em;border-radius:.55em;border:1px solid #2b5b5e;background:rgba(17,37,42,.6);color:inherit">
+    🔑 Eigene Identität &amp; Spore erzeugen / verwalten →
+  </a>
+
+  <a href="sicherheit.html" id="mt-mycel-link" target="_blank" rel="noopener"
+     style="display:block;text-align:center;font:inherit;text-decoration:none;padding:.6em 1em;margin:0 0 .9em;border-radius:.55em;border:1px solid #2b5b5e;background:rgba(17,37,42,.6);color:inherit">
+    🛡 So funktioniert das Mycel &amp; wie du geschützt bist →
+  </a>
+
+  <div style="font-size:.82rem;color:var(--muted,#9aa);margin:0 0 .4em">Bezeugt seit 2026-06-06.</div>
+
+  <!-- Andock-Fenster: Verbindung zum Werkzeug -->
+  <div style="border:1px solid var(--line,#2a4a4d);border-radius:.6em;padding:.6em .75em;margin:.2em 0 1em">
+    <div style="font-weight:600;font-size:.85rem;margin-bottom:.4em">🔗 Andock — Verbindung zum Werkzeug</div>
+    <div class="andock-row"><span>Endknoten</span><code>Mein-Tresor</code></div>
+    <div class="andock-row"><span>Endpunkt</span><a href="https://lausiklauskn-png.github.io/Mein-Tresor/" target="_blank" rel="noopener">…github.io/Mein-Tresor/ ↗</a></div>
+    <div class="andock-row"><span>nodeId</span><code style="word-break:break-all">wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0</code></div>
+    <div class="andock-row"><span>Spore</span><a href="sbkim/spore.json" target="_blank" rel="noopener">sbkim/spore.json ↗ (✔ VALID)</a></div>
+    <p style="margin:.6em 0 0"><a class="andock-tool" href="https://lausiklauskn-png.github.io/SB-KIMTool-Point/" target="_blank" rel="noopener">SBKIM-Werkzeug öffnen ↗</a></p>
+  </div>
+
+  <div style="font-weight:600;font-size:.8rem;letter-spacing:.04em;margin:0 0 .35em">PFLICHT-MODULE</div>
+  <div style="font-size:.84rem;line-height:1.95;margin:0 0 1em">
+    <div><span style="color:#3bbf7a">●</span> 01 · Storage <span style="color:var(--muted,#9aa)">· Tresor/Bibliothek (AES-256-GCM) · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 02 · Spore <span style="color:var(--muted,#9aa)">· Ed25519-Identität, ✔ VALID · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 03 · Embedding <span style="color:var(--muted,#9aa)">· domainVector 384-dim (e5-small) · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 04 · Match <span style="color:var(--muted,#9aa)">· verified-match ✔ Jasons 1.0 · Point 0.8537 · Sage 0.8478</span></div>
+    <div><span style="color:#3bbf7a">●</span> 05 · Anastomose <span style="color:var(--muted,#9aa)">· Netz-Andock, 5 Nachbarn ✔ VALID · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 07 · Apoptose <span style="color:var(--muted,#9aa)">· Notfall (Verriegeln/Retten&amp;Löschen) · bereit</span></div>
+    <div><span style="color:#3bbf7a">●</span> 15 · Membran <span style="color:var(--muted,#9aa)">· Wächter, warnt nur · bereit</span></div>
+  </div>
+
+  <div style="font-weight:600;font-size:.8rem;letter-spacing:.04em;margin:0 0 .35em">ASPEKTE (LEBENDES DOKUMENT)</div>
+  <div style="font-size:.82rem;line-height:1.5">
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 02 ·</span> <b>Dauerhafte Identität live.</b>
+      Im Browser (WebCrypto) erzeugt: nodeId <code style="font-size:.72rem">wRsGQouO…ektVEDk</code>, Spore echt Ed25519-signiert und ✔ VALID. Privater Schlüssel blieb im Browser; verschlüsselte Sicherung liegt lokal bei Klaus.</p>
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 03 ·</span> <b>Echter domainVector eingebettet.</b>
+      384-dim Embedding (Xenova/multilingual-e5-small, L2-Norm 1.000000) im Browser erzeugt, in die Spore eingebettet und neu signiert (nodeId unverändert). Kein <code>_demo</code> mehr.</p>
+    <p style="margin:.45em 0"><span style="color:var(--muted,#9aa)">2026-06-06 · 05 ·</span> <b>Vollvernetzt — Verbund 4/5.</b>
+      Briefkasten listet jetzt ALLE Nachbarn (Klaus' Regel). Live nachgerechnet: Jasons-Tresor 1.0000, SB-KIMTool-Point 0.8537, Sage 0.8478, Mein-Rezeptbuch 0.8137 (alle ≥0.80 ✔); Mein-Mixarium 0.7884 (ehrlich knapp unter 0.80, andere Domäne) → 4/5 verbunden. Rezeptbuch/Mixarium führen noch kein SIGNAL.json (③ Sync „nicht lesbar").</p>
+  </div>
+
+  <p style="font-size:.74rem;color:var(--muted,#9aa);line-height:1.45;margin:.6em 0 0">
+    Ehrlich: headless durch <code>npm test</code> bewiesen (53/53). Browser-Pfade
+    (Match-Gegenseite bei Sage/Point, Klaus' eigener Browser-Lauf) bleiben <b>ungeprüft</b>,
+    bis Klaus sie gesehen hat.
+  </p>
+
+  <form method="dialog" style="text-align:right;margin-top:1em">
+    <button style="font:inherit;padding:.4em 1em;border-radius:.5em;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">Schließen</button>
+  </form>
+</dialog>
+
 <script>
-  // === SBKIM-Briefkasten CONFIG ===
+  // === SBKIM-Briefkasten CONFIG (Mein-Tresor-Sicht) ===
   window.SBKIM_MAILBOX = {
-    self: "Mein-Tresor",                   // unser Knoten-Name
-    selfSignal: "sbkim/SIGNAL.json",          // relativ zu dieser Seite
+    self: "Mein-Tresor",
+    selfSignal: "sbkim/SIGNAL.json",
+    selfSpore:  "sbkim/spore.json",           // eigener domainVector fuer den Live-Match
+    // Vollvernetzung (Klaus 2026-06-06): ALLE anderen Knoten als Peers (jeder listet alle).
     peers: [
-      { name: "Sage-Protokol",    signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
-      { name: "SB-KIMTool-Point", signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" },
-      { name: "Jasons-Tresor",    signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" }
+      { name: "Sage-Protokol",    label: "Sage-Protokol",             inbox: "sbkim/sage_inbox.json",       mailbox: "sbkim/AUSTAUSCH.md",             signal: "https://raw.githubusercontent.com/lausiklauskn-png/Sage-Protokol/main/sbkim/SIGNAL.json" },
+      { name: "Jasons-Tresor",    label: "Jasons-Tresor (Schwester)", inbox: "sbkim/jason_inbox.json",      mailbox: "sbkim/AUSTAUSCH-JasonsTresor.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Jasons-Tresor/main/sbkim/SIGNAL.json" },
+      { name: "SB-KIMTool-Point", label: "SB-KIMTool-Point",          inbox: "sbkim/point_inbox.json",      mailbox: "sbkim/AUSTAUSCH-SBKIMTool.md",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/SB-KIMTool-Point/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Rezeptbuch",  label: "Mein-Rezeptbuch",           inbox: "sbkim/rezeptbuch_inbox.json", mailbox: "sbkim/AUSTAUSCH-Rezeptbuch.md", signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Rezeptbuch/main/sbkim/SIGNAL.json" },
+      { name: "Mein-Mixarium",    label: "Mein-Mixarium",             inbox: "sbkim/mixarium_inbox.json",   mailbox: "sbkim/AUSTAUSCH-Mixarium.md",   signal: "https://raw.githubusercontent.com/lausiklauskn-png/Mein-Mixarium/main/sbkim/SIGNAL.json" }
     ]
   };
 
@@ -1507,35 +1592,84 @@
     try { const r = await fetch(url, { cache: "no-store" }); if (!r.ok) return { error: "HTTP " + r.status }; return await r.json(); }
     catch (e) { return { error: String(e && e.message || e) }; }
   }
-  // silent=true: nur Badge setzen (beim Laden), KEIN Dialog (Vorlage-Intention "still pruefen").
+  // L2-Cosinus zweier domainVector (sind normalisiert; sicherheitshalber voll gerechnet).
+  function sbkimCosine(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return null;
+    let dot = 0, na = 0, nb = 0;
+    for (let i = 0; i < a.length; i++) { dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
+    if (!na || !nb) return null;
+    return dot / (Math.sqrt(na) * Math.sqrt(nb));
+  }
+
+  // silent=true: nur Badge (beim Laden). Voller Modus: drei Ebenen je Nachbar —
+  // Spore ✔, Match (Cosinus LIVE im Browser nachgerechnet) und Synchron-Stand (seq ↔ ack).
   async function sbkimMailboxCheck(silent) {
     const cfg = window.SBKIM_MAILBOX || {};
     const dlg = document.getElementById("sbkim-mailbox-dialog");
     const body = document.getElementById("sbkim-mailbox-body");
-    if (!silent) { body.innerHTML = "Lese Nachbarn …"; if (dlg.showModal) dlg.showModal(); }
-    let selfAck = {};
+    if (!silent) { body.innerHTML = "Lese Nachbarn & rechne Verbindung nach …"; if (dlg.showModal) dlg.showModal(); }
+
+    let selfAck = {}, selfVec = null, selfId = "";
     try { const s = await sbkimMailboxFetch(cfg.selfSignal); if (s && s.ack) selfAck = s.ack; } catch {}
-    const lines = [];
-    let unread = 0;
+    if (!silent) {
+      const sp = await sbkimMailboxFetch(cfg.selfSpore);
+      if (sp && !sp.error) { if (Array.isArray(sp.domainVector)) selfVec = sp.domainVector; selfId = sp.id || ""; }
+    }
+
+    const cards = [];
+    let unread = 0, connected = 0;
     for (const peer of (cfg.peers || [])) {
       const sig = await sbkimMailboxFetch(peer.signal);
-      if (sig.error) { lines.push(`<li><b>${peer.name}</b>: SIGNAL nicht lesbar (${sig.error})</li>`); continue; }
-      const seq = Number(sig.seq) || 0;
+      const seq = sig && !sig.error ? (Number(sig.seq) || 0) : null;
       const seen = Number(selfAck[peer.name]) || 0;
-      if (seq > seen) {
-        unread++;
-        lines.push(`<li><b>${peer.name}</b>: NEUER Bau (seq ${seq}) — ${sig.headline || ""}</li>`);
-      } else {
-        lines.push(`<li><b>${peer.name}</b>: nichts Neues (seq ${seq})</li>`);
+
+      let sync;
+      if (seq === null) sync = `SIGNAL nicht lesbar`;
+      else if (seq > seen) { unread++; sync = `<b style="color:#e0a52b">⏳ ${seq - seen} ungelesen</b> (ihr seq ${seq}) — <a href="${peer.mailbox}" target="_blank" rel="noopener">Postfach ↗</a>`; }
+      else sync = `<span style="color:#3bbf7a">✔ synchron</span> (seq ${seq}, quittiert ${seen})`;
+
+      let spore = "—", match = "—";
+      if (!silent) {
+        const inbox = await sbkimMailboxFetch(peer.inbox);
+        if (inbox && !inbox.error) {
+          spore = `<span style="color:#3bbf7a">✔ verified-spore</span> · <code style="font-size:.72rem">${(inbox.id || "").slice(0, 16)}…</code>`;
+          const c = selfVec && Array.isArray(inbox.domainVector) ? sbkimCosine(selfVec, inbox.domainVector) : null;
+          if (c === null) match = `wartet auf Vektor`;
+          else if (c >= 0.8) { connected++; match = `<span style="color:#3bbf7a">✔ verified-match</span> · cos <b>${c.toFixed(4)}</b>`; }
+          else match = `cos ${c.toFixed(4)} — unter 0.80`;
+        } else spore = `Spore nicht lesbar`;
       }
+
+      cards.push(
+        `<div style="border:1px solid var(--line,#2a2a2a);border-radius:.6em;padding:.55em .7em;margin:.5em 0">
+           <div style="font-weight:600;margin-bottom:.25em">${peer.label || peer.name}</div>
+           <div style="font-size:.82rem;line-height:1.8">
+             <div>①&nbsp;Spore&nbsp;&nbsp;${spore}</div>
+             <div>②&nbsp;Match&nbsp;&nbsp;${match}</div>
+             <div>③&nbsp;Sync&nbsp;&nbsp;&nbsp;${sync}</div>
+           </div>
+         </div>`);
     }
+
     if (!silent) {
-      body.innerHTML = `<ul style="margin:.2em 0 .2em 1.1em;padding:0">${lines.join("")}</ul>` +
-        (unread ? `<p style="margin:.6em 0 0"><b>${unread}</b> ungelesene(r) Bau(ten). Lies das jeweilige Postfach und quittiere via <code>ack</code> in deiner SIGNAL.json.</p>`
-                : `<p style="margin:.6em 0 0">Alles gelesen. 📭</p>`);
+      const total = (cfg.peers || []).length;
+      const head =
+        `<div style="text-align:center;margin:0 0 .6em">
+           <img src="assets/sbkim-siegel-wappen.svg" alt="SBKIM-Siegel" decoding="async" style="width:92px;height:92px;display:block;margin:0 auto .25em"/>
+           <div style="font-weight:600">Mein-Tresor — SBKIM-Endknoten</div>
+           <div style="font-size:.72rem;color:var(--muted,#9aa);word-break:break-all">${selfId ? "nodeId " + selfId.slice(0, 20) + "… · verified-spore ✔" : "Identität: sbkim/spore.json"}</div>
+         </div>`;
+      const foot =
+        `<p style="margin:.6em 0 0;text-align:center"><b style="color:#3bbf7a">${connected}/${total} verbunden</b> · ${unread ? `<b style="color:#e0a52b">${unread} ungelesen</b>` : "📭 alles synchron"}</p>
+         <p style="margin:.3em 0 0;font-size:.7rem;color:var(--muted,#9aa);text-align:center">Match jetzt <b>live in deinem Browser</b> nachgerechnet (Cosinus eigener ⟷ Nachbar-Spore). Quittieren via <code>ack</code> in sbkim/SIGNAL.json.</p>`;
+      body.innerHTML = head + cards.join("") + foot;
     }
-    const badge = document.getElementById("sbkim-mailbox-badge");
-    if (unread) { badge.textContent = String(unread); badge.hidden = false; } else { badge.hidden = true; }
+
+    for (const id of ["sbkim-mailbox-badge", "hud-mailbox-badge", "mt-room-mail-badge"]) {
+      const badge = document.getElementById(id);
+      if (!badge) continue;
+      if (unread) { badge.textContent = String(unread); badge.hidden = false; } else { badge.hidden = true; }
+    }
   }
   // Beim Laden still pruefen und Badge setzen (kein Dialog-Popup).
   window.addEventListener("DOMContentLoaded", () => { try { sbkimMailboxCheck(true); } catch {} });
@@ -2338,7 +2472,7 @@
   // Einmalige Umstellung auf die automatische Boden-Verteilung: alte Editier-/Nudge-Layouts leeren
   // (nur Anzeige-Layout im Browser, KEINE Tresor-/Jason-Daten).
   try{ if(localStorage.getItem('jt-shelf-v') !== '2'){ localStorage.removeItem('jt-shelfrows'); localStorage.removeItem('jt-booklayout'); localStorage.setItem('jt-shelf-v','2'); } }catch(e){}
-  var P = '../assets/erlebnis/bilder/';
+  var P = 'assets/erlebnis/bilder/';
   // VIEWS = Hintergrundbild + Beschriftung je Ansicht. Die Regalböden (Position/Perspektive)
   // stehen in SHELVES; daraus werden die Buchrücken automatisch je Boden mittig verteilt.
   var VIEWS = [
@@ -2804,11 +2938,32 @@
   var siegel = document.getElementById('sbkim-siegel-badge');
   var andock = document.getElementById('andock');
   var andockClose = document.getElementById('andock-close');
-  if(siegel && andock){
-    siegel.addEventListener('click', function(){ if(andock.showModal) andock.showModal(); });
+  if(siegel){
+    // Beide Siegel (altes HUD + Raum) zeigen dieselbe Erklaerung (mt-seal-dialog), Fallback: #andock.
+    siegel.addEventListener('click', function(){
+      var d=document.getElementById('mt-seal-dialog');
+      if(d && d.showModal) d.showModal();
+      else if(andock && andock.showModal) andock.showModal();
+    });
     siegel.classList.add('first-boot'); setTimeout(function(){ siegel.classList.remove('first-boot'); }, 700);
   }
   if(andockClose && andock){ andockClose.addEventListener('click', function(){ if(andock.close) andock.close(); }); }
+
+  // Mycel-Erklärung → In-Page-Overlay (iframe). Ohne <dialog>-Support: normale Navigation (neuer Tab).
+  var mycelLink = document.getElementById('mt-mycel-link');
+  var mycelOv = document.getElementById('mt-mycel-overlay');
+  var mycelFrame = document.getElementById('mt-mycel-frame');
+  var mycelClose = document.getElementById('mt-mycel-close');
+  if(mycelLink && mycelOv && mycelFrame && typeof mycelOv.showModal === 'function'){
+    mycelLink.addEventListener('click', function(e){
+      e.preventDefault();
+      if(!mycelFrame.src || mycelFrame.src.indexOf('sicherheit.html') === -1) mycelFrame.src = 'sicherheit.html';
+      mycelOv.showModal();
+    });
+    var closeMycel = function(){ if(mycelOv.close) mycelOv.close(); };
+    if(mycelClose) mycelClose.addEventListener('click', closeMycel);
+    mycelOv.addEventListener('click', function(e){ if(e.target === mycelOv) closeMycel(); }); // Backdrop-Klick schließt; Esc schließt von selbst
+  }
 })();
 </script>
 <!-- ===== Mein-Tresor — NEUE Schale (Dreh-Safe + Tresorraum) — CSS-verankert (kein Verspringen) ===== -->
@@ -2820,8 +2975,16 @@
   #mt-entry[hidden],#mt-room[hidden],#mt-toroom[hidden]{display:none}
   #mt-entry.mt-gone{opacity:0;transition:opacity 1.2s ease;pointer-events:none}
   #mt-entry-fit{position:relative;aspect-ratio:1/1;width:min(100vw,100vh);height:auto;flex:none}
-  #mt-wall-wrap{position:relative;aspect-ratio:var(--ar,1.25);
+  #mt-wall-wrap{position:relative;aspect-ratio:var(--ar,1.25);container-type:inline-size;
     width:min(100vw, calc(100vh * var(--ar,1.25)));height:auto;flex:none}
+  /* Schmal/Handy (hohe Wand): die Wand fuellt die BREITE, der Raum SCROLLT senkrecht durch
+     die Reihen (statt alles winzig auf einen Blick zu quetschen). Greift voll, sobald hohe
+     Hochformat-Wandbilder vorliegen; bis dahin sitzt die Wand oben, darunter bleibt frei.
+     Die feste Knopfleiste + das Siegel liegen (position:fixed) ueber dem scrollenden Inhalt. */
+  #mt-room.mt-portrait{align-items:flex-start;overflow-y:auto;overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    padding-top:clamp(58px,10vh,84px);padding-bottom:24px;scroll-padding-top:58px}
+  #mt-room.mt-portrait #mt-wall-wrap{width:100vw;max-width:100vw}
   #mt-safe,#mt-wall{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;
     user-select:none;-webkit-user-drag:none}
   .mt-wheel{position:absolute;transform:translate(-50%,-50%);border:0;background:none;padding:0;
@@ -2843,30 +3006,58 @@
     cursor:pointer;border-radius:7px;display:flex;align-items:flex-end;justify-content:center;
     outline:1px solid rgba(110,231,211,0);transition:outline-color .15s ease,background .15s ease}
   .mt-fach:hover,.mt-fach:focus{outline-color:rgba(110,231,211,.85);background:rgba(110,231,211,.10)}
-  .mt-fach .mt-num{font-size:clamp(.5rem,1.7vmin,.82rem);font-weight:700;color:#1a1206;background:#d9c38a;
-    border-radius:3px;padding:0 5px;margin-bottom:6%;box-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none}
+  .mt-fach .mt-num{font-size:clamp(.5rem,1.7vmin,.82rem);
+    font-size:clamp(.34rem, calc(var(--fns,1.2) * 1cqw), .82rem);  /* skaliert mit der Wandbreite (cqw) statt Viewport */
+    font-weight:700;color:#1a1206;background:#d9c38a;box-sizing:border-box;
+    border-radius:3px;padding:0 5px;margin-bottom:6%;box-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none;
+    max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mt-fach .mt-lock{position:absolute;top:5%;left:50%;transform:translateX(-50%);
-    font-size:clamp(.6rem,1.9vmin,.98rem);pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
+    font-size:clamp(.6rem,1.9vmin,.98rem);
+    font-size:clamp(.42rem, calc(var(--fns,1.2) * 1.25cqw), .98rem);
+    pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
   #mt-room.mt-editnums .mt-fach{outline-color:rgba(244,180,53,.9);background:rgba(244,180,53,.10)}
   #mt-room-bar{position:fixed;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);
-    display:flex;gap:8px;z-index:5;flex-wrap:wrap;justify-content:center;max-width:96vw}
+    display:flex;gap:clamp(4px,1.2vw,8px);z-index:5;flex-wrap:nowrap;justify-content:center;max-width:98vw}
   #mt-room-bar button{font:inherit;color:#e6f2f1;background:rgba(17,37,42,.9);border:1px solid #2b5b5e;
-    border-radius:8px;padding:7px 12px;cursor:pointer}
+    border-radius:8px;padding:clamp(4px,1vw,7px) clamp(7px,1.8vw,12px);font-size:clamp(.72rem,2vw,.95rem);
+    line-height:1.1;white-space:nowrap;cursor:pointer}
   #mt-room-bar button:hover{border-color:#6ee7d3}
+  #mt-room-bar .mt-blabel{margin-left:.35em}
+  /* Schmal/Handy: nur Symbole -> alle Buttons bleiben in EINER Reihe (+ Platz fuers Siegel) */
+  @media (max-width:560px){ #mt-room-bar .mt-blabel{display:none} #mt-room-bar button{padding:5px 8px;font-size:1.05rem} }
+  /* SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum — gleiches Wappen/Groesse wie im Dialog (92px),
+     auf dem Handy automatisch kleiner (mit den Buttons). Klick -> Verbindungs-Uebersicht. */
+  #mt-room-seal{position:fixed;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));
+    z-index:6;background:none;border:0;padding:0;cursor:pointer;width:clamp(38px,10vw,92px);height:auto;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
+  #mt-room-seal img{width:100%;height:auto;display:block;pointer-events:none}
+  #mt-room-seal:hover{filter:drop-shadow(0 0 10px rgba(110,231,211,.9))}
   #mt-toroom{position:fixed;left:16px;bottom:16px;z-index:70;font:inherit;color:#e6f2f1;
     background:rgba(17,37,42,.9);border:1px solid #2b5b5e;border-radius:8px;padding:8px 12px;cursor:pointer}
   #mt-toroom:hover{border-color:#6ee7d3}
   .mt-wheel,.mt-wheel:hover,.mt-wheel:active,.mt-wheel:focus,.mt-fach,.mt-fach:hover,.mt-fach:active,.mt-fach:focus{transform:translate(-50%,-50%)!important}
   @media (prefers-reduced-motion:reduce){#mt-entry.mt-gone{transition:none}.mt-wheel img{transition:none}}
+  /* Dezenter Impressum-Link unten (Pflicht-Rechtslink, sichtbar ueber Eingang UND Raum) */
+  #mt-impressum{position:fixed;left:50%;bottom:max(4px,env(safe-area-inset-bottom));transform:translateX(-50%);
+    z-index:1400;font-size:.64rem;letter-spacing:.04em;color:#9fb8b4;opacity:.5;text-decoration:none;
+    background:rgba(7,10,12,.4);padding:1px 9px;border-radius:6px}
+  #mt-impressum:hover{opacity:1;color:#cfeae6}
+  /* Gold-Zaehler am GESCHLOSSENEN Briefkasten: Anzahl neuer/unbearbeiteter Briefe.
+     Eck-Platzierung (wie Jasons) damit auch ohne Text sichtbar; Sage-Gold-Optik. */
+  #mt-room-mail{position:relative}
+  #mt-room-mail-badge{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9px;background:#C9A961;color:#1e1707;font-size:.7rem;font-weight:700;line-height:18px;
+    text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.55);pointer-events:none}
+  #mt-room-mail-badge[hidden]{display:none}
 </style>
 
 <div id="mt-entry" aria-label="Dreh-Safe — Eingang zum Tresor">
   <div id="mt-entry-fit">
-    <img id="mt-safe" src="../assets/safe/safe-front.png" alt="Futuristische Tresortür mit vier Drehrädern" draggable="false" />
-    <button class="mt-wheel" data-wheel="c"  type="button" aria-label="großes Drehrad (Mitte)"><img src="../assets/safe/drehrad.png" alt="" draggable="false"/></button>
-    <button class="mt-wheel" data-wheel="tl" type="button" aria-label="Drehrad oben links"><img src="../assets/safe/drehrad.png" alt="" draggable="false"/></button>
-    <button class="mt-wheel" data-wheel="tr" type="button" aria-label="Drehrad oben rechts"><img src="../assets/safe/drehrad.png" alt="" draggable="false"/></button>
-    <button class="mt-wheel" data-wheel="br" type="button" aria-label="Drehrad unten rechts"><img src="../assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <img id="mt-safe" src="assets/safe/safe-front.png" alt="Futuristische Tresortür mit vier Drehrädern" draggable="false" />
+    <button class="mt-wheel" data-wheel="c"  type="button" aria-label="großes Drehrad (Mitte)"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="tl" type="button" aria-label="Drehrad oben links"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="tr" type="button" aria-label="Drehrad oben rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
+    <button class="mt-wheel" data-wheel="br" type="button" aria-label="Drehrad unten rechts"><img src="assets/safe/drehrad.png" alt="" draggable="false"/></button>
     <div id="mt-entry-glow"></div>
   </div>
   <div class="mt-hint">Alle vier Räder mit dem Finger drehen, um den Tresor zu öffnen</div>
@@ -2875,16 +3066,17 @@
 
 <div id="mt-room" hidden aria-label="Tresorraum mit Fächern">
   <div id="mt-wall-wrap">
-    <img id="mt-wall" src="../assets/safe/tresorwand-hoch.png" alt="Tresorwand mit Schließfächern" draggable="false" />
+    <img id="mt-wall" src="assets/safe/tresorwand-hoch.png" alt="Tresorwand mit Schließfächern" draggable="false" />
     <div id="mt-grid"></div>
   </div>
   <div id="mt-room-bar">
-    <button id="mt-room-numbers" type="button">✎ Nummern</button>
-    <button id="mt-room-list" type="button">☰ Liste</button>
-    <button id="mt-room-lock" type="button">🔒 Verriegeln</button>
+    <button id="mt-room-numbers" type="button" title="Fach-Nummern bearbeiten">✎<span class="mt-blabel">Nummern</span></button>
+    <button id="mt-room-list" type="button" title="Listen-Ansicht">☰<span class="mt-blabel">Liste</span></button>
+    <button id="mt-room-lock" type="button" title="Verriegeln — zurück zum Eingang">🔒<span class="mt-blabel">Verriegeln</span></button>
   </div>
 </div>
 <button id="mt-toroom" type="button" hidden>🔐 Tresorraum</button>
+<a id="mt-impressum" href="impressum.html" target="_blank" rel="noopener">Impressum &amp; Datenschutz</a>
 
 <script>
 (function(){
@@ -2925,18 +3117,33 @@
   /* ===== RAUM: Tresorraum — %-Koordinaten in festem Rahmen ===== */
   var wall=document.getElementById('mt-wall'), grid=document.getElementById('mt-grid');
   var LAYOUT={
-    hoch:{ img:'../assets/safe/tresorwand-hoch.png', ar:1402/1122, cols:5, rows:6, x0:.045, x1:.955, y0:.045, y1:.955 },
-    quer:{ img:'../assets/safe/tresorwand-quer.png', ar:1536/1024, cols:8, rows:4, x0:.035, x1:.965, y0:.050, y1:.950 }
+    hoch:{ img:'assets/safe/tresorwand-hoch.png', ar:1402/1122, cols:5, rows:6, x0:.045, x1:.955, y0:.045, y1:.955 },
+    quer:{ img:'assets/safe/tresorwand-quer.png', ar:1536/1024, cols:8, rows:4, x0:.035, x1:.965, y0:.050, y1:.950 }
   };
   var N=30, curMode=null, editNums=false;
+  // Beide Wandbilder einmal vorladen -> ein Orientierungswechsel zeigt nie eine schwarze
+  // (noch ladende) Wand mehr; das neue Bild kommt sofort aus dem Cache.
+  ['hoch','quer'].forEach(function(m){ var im=new Image(); im.src=LAYOUT[m].img; });
   function nums(){ try{ return JSON.parse(localStorage.getItem('mt-fachnums')||'{}')||{}; }catch(e){ return {}; } }
   function saveNums(m){ try{ localStorage.setItem('mt-fachnums', JSON.stringify(m)); }catch(e){} }
   function labelFor(n){ var v=nums()['f-'+n]; return (v!=null && v!=='') ? v : ('0'+n).slice(-2); }
-  function pickMode(){ return (window.innerWidth >= window.innerHeight) ? 'quer' : 'hoch'; }
+  // Format nach dem TATSAECHLICH verfuegbaren Sichtfeld (Fenster/Panel), NICHT nach der
+  // Geraete-Ausrichtung: ein schmales Handy-/Split-Fenster nimmt die HOHE Wand (5x6 -> weniger
+  // Faecher pro Reihe, mehr Reihen), ein breites die quere (8x4). Totzone 0.90..1.12 + 150ms-
+  // Entprellung verhindern das Kippen durch die ein-/ausfahrende Chrome-Adressleiste.
+  var mqLandscape = window.matchMedia ? window.matchMedia('(orientation: landscape)') : null;
+  function pickMode(){
+    var w=window.innerWidth, h=window.innerHeight, r=(h>0 ? w/h : 1);
+    if(curMode==='quer' && r>0.90) return 'quer';   // bleibe quer, bis deutlich hochkant
+    if(curMode==='hoch' && r<1.12) return 'hoch';   // bleibe hoch, bis deutlich quer
+    return r>=1.0 ? 'quer' : 'hoch';
+  }
   function buildGrid(){
     var mode=pickMode(), L=LAYOUT[mode]; curMode=mode;
+    room.classList.toggle('mt-portrait', mode==='hoch');  // schmal/hoch: Wand fuellt Breite, Raum scrollt senkrecht
     if(wall.getAttribute('src')!==L.img) wall.setAttribute('src', L.img);
     wrap.style.setProperty('--ar', L.ar);
+    wrap.style.setProperty('--fns', mode==='quer' ? '1.0' : '1.5');  // Schrift-Skala je Format (quer mehr Spalten -> kleiner)
     grid.innerHTML='';
     var gw=(L.x1-L.x0)/L.cols, gh=(L.y1-L.y0)/L.rows, idx=0;
     for(var r=0;r<L.rows;r++){ for(var c=0;c<L.cols;c++){
@@ -2969,7 +3176,7 @@
   }
   document.getElementById('mt-room-numbers').addEventListener('click', function(){
     editNums=!editNums; room.classList.toggle('mt-editnums', editNums);
-    this.textContent = editNums ? '✓ Fertig' : '✎ Nummern';
+    this.innerHTML = editNums ? '✓<span class="mt-blabel">Fertig</span>' : '✎<span class="mt-blabel">Nummern</span>';
   });
   document.getElementById('mt-room-list').addEventListener('click', function(){ room.setAttribute('hidden',''); toRoom.removeAttribute('hidden'); });
   toRoom.addEventListener('click', function(){ toRoom.setAttribute('hidden',''); room.removeAttribute('hidden'); });
@@ -2985,7 +3192,14 @@
     new MutationObserver(function(){ if(bookdemo.hasAttribute('hidden')||bookdemo.style.display==='none') refreshLocks(); })
       .observe(bookdemo, {attributes:true, attributeFilter:['hidden','style']});
   }
-  window.addEventListener('resize', function(){ if(!room.hasAttribute('hidden') && pickMode()!==curMode) buildGrid(); });
+  // Neu bauen NUR bei echtem Orientierungswechsel, entprellt (150 ms) -> kein Flackern/Neuladen.
+  var rebuildT=null;
+  function maybeRebuild(){ if(rebuildT) clearTimeout(rebuildT);
+    rebuildT=setTimeout(function(){ rebuildT=null; if(!room.hasAttribute('hidden') && pickMode()!==curMode) buildGrid(); }, 150); }
+  if(mqLandscape){ if(mqLandscape.addEventListener) mqLandscape.addEventListener('change', maybeRebuild);
+    else if(mqLandscape.addListener) mqLandscape.addListener(maybeRebuild); }
+  window.addEventListener('resize', maybeRebuild);
+  window.addEventListener('orientationchange', maybeRebuild);
   buildGrid();
   try{ if(sessionStorage.getItem(GATE)==='1'){ opened=true; entry.setAttribute('hidden',''); showRoom(); } }catch(e){}
 })();
@@ -2995,25 +3209,29 @@
 <script>
 (function(){
   var bar=document.getElementById('mt-room-bar'); if(!bar) return;
+  var room=document.getElementById('mt-room');
   var mail=document.createElement('button'); mail.type='button'; mail.id='mt-room-mail';
-  mail.title='SBKIM-Briefkasten & Siegel'; mail.textContent='📬 Briefkasten';
+  mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span><span id="mt-room-mail-badge" hidden></span>';
   bar.insertBefore(mail, bar.firstChild);
+  // Geschlossener Briefkasten: Anzahl neuer/unbearbeiteter Briefe sofort still pruefen + Badge setzen.
+  if(typeof window.sbkimMailboxCheck==='function'){ try{ window.sbkimMailboxCheck(true); }catch(e){} }
 
-  // SBKIM-Siegel + eigene Identitaet einmalig in den geerbten Briefkasten-Dialog setzen.
-  var dlg=document.getElementById('sbkim-mailbox-dialog');
-  if(dlg && !document.getElementById('mt-seal-head')){
-    var head=document.createElement('div'); head.id='mt-seal-head';
-    head.style.cssText='text-align:center;margin:0 0 .7em';
-    head.innerHTML='<img src="../assets/sbkim-siegel-wappen.svg" alt="SBKIM-Siegel — Mein-Tresor" decoding="async" '+
-      'style="width:118px;height:118px;display:block;margin:0 auto .4em"/>'+
-      '<div style="font-weight:600;color:#6ee7d3">Mein-Tresor — SBKIM-Endknoten</div>'+
-      '<div id="mt-seal-id" style="font-size:.72rem;color:#8fb3b1;word-break:break-all">Identität wird gelesen …</div>';
-    dlg.insertBefore(head, dlg.firstChild);
-    fetch('../sbkim/spore.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(s){
-      var el=document.getElementById('mt-seal-id'); if(!el) return;
-      el.textContent='nodeId '+(s.id||'?')+(s._demo ? '  ·  Identität noch flüchtig (Demo, wartet auf Schlüssel)' : '  ·  verified-spore ✔');
-    }).catch(function(){ var el=document.getElementById('mt-seal-id'); if(el) el.textContent='Identität: sbkim/spore.json (lokal)'; });
+  // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog).
+  // Klick -> ERKLAERT das Siegel (was/warum), Andock + Identitaet/Spore — NICHT der Briefkasten
+  // (der bleibt auf dem 📬-Knopf). Wie im Sage-Protokoll. Liegt im #mt-room (nur im Raum sichtbar).
+  if(room && !document.getElementById('mt-room-seal')){
+    var seal=document.createElement('button'); seal.type='button'; seal.id='mt-room-seal';
+    seal.title='SBKIM-Siegel — was bedeutet das? (Identität, Andock, Module)';
+    seal.setAttribute('aria-label','SBKIM-Siegel — Erklärung, Andock und Identität öffnen');
+    seal.innerHTML='<img src="assets/sbkim-siegel-wappen.svg" alt="" decoding="async"/>';
+    seal.addEventListener('click', function(){ var d=document.getElementById('mt-seal-dialog'); if(d&&d.showModal) d.showModal(); });
+    room.appendChild(seal);
   }
+
+  // Siegel-Kopf NICHT mehr hier injizieren (§7 D): der Live-Verbund-Render in
+  // sbkimMailboxCheck() baut den Siegel-Kopf jetzt selbst oben im Dialog-Body —
+  // eine zusaetzliche Injektion hier gaebe ein DOPPELTES Siegel.
+  var dlg=document.getElementById('sbkim-mailbox-dialog');
   mail.addEventListener('click', function(){
     if(typeof window.sbkimMailboxCheck==='function') window.sbkimMailboxCheck(false);
     else if(dlg && dlg.showModal) dlg.showModal();
@@ -3021,6 +3239,43 @@
 })();
 </script>
 
+<!-- SBKIM Andock-Runtime + Auto-Lauschen (Stufe 2, 2026-06-27) — additiv, außerhalb
+     des JASONLIB-Cores. Acht Module byte-identisch aus Sage src/modules/ kopiert.
+     05b als type=module (importiert noble relativ). sbkim-init.js startet nach
+     Anastomose.init() fail-soft listenNostr() — Empfangsmodus mit Antwortrecht. -->
+<!-- Identitäts-Isolierung: eigene IndexedDB-Schublade "sbkim_meintresor", VOR dem
+     ersten SBKIM-Modul, damit Modul 01 die richtige DB öffnet (keine Kollision auf
+     dem geteilten GitHub-Pages-Origin). -->
+<script>window.SBKIM_DB_SUFFIX="meintresor";</script>
+<script src="sbkim/01_storage.js"></script>
+<!-- Modul 20 Schlüssel-Safe: verschlüsselte Geheimnis-Ablage (putSecret/getSecret,
+     PBKDF2-600k+AES-GCM-256). Der KI-Richter im 🌐-Raum-Panel (Modul 23 UI) nutzt
+     ihn für „🔒 im Tresor merken / 🔓 entsperren" des BYOK-KI-Schlüssels. Byte-1:1
+     aus Sage src/modules/20_schluessel_safe.js. Ohne Modul 20 fail-soft (Feature aus). -->
+<script src="sbkim/20_schluessel_safe.js"></script>
+<script src="sbkim/02_spore.js"></script>
+<script src="sbkim/03_embedding.js"></script>
+<script src="sbkim/04_match.js"></script>
+<script src="sbkim/05_anastomose.js"></script>
+<script src="sbkim/07_apoptose.js"></script>
+<!-- Modul 17 Floating-Widget (schlankes Lampen-Design): LEBT/VERKEHR/FREMD.
+     Das volle Siegel bleibt das vorhandene statische #sbkim-siegel-badge. -->
+<script src="sbkim/17_floating_widget.js"></script>
+<!-- Modul 15 (Membran/Fremd-Wächter) + 16 (Selbst-Siegel) — NACH 17 geladen;
+     schutz-init.js initt in Pflicht-Reihenfolge 17→15→16→07. -->
+<script src="sbkim/15_membran.js"></script>
+<script src="sbkim/16_siegel.js"></script>
+<script type="module" src="sbkim/05b_nostr_relay.js"></script>
+<!-- Modul 23 Rendezvous (gemeinsamer Raum) + öffentlicher 🌐-Knopf. Byte-1:1
+     aus Sage src/modules/23_rendezvous(.ui).js. Vor sbkim-init.js (das mountet). -->
+<script src="sbkim/23_rendezvous.js"></script>
+<script src="sbkim/23_rendezvous_ui.js"></script>
+<script src="sbkim/sbkim-init.js"></script>
+<!-- Voller-Knoten-Init (17→15→16→07) + Andock-Werkzeug IM Siegel-Modal (aus Sage,
+     nach Skill »status-leiste-siegel«). Ersetzt den alten statischen Siegel/Andock:
+     Identität · Spore signieren+⬇ · Backup · Wiederherstellen · Wechsler · ✍ Semantik. -->
+<script src="assets/schutz-init.js"></script>
+<script src="assets/siegel-inhalt.js"></script>
 <script>
 /* Dezenter Hard-Reload — Service-Worker + Caches leeren, dann neu laden (fail-soft, App-Glue, ausserhalb JASONLIB-CORE). */
 function hardReloadApp(){
@@ -3036,5 +3291,39 @@ function hardReloadApp(){
 }
 </script>
 
+
+<!-- ── family-projekt.de · dezenter Fuß-Verweis (netzweit identisch) ──────────
+     Zweck: Wer diese App irgendwo findet (GitHub-Download, Fork, geteilter Link),
+     kommt von hier zurück zum Marktplatz. Bewusst KLEIN und ganz unten — nicht
+     dominant auf der ersten Seite (Klaus 2026-07-28). Farbwelt = family-project
+     (--accent #6ee7d3). Selbst-enthalten, kein CDN, keine Abhängigkeit. -->
+<style>
+  .fp-badge-wrap{max-width:960px;margin:30px auto 18px;padding:0 16px;text-align:center;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  .fp-badge{display:inline-flex;align-items:center;gap:.5em;padding:7px 15px;
+    border-radius:999px;border:1px solid rgba(110,231,211,.38);color:#6ee7d3;
+    background:rgba(110,231,211,.06);font-size:.82rem;text-decoration:none;
+    transition:background .18s ease,border-color .18s ease;}
+  .fp-badge:hover,.fp-badge:focus-visible{background:rgba(110,231,211,.15);
+    border-color:rgba(110,231,211,.72);outline:none;}
+  .fp-badge.fp-strong{background:rgba(110,231,211,.13);
+    border-color:rgba(110,231,211,.55);font-size:.86rem;padding:8px 17px;}
+  .fp-badge .fp-dot{width:7px;height:7px;border-radius:50%;background:#6ee7d3;
+    box-shadow:0 0 7px rgba(110,231,211,.85);flex:none;}
+  .fp-copy{margin-top:9px;font-size:.72rem;line-height:1.5;color:#9aa7b6;opacity:.78;}
+  @media (prefers-color-scheme: light){
+    .fp-badge{color:#0f766e;border-color:rgba(15,118,110,.35);background:rgba(15,118,110,.05);}
+    .fp-badge:hover,.fp-badge:focus-visible{background:rgba(15,118,110,.12);}
+    .fp-badge .fp-dot{background:#0f766e;box-shadow:0 0 7px rgba(15,118,110,.5);}
+    .fp-copy{color:#5b6b7a;}
+  }
+</style>
+<div class="fp-badge-wrap">
+  <a class="fp-badge" href="https://family-projekt.de" target="_blank" rel="noopener"
+     title="Zum Marktplatz family-projekt.de — weitere Werkzeuge und Apps">
+    <span class="fp-dot"></span> Mehr Werkzeuge auf family-projekt.de
+  </a>
+  <div class="fp-copy">&copy; 2026 Klaus Nitzsche &middot; kostenlos, ohne Konto, offline nutzbar</div>
+</div>
 </body>
 </html>
