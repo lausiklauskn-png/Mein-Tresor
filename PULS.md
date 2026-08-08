@@ -3,6 +3,57 @@
 > Kurz-Puls für den nächsten Sitzungsstart: **was getan, was offen, nächste Schritte.**
 > Wahrheitsquelle für den Real-Anteil bleibt `status.json`. Datum `YYYY-MM-DD`.
 
+## Stand: 2026-08-08 (2) — Die drei Auswahlfelder haben einen Namen · und zwei Korrekturen am Brief
+
+Branch `claude/mein-tresor-a11y-rollout-7ffzs7`, frisch auf `origin/main`. Auftrag war Punkt 2
+des Briefs `docs/sessions/BRIEF_kern-mangel-netzweit.md`: der `select-name`-Mangel mit
+**Gewicht 10**, der in **beiden** Tresoren gleich steckte.
+
+### Getan
+- **Kanon zuerst:** in **Jasons-Tresor** je ein `aria-label` an `#f-cat` / `#f-tag` / `#f-sort`
+  (Wurzel + Spiegel), `npm test` **59/59** grün, als PR #148 gemergt.
+- **Dann die Kopie:** dieselbe Änderung byte-gleich hier (Wurzel + Spiegel), `npm test`
+  **53/53** grün.
+- **Gemessen statt behauptet** — echter Zugänglichkeits-Baum von Chromium
+  (`Accessibility.getFullAXTree`, Handy-Fenster 412 px), alle vier Dateien:
+
+  | | `#f-cat` | `#f-tag` | `#f-sort` |
+  |---|---|---|---|
+  | vorher | `(LEER)` | `(LEER)` | `(LEER)` |
+  | nachher | Nach Kategorie filtern | Nach Schlagwort filtern | Reihenfolge der Liste |
+
+  Seite geladen, Netzwerk-Protokoll: **kein 404**. Kern-Prüfsumme unverändert
+  `a98a704c6518…` — `status.json` bleibt gültig.
+
+### Zwei Korrekturen am Brief (ehrlich vermerkt)
+1. **Die Felder stehen NICHT im JasonLib-Kern.** Der Brief hielt das für den Grund, sie hier
+   nicht anzufassen. Nachgemessen: der Kern liegt zwischen den Markern ab Zeile **802**
+   (JavaScript), die Auswahlfelder bei **595–597** im HTML davor. Der Weg über den Kanon war
+   trotzdem richtig (geteilte Schale), nur die Begründung stimmte nicht — und die Prüfsumme
+   war nie in Gefahr.
+2. **Punkt 3 des Briefs (Widget-Knöpfe) war schon erledigt.** Der Brief nannte Siegel,
+   Minimieren und Schließen als zu kleine Berührungsziele. Gemessen im Browser:
+
+   ```
+   LEBT 54,5 x 24   VERKEHR 75,5 x 24   FREMD 61,5 x 24   SIEGEL 81,5 x 28
+   Minimieren 24 x 24        Schließen 24 x 24            (Norm 24 x 24)
+   ```
+
+   Alle über der Norm. Der Sage-Kanon trägt den Fix seit der Lighthouse-Runde 2026-08-03,
+   und Modul 17 + 23-UI liegen hier **byte-1:1** darauf (Rollout #88/#89). **Nichts zu tun.**
+   Ein Treffer „1 x 12" im Messwerkzeug ist der `#sbkim-siegel-badge`-**Proxy**: ein
+   `visibility:hidden`-Anker aus Modul 17, kein Knopf — Lighthouse sieht ihn nicht.
+
+### Offen / wartet auf Klaus
+1. **PR #91** (Ladezeit/WebP) — wartet auf Klaus' Blick auf die neu gerechneten Safe-Bilder.
+   Getestet: dieser Zweig und #91 vertragen sich **ohne Konflikt** in `index.html` (lokal
+   probe-gemergt); in `PULS.md` erwartet die spätere Sitzung eine kleine Überschneidung.
+2. **PageSpeed-Beweis** für beide Tresore (Erwartung Barrierefreiheit 95 → 100). Lokal ist
+   nur ein Hinweis; am 2026-08-07 lag eine lokale Messung um 23 Punkte daneben.
+3. **Briefkasten beim Seitenstart** — Klaus' Entscheidung (Fremd-Abruf beim Öffnen benennen
+   oder auf den 📬-Knopf legen). Unverändert offen.
+4. **Brief-Kette ausmisten** — Tabelle liegt der Sitzung bei, gelöscht wird erst nach Klaus.
+
 ## Stand: 2026-06-28 — Modul 23 Rendezvous + öffentlicher „🌐 Mit dem Netz verbinden"-Knopf
 
 Branch `claude/module-23-rendezvous-rollout-zqaa8u` (zuerst frisch auf `origin/main`
