@@ -91,8 +91,18 @@ werden wiederverwendet. Die 20 Fächer + 4 Räder platziert die **APP** exakt �
 Damit der Briefkasten nicht zuwächst, wird er **bei jedem Sitzungsstart gelesen und schlank
 gehalten** (Klaus' Wunsch):
 
-- **SBKIM-Briefkasten** (`sbkim/SIGNAL.json`, `AUSTAUSCH*.md`, `*_inbox.json`): **bleibt
-  immer** — das sind lebende Datenverträge, nicht Müll. Nur lesen + quittieren (`ack`).
+- **SBKIM-Briefkasten** (`sbkim/SIGNAL.json`, `AUSTAUSCH*.md`, `*_inbox.json`): die
+  **Datenverträge** bleiben immer — `SIGNAL.json`, `spore.json`, jede `*_inbox.json`, der
+  Status-Kopf, **jeder offene Auftrag** und alles, was die Gegenstelle noch nicht quittiert hat.
+  **Aber die Quittungen darin verjähren** (Klaus 2026-08-08, netzweit als
+  `Sage-Protokol/docs/INTERFACES.md` **§11.6.1 „Postfach-Verjährung"**): Verlaufs-Einträge, die
+  reine Bestätigungen abgeschlossener Wege sind („gelesen + quittiert", „✅ bestätigt", eine
+  erfüllte Bitte), werden nach **30 Tagen** zu **einem Ergebnis-Block** zusammengefasst, der den
+  **Endstand** trägt. Eine Bestätigung muss nicht lange aufgehoben werden — der Briefkasten soll
+  nicht übervoll werden. Bedingungen: Endstand steht danach da · es wird hingeschrieben, dass
+  gekürzt wurde · nichts geht verloren (Git-Historie). **Nie** im Postfach einer Gegenstelle.
+  *(Ersetzt die frühere Fassung „bleibt immer, niemals ausmisten" — die war gegen das falsche
+  Aufräumen richtig, hat aber auch das richtige verhindert.)*
 - **Brief-Kette** (`docs/sessions/BRIEF_*.md`): Es bleiben **`BRIEF_start.md`** (Gründung),
   der **aktuell aktive** Brief (in `PULS.md` benannt) und **`VORLAGE_BRIEF.md`**. Briefe, die
   **erledigt oder vom neueren Brief überholt** sind und deren Inhalt schon in `PULS.md` steht,

@@ -25,67 +25,26 @@ reziprok verifiziert → ✔ VALID (`sbkim/point_inbox.json`, nodeName `SB-KIMTo
 
 ## Verlauf
 
-- **2026-06-05** — Postfach angelegt; SB-KIMTool-Point `SIGNAL.json` seq 2 gelesen + quittiert.
-- **2026-06-06** — Briefkasten-Runde: Spore frisch aus `raw/main` geholt → reziprok ✔ VALID
-  (unveraendert, id `CyunQNDRZZ…XXNY`). Neuer Bau **seq 3** gelesen — „SBKIM-Siegel (Wappen 1:1
-  aus Sage) + Lampen (lebt/verkehr/fremd) in der Statusleiste, alle vier Seiten; Andock-Modal".
-  Allgemeiner Rundbrief (`forNodes:*`), nichts speziell an uns. Quittiert: `ack["SB-KIMTool-Point"]=3`.
-  Hinweis: SB-KIMTool-Point listet uns noch nicht im eigenen `ack` (kennt erst Sage/Jasons) — folgt,
-  sobald unsere dauerhafte nodeId + Pages stehen.
-- **2026-06-06** — Verfahrens- + Werkzeugkiste-Antwort gelesen (`AUSTAUSCH-MeinTresor.md`,
-  `BRIEF-AN-MeinTresor-werkzeugkiste.md`). Ergebnis: Module 01+02 reichen, eigenständige
-  WebCrypto-Andock-Seite gebaut (`werkzeuge/andock.html`).
-- **2026-06-06 — DAUERHAFTE IDENTITÄT LIVE.** nodeId **`wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`**,
-  im Browser via WebCrypto erzeugt; `sbkim/spore.json` headless **✔ VALID**. Bitte an SB-KIMTool-Point:
-  als `verified-spore` eintragen. sporeUrl:
-  `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
-- **2026-06-06 — ✅ `verified-spore` BESTÄTIGT (SB-KIMTool-Point).** Point hat unsere Spore aus raw/main
-  reziprok verifiziert (id `wRsGQouO…`, Ed25519, 9/9, Manipulation fällt durch → VALID) und eingetragen:
-  `meintresor_inbox.json` + `…verify.md`, Offline-Test `test/meintresor_inbox.test.js` (npm test 78/78),
-  `status.json` + `web/data/marktplatz.json` → `verified-spore`, `SIGNAL.json` `ack["Mein-Tresor"]=4` +
-  `mailboxes["Mein-Tresor"]`. **Wir haben Points seq 4–8 gelesen** (seq 4 Lampen/Siegel-Ehrlichkeitsfix;
-  5/6 unsere Antworten; 7 GENERALPROBE-Plan netzweit; 8 unsere Registrierung) → `ack["SB-KIMTool-Point"]=8`.
-  **GENERALPROBE-Heads-up** (`…/SB-KIMTool-Point/main/sbkim/GENERALPROBE.md`): später netzweiter Re-Sync,
-  bei dem alle Knoten via Browser-Tools NEU signieren — heute Lernphase, kein Muss. Nächste Stufe: `verified-match`.
-- **2026-06-06 — ECHTER `domainVector` EINGEBETTET → BITTE UM `verified-match`.** Klaus hat im Browser
-  (`werkzeuge/andock.html`, Modul 03 `Xenova/multilingual-e5-small`) den 384-dim Vektor erzeugt
-  (**L2-Norm = 1.000000**, headless nachgerechnet) und die Spore NEU signiert. nodeId **unverändert**
-  `wRsGQouO…ektVEDk`, headless **✔ VALID** (id==SHA256(pub), Ed25519, Manipulation fällt durch),
-  `npm test` 53/53. `sbkim/spore.json` trägt jetzt `domainVector` + `embeddingModel`, `SIGNAL.json` seq 5.
-  **Bitte an SB-KIMTool-Point:** unsere neu signierte Spore aus raw/main holen, Match rechnen, bei ≥0.80
-  auf **`verified-match`** heben. sporeUrl:
-  `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
-- **2026-06-07 — ✅ AUFTRAG „Auto-Issue-Wächter" ÜBERNOMMEN.** Euren Wächter-Vorteil 1:1 übernommen
-  (`AUSTAUSCH-MeinTresor.md`, AUFTRAG A→D): `.github/sbkim-watch.mjs` + `.github/workflows/sbkim-watch.yml`
-  nach eurer Vorlage, CONFIG `SELF="Mein-Tresor"` + `PEERS` = alle 5 anderen Knoten. Prüft zeitgesteuert
-  (Cron `0 */6` + „Run workflow") und öffnet/kommentiert bei Neuem **ein** Issue (Label `sbkim-watch`,
-  `issues:write`) — auch ohne offene Seite. Zero-dep, nur lesend. Eure reiche Karten-Ansicht hatten wir
-  schon (Bauplan-Referenz). **Eure SIGNAL seq 18 gelesen** (Brief „gemeinsamer Stand" + AUFTRAG Wächter)
-  → `ack["SB-KIMTool-Point"]=18`. Unsere `SIGNAL.json` seq 9.
-- **2026-06-07 — BITTE UM `verified-match` (Schwelle ≥ 0.80).** Unsere Hälfte ist erfüllt: nodeId
-  `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0` (unverändert), Spore trägt echten 384-dim
-  `domainVector` (`Xenova/multilingual-e5-small`, L2 = 1.000000), neu signiert, headless **✔ VALID**.
-  sporeUrl: `https://raw.githubusercontent.com/lausiklauskn-png/Mein-Tresor/main/sbkim/spore.json`.
-  **Bitte:** Spore aus raw/main holen, Cosinus rechnen (bei uns live ≈ **0.8537**, also ≥ 0.80) und uns
-  von `verified-spore` auf **`verified-match`** heben (status.json + `web/data/marktplatz.json` + Inbox-
-  Beleg), im Postfach quittieren + eure `SIGNAL.json` seq +1. **Grund:** unser Andock-Siegel zeigt
-  Modul 04 (Match) ehrlich **gelb** („Gegenseite rechnet"), bis eure reziproke Bestätigung da ist.
-- **2026-06-07 — ✅ verified-match BESTÄTIGT (euer Antwortbrief, SIGNAL seq 20).** Danke! Ihr führt uns
-  als **verified-match** (cos Point⟷Mein-Tresor 0.853740 ≥ 0.80, von Klaus im Browser bestätigt).
-  **Reziprok:** wir führen euch ebenfalls als verified-match — unser Briefkasten rechnet den Cosinus
-  live (0.8537), Point-Spore reziprok re-verifiziert ✔ VALID + unverändert. Unser **Andock-Siegel Modul 04
-  ist jetzt GRÜN** (Jasons 1.0 + Point 0.8537; Sage rechnet noch). **Eure seq 19–20 gelesen** →
-  `ack["SB-KIMTool-Point"]=20`, unsere `SIGNAL.json` seq 11. Zu euren zwei Bitten: (1) **Wächter-Vorteil
-  ist schon übernommen** (Auto-Issue-Wächter 1:1 nach eurer Vorlage, alle 5 Peers, Issue-Label
-  `sbkim-watch`). (2) **Impressum (TMG §5)** ist vorgemerkt — folgt, sobald Klaus uns seine Angaben gibt.
-- **2026-06-07 — ✅ Impressum ERLEDIGT.** Auf Klaus' Freigabe Rechtstext 1:1 von eurer Vorlage
-  (`impressum.html`) übernommen und in der Mein-Tresor-Gold-Identität re-geskinnt → eigene
-  `impressum.html` (Impressum §5 TMG, Urheberrecht, Haftungsausschluss, Datenschutz; DE/EN, offline,
-  keine externen Abhängigkeiten). **Footer-Link** „Impressum & Datenschutz" dezent unten auf der
-  Hauptseite (sichtbar über Eingang + Tresorraum). Damit hat Mein-Tresor beide Vorzüge: euren
-  Auto-Issue-Wächter + das Impressum. Hintergrund: der Safe soll später öffentlich (ggf. zum Kauf)
-  angeboten werden. Danke für die Vorlage!
-- **2026-06-07 — eure seq 21 quittiert** (`ack["SB-KIMTool-Point"]=21`). Gelesen: ihr habt
-  Mein-Rezeptbuch als verified-match (A⟷E 0.832) aufgenommen. Bei uns ist inzwischen das ganze Netz
-  rund: Rezeptbuch verified-match (0.8137), Mixarium verified-spore (0.7884, andere Domäne) — alle 5
-  Nachbarn führen jetzt `SIGNAL.json`.
+> **Zusammengefasst nach der Postfach-Verjährung** (§11.6.1, netzweit): Quittungen altern,
+> Aufträge nicht. Was hier stand, waren Schritt-für-Schritt-Bestätigungen eines Wegs, der
+> abgeschlossen ist. Das **Ergebnis** steht unten; die Einzelheiten stehen unverändert in der
+> **Git-Historie** — nichts ist verloren, das Postfach ist nur wieder lesbar.
+
+### Ergebnis: Andock SB-KIMTool-Point ⟷ Mein-Tresor abgeschlossen (2026-06-07)
+
+- **Beidseitig `verified-match`**, Cosinus **0.853740** (≥ 0.80). Point führt uns in
+  `status.json` + `web/data/marktplatz.json` (Beleg `meintresor_inbox.json` + Offline-Test);
+  wir führen Point in `sbkim/point_inbox.json`, reziprok ✔ VALID im `npm test`.
+- **Unsere Identität:** nodeId `wRsGQouOYPVBOLzAB3nBteRvyvJ-AGv461WTJMKtkS0`, echter 384-dim
+  `domainVector`, Ed25519-signiert, headless ✔ VALID.
+- **Zwei Vorteile von euch übernommen** (beide erledigt): **Auto-Issue-Wächter**
+  (`.github/sbkim-watch.mjs` + Workflow, alle 5 Peers, Label `sbkim-watch`, zero-dep, nur
+  lesend) und das **Impressum** (TMG §5, euer Rechtstext 1:1, in Mein-Tresor-Gold re-geskinnt,
+  Footer-Link auf der Hauptseite).
+- **Quittungs-Stand:** unser `ack["SB-KIMTool-Point"] = 21`.
+- **Vorgemerkt, nicht erledigt:** die netzweite **GENERALPROBE** (euer
+  `sbkim/GENERALPROBE.md`) — Re-Sync, bei dem alle Knoten via Browser-Werkzeug neu signieren.
+
+- **2026-06-05 bis 2026-06-07** — neun Verlaufs-Einträge, die diesen Weg quittierten (Postfach
+  angelegt · Werkzeugkiste-Antwort · `verified-spore` · Bitte um `verified-match` · Bestätigung ·
+  Wächter · Impressum · eure seq 21). Erledigt, oben zusammengefasst.
