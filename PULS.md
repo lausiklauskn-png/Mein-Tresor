@@ -54,6 +54,102 @@ des Briefs `docs/sessions/BRIEF_kern-mangel-netzweit.md`: der `select-name`-Mang
    oder auf den 📬-Knopf legen). Unverändert offen.
 4. **Brief-Kette ausmisten** — Tabelle liegt der Sitzung bei, gelöscht wird erst nach Klaus.
 
+## Stand: 2026-08-08 — Ladezeit: die vier Safe-Bilder (und was dahinter lag)
+
+Branch `claude/safe-images-performance-3frzcp`, frisch auf `origin/main`. Auftrag war
+der Brief `docs/sessions/BRIEF_ladezeit-safe-bilder.md`: Mein-Tresor war die langsamste
+Seite im Netz, die Schwester Jasons-Tresor eine der schnellsten, bei gleichem Kern.
+
+### Gemessen (lokal, `family-project/tools/lh-messen.mjs`, drei Runden im Wechsel)
+
+| | Handy vorher | Handy nachher | Computer vorher | Computer nachher |
+|---|---|---|---|---|
+| Leistung | 73 · 73 · 75 · 74 · 74 | **80 · 80 · 80** | 80 · 64 · 80 · 75 · 80 | **98 · 98 · 98** |
+| Ladezeit (LCP) | 21,8 s (fünfmal gleich) | **5,4 s** | 3,6–9,8 s | **1,0–1,1 s** |
+| Barrierefreiheit | 84 | **95** | 87 | **95** |
+| Übertragen beim Laden | 15,9 MB · 44 Dateien | **0,75 MB · 23 Dateien** | | |
+
+Die Barrierefreiheit liegt damit **über** der Schwester Jasons-Tresor (92).
+**Lokal gemessen — der Beweis ist der nächste PageSpeed-Lauf** (Regel 1b).
+
+### Getan
+
+1. **Die vier Safe-Bilder nach WebP, Güte 0,90** (`assets/safe/`): 8.447 → 891 KiB
+   (**89 % weniger**). Nur das Drehrad wurde zusätzlich verkleinert (1024 → 768 px,
+   größte Anzeige gemessen 372 px); die anderen drei lagen bereits unter dem Doppelten
+   ihrer Anzeigebreite, da war nichts zu holen. Alt und neu in echter Anzeigegröße
+   nebeneinander angesehen — kein Unterschied. Im 3-fach-Zoom zeigt Güte 0,80 Flecken
+   in den dunklen Metall-Verläufen, 0,90 nicht; darum 0,90 (Klaus' offene Frage 1).
+   Durchsichtigkeit des Drehrads erhalten (52,3 % Alpha, wie vorher).
+   Neue Ablage-Anleitung `assets/safe/README.md` — damit nicht die nächste Sitzung
+   wieder ein 2-MB-PNG dorthin legt.
+2. **Nur die Wand laden, die gezeigt wird.** Vorher wurden beide vorgeladen (~4,2 MB
+   als PNG), obwohl immer nur eine sichtbar ist. Jetzt holt die Seite gar keine beim
+   ersten Anstrich: die passende kommt, sobald der Safe aufgeht (die Animation läuft
+   2,2 s), die andere still danach. Ein Formatwechsel zeigt weiterhin keine schwarze Wand.
+3. **Das ausgeblendete Erlebnis wird nicht mehr mitgeholt — der eigentliche Fund.**
+   `#threshold` (Tür-Intro) und `#regal` sind in Mein-Tresor `display:none!important`,
+   an ihrer Stelle steht der Dreh-Safe. Ihre Bilder lagen trotzdem im Rumpf und wurden
+   bei **jedem** Aufruf geholt: rund **6 MB, die nie jemand zu sehen bekam**. Das ist
+   der Grund, warum dieselbe Bildstrecke bei Jasons-Tresor nicht weh tut — dort wird
+   sie gezeigt. Jetzt `loading="lazy"`: ein Bild in einem ausgeblendeten Behälter kommt
+   dem Sichtfeld nie nahe und wird nicht geholt. Nimmt jemand die Ausblendung heraus,
+   lädt alles normal.
+   Ebenso das Fach-Fenster (`#bookdemo`, 1,38 MiB) — es geht erst beim Öffnen eines
+   Fachs auf; jetzt lazy **plus** stilles Vorwärmen nach dem Laden, damit das Öffnen
+   so schnell bleibt wie vorher (nachgeprüft: beim Fach-Klick wird nichts mehr geholt).
+   Mit ausgeblendet: der Schlüssel-Knopf „Intro nochmal ansehen" — er lag ohnehin unter
+   dem Safe, war nie anklickbar, und richtet gegen ein per CSS ausgeblendetes Intro
+   nichts aus. Sein Bild kostete 265 KiB für eine Anzeige von 72×48 Pixeln.
+4. **Safe-Front früh angemeldet** (`<link rel=preload as=image fetchpriority=high>`),
+   echte `width`/`height` an allen angefassten Bildern (bei den Wänden je Format, aus
+   `LAYOUT`), damit nichts springt.
+5. **Der Briefkasten-Blick läuft nach dem Laden.** Die fünf Abrufe an
+   `raw.githubusercontent.com` hingen an `DOMContentLoaded`, also mitten im
+   Seitenaufbau. Jetzt `load` + Ruhepause. Das Badge kommt ein bis zwei Sekunden
+   später, die Seite steht früher.
+6. **Barrierefreiheit 84/87 → 95/95.** Wächter-Lampe: `role="img"` ergänzt (ein
+   `aria-label` an einem `<span>` ohne Rolle ist unzulässig und wird still ignoriert).
+   Impressum-Verweis: die Deckkraft `.5` drückte die Schrift effektiv auf rgb(83,97,96)
+   — 3,1:1 gegen den Grund, unter den geforderten 4,5:1; Deckkraft raus, Farbe bleibt,
+   eigener Grund kräftiger. „Eintreten"-Knopf 32 px höher gesetzt: seine linke untere
+   Ecke lag **über** dem Impressum-Verweis (am Handy gemessen 5 px Überdeckung) — wer
+   dort tippte, traf mal das eine, mal das andere.
+7. **Kern nachgerechnet — und dabei fast eine falsche Behauptung eingebaut.** Eine
+   Zwischenmessung ergab für den JasonLib-Kern `30b0069d…` statt des in `status.json`
+   genannten `a98a704c…`, und die Angabe wurde daraufhin als „veraltet" korrigiert.
+   **Das war falsch.** Der Unterschied lag nicht am Kern, sondern am Schnitt: der
+   dokumentierte Wert schneidet Marker **plus Zeilenumbruch** (18.018 Bytes), die
+   Zwischenmessung nur bis zum Marker (18.017). Beide Schnitte ergeben in Mein-Tresor
+   und in Jasons-Tresor `origin/main` **denselben** Wert — der Kern ist unverändert und
+   byte-gleich. `status.json` wurde wieder zurückgesetzt. (Falle 4 aus dem Brief, an
+   der eigenen Arbeit vorgeführt: das Messwerkzeug war das Kaputte.)
+
+### Bewusst NICHT gemacht (Brief § „Was NICHT gemacht wird")
+
+- SBKIM-Module **nicht** verkleinert (byte-1:1 aus dem Sage-Kanon, Drift-Guard).
+- Modul-Stapel **nicht** verschoben (steht schon hinter dem sichtbaren Inhalt).
+- Die drei Auswahlfelder ohne Beschriftung (`#f-cat`/`#f-tag`/`#f-sort`, Gewicht 10)
+  stehen im **JasonLib-Kern** und teilen sich beide Tresore — das gehört in den Kanon
+  (Jasons-Tresor) und dann netzweit ausgerollt, nicht hier repariert. Ebenso die zu
+  kleinen Knöpfe des SBKIM-Widgets (Modul 17).
+  Der „Eintreten"-Knopf war **nicht** so ein Fall: `.mt-skip` ist eigenes CSS dieser
+  App, und der Mangel war ein Zusammenstoß mit dem eigenen Impressum-Verweis — nachgemessen,
+  nicht angenommen. Deshalb hier behoben, abweichend von der Einordnung im Brief.
+
+### Offen / wartet auf Klaus
+
+1. **Klaus' Browser-Lauf** — bei diesem Bau ist sein Blick keine Formsache: es geht um
+   das **Aussehen des Safes**. Güte 0,90 gewählt; 0,80 wäre nochmal 342 KiB kleiner,
+   die alten PNG liegen in der Git-Historie, ein Umrechnen ist eine Sitzung.
+2. **`fach.png` (Brief-Frage 2):** wird von der Seite **nicht** geholt (nirgends
+   verlinkt). Trotzdem mit umgerechnet und als `fach.webp` (188 KiB statt 2.142 KiB)
+   liegen gelassen — für den vorgemerkten Umbau des Fach-Fensters auf die Fach-Grafik.
+3. **Briefkasten nur auf Knopfdruck (Brief-Frage 3):** verschoben ist er; **ob** er beim
+   Öffnen der Seite überhaupt mit einem fremden Server sprechen soll, ist Klaus' Entscheid.
+4. **Brief-Kette ausmisten** (CLAUDE.md § Briefkasten-Hygiene): in `docs/sessions/`
+   liegen 8 Briefe, davon sind mehrere erledigt. Bewusst **nicht** in diesen PR gemischt.
+
 ## Stand: 2026-06-28 — Modul 23 Rendezvous + öffentlicher „🌐 Mit dem Netz verbinden"-Knopf
 
 Branch `claude/module-23-rendezvous-rollout-zqaa8u` (zuerst frisch auf `origin/main`
