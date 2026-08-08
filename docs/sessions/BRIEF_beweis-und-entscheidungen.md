@@ -34,6 +34,10 @@ gemergt, alles gemessen — Einzelheiten im obersten `PULS.md`-Eintrag.
 sondern **zehn Abrufe an `raw.githubusercontent.com`** beim bloßen Öffnen der Seite, bis zu
 4 s im kritischen Pfad. Die sind jetzt weg (erst auf Knopfdruck).
 
+**Danach kamen noch zwei Dinge dazu** (siehe `PULS.md`): die **Postfach-Verjährung** — reine
+Quittungen im Briefkasten verjähren nach 30 Tagen zu einem Ergebnis-Block, netzweit als
+`Sage INTERFACES §11.6.1` — und der **Zeichensatz** steht jetzt bei Byte 939 statt 1455.
+
 ## Was als Nächstes kommt — in dieser Reihenfolge
 
 ### 1 · Neu messen (Klaus, ein Klick)
@@ -77,7 +81,24 @@ aktive Brief und `VORLAGE_BRIEF.md`.
 **Vor dem `git rm`:** Querverweise greppen, Tabelle Klaus zeigen. Der SBKIM-Briefkasten
 (`sbkim/`) wird **nie** angefasst — lebende Datenverträge.
 
-### 4 · Was das Netz erben sollte
+### 4 · Die Postfach-Verjährung ins Netz tragen (Klaus fragen, bevor gebaut wird)
+
+Die Regel steht im Kanon (`Sage INTERFACES §11.6.1`) und ist in Mein-Tresor angewendet
+(105→75, 91→50, 251→179 Zeilen). **Angewendet hat sie sonst noch niemand** — und dort liegt
+die eigentliche Last:
+
+| Postfach | Zeilen |
+|---|---|
+| `Sage-Protokol/sbkim/AUSTAUSCH.md` | **653** |
+| `SB-KIMTool-Point/sbkim/AUSTAUSCH.md` | 573 |
+| `SB-KIMTool-Point/sbkim/AUSTAUSCH-MeinTresor.md` | 471 |
+| `Sage-Protokol/sbkim/AUSTAUSCH-BookLedgerPro.md` | 438 |
+
+**Jeder Knoten räumt nur im eigenen Postfach** — nie im Depot der Gegenstelle. Drei
+Bedingungen aus der Regel gelten immer: Endstand steht danach da · es wird hingeschrieben,
+dass gekürzt wurde · nichts geht verloren (Git-Historie).
+
+### 5 · Was das Netz erben sollte
 
 Zwei Funde dieser Runde betreffen **nicht nur Mein-Tresor**:
 
