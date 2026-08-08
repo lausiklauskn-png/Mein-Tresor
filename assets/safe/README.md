@@ -22,9 +22,40 @@ langsamste Seite im Netz war.
 | Datei | Breite | angezeigt bei 412 px / 1350 px Fenster | jetzt |
 |---|---|---|---|
 | `safe-front.webp` | 1254 | 412 / 940 | 258 KiB |
+| `safe-front-828.webp` | 828 | Handy-Fassung (siehe unten) | 129 KiB |
 | `drehrad.webp` | 768 | 163 / 372 (größtes Rad) | 165 KiB |
+| `drehrad-384.webp` | 384 | Handy-Fassung (siehe unten) | 46 KiB |
 | `tresorwand-hoch.webp` | 1402 | füllt die Breite (Hochformat) | 242 KiB |
 | `tresorwand-quer.webp` | 1536 | füllt die Breite (Querformat) | 226 KiB |
+
+## Zwei Fassungen je Bild — das Handy holt nicht die Computer-Datei
+
+**Seit 2026-08-08 (PageSpeed-Befund).** Der Safe füllt `min(100vw,100vh)`: am Handy sind
+das 412 px, am Computer 940. Eine einzige Datei kann beides nicht gut bedienen — 1254 px
+sind am Computer richtig und am Handy dreimal zu viel. PageSpeed rechnete allein dafür
+326 KiB unnötige Übertragung vor.
+
+Gelöst mit `srcset`/`sizes`, **nicht** durch Verkleinern:
+
+```html
+<img id="mt-safe" src="assets/safe/safe-front.webp"
+     srcset="assets/safe/safe-front-828.webp 828w, assets/safe/safe-front.webp 1254w"
+     sizes="(max-aspect-ratio: 1/1) 100vw, 100vh" width="1254" height="1254" …>
+```
+
+Die Räder ebenso (`40vw`/`40vh`, weil das größte Rad 39,6 % der Fläche einnimmt).
+
+**Gemessen, welche Datei wirklich kommt:**
+
+| | geholt | Übertragung |
+|---|---|---|
+| Handy 412, DPR 2 | `safe-front-828` + `drehrad-384` | 424 → **176 KiB** |
+| Computer 1350, DPR 1 | `safe-front` + `drehrad-384` | 424 → **305 KiB** |
+
+**Die Falle dabei:** das `<link rel="preload">` im Kopf muss dieselbe Auswahl treffen,
+sonst lädt der Browser **zwei** Dateien — die vorgeladene und die aus `srcset` gewählte.
+Dafür gibt es `imagesrcset` + `imagesizes`; beide müssen mit dem `<img>` übereinstimmen.
+Nachgeprüft wird das im Netzwerk-Protokoll: **je Gerät genau ein** Safe-Bild.
 
 `fach.webp` liegt als Vorrat hier — die Seite holt es **nicht**. Gedacht ist es für
 den Fall, dass das Fach-Öffnen-Fenster einmal auf die Fach-Grafik umgestellt wird.
