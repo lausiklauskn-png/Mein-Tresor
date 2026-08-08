@@ -3,6 +3,81 @@
 > Kurz-Puls für den nächsten Sitzungsstart: **was getan, was offen, nächste Schritte.**
 > Wahrheitsquelle für den Real-Anteil bleibt `status.json`. Datum `YYYY-MM-DD`.
 
+## Stand: 2026-08-08 (4) — Brief-Kette ausgemistet · Gegenmessung lokal · zwei Bauten ins Netz getragen
+
+Klaus hat drei Entscheidungen getroffen und die Sitzung hat sie umgesetzt.
+
+### 1 · Brief-Kette ausgemistet (Klaus: „8 löschen")
+
+Alle zwölf Briefe gelesen und geprüft. **Acht gelöscht**, vier bleiben:
+`BRIEF_start.md` (Gründung) · `VORLAGE_BRIEF.md` · der aktive Brief ·
+`BRIEF_briefkasten-bauplan.md` (Lebend-Doku, in drei `AUSTAUSCH`-Postfächern §4 verlinkt).
+
+**Eine Korrektur an der Tabelle im Vorgänger-Brief:** dort stand
+`BEFEHL_briefkasten-rezeptbuch-mixarium.md` als „prüfen, sonst bleibt". Geprüft — der
+Auftrag ist **erfüllt**: Mein-Rezeptbuch und Mein-Mixarium tragen beide `sbkim/SIGNAL.json`,
+`AUSTAUSCH-MeinTresor.md`, `.github/sbkim-watch.mjs` + Workflow und den Briefkasten in
+`index.html`. Also mitgelöscht.
+
+**Querverweise geprüft, nicht blind gelöscht.** `PULS.md` nennt einige der gelöschten
+Briefe in **alten** Einträgen — die bleiben stehen, das ist die Historie (so wurde es beim
+letzten Ausmisten am 2026-06-08 auch gehalten). Nachgezogen wurde nur der **stale Zeiger**
+ganz unten: der Block „Aktiver Übergabe-Brief" verwies noch auf vier Briefe von Anfang Juni,
+von denen drei jetzt weg sind. Genau so ein toter Zeiger schickt die nächste Sitzung auf die
+Suche nach Dateien, die es nicht mehr gibt.
+
+### 2 · Gegenmessung — lokal, als Hinweis (Klaus' PageSpeed-Lauf bleibt der Beweis)
+
+Der Brief nennt die Gegenmessung als Klaus' Schritt. Damit er weiß, was ihn erwartet, hat
+die Sitzung **lokal** gemessen — alt und neu, je drei Läufe, Regel 2:
+
+| | Handy (3 Läufe) | LCP | Gute Praxis |
+|---|---|---|---|
+| **alt** (`1d289ea`, der Stand mit PageSpeed **83**) | 80 · 68 · 80 | 5,4 · 5,3 · 5,4 s | 92 |
+| **neu** (`origin/main`, nach #93/#94/#96) | 80 · **88 · 87** | 4,1 · **3,9 · 3,9** s | **100** |
+
+Computer: **99 · 99 · 99**, LCP 0,9 s, Blockierzeit 0 ms — unverändert gut.
+
+**Wie das zu lesen ist.** Die Gesamtnote schwankt auf der Bau-Maschine erheblich (der 68er
+im alten Stand ist ein Aussetzer, der 80er im neuen auch) — genau davor warnt Regel 2. Die
+**belastbare** Zahl ist **LCP: 5,4 → 3,9 Sekunden**, in allen sechs Läufen stabil. Das ist
+anderthalb Sekunden weniger bis zum größten Element, und es passt zu dem, was gebaut wurde
+(kleinere Bilder fürs Handy, keine zehn Fremd-Abrufe mehr im kritischen Pfad).
+
+**Trotzdem gilt Regel 1b:** *lokal ist ein Hinweis, PageSpeed ist der Beweis.* Der Wert am
+Handy war lokal schon vorher pessimistischer als draußen (80 lokal gegen 83 bei Google).
+Was Klaus' nächster Lauf sagt, sagt er.
+
+### 3 · Was ins Netz getragen wurde
+
+- **Jasons-Tresor (PR #150, gemergt):** derselbe Briefkasten-Umbau. Dort war es sogar
+  schlimmer als hier — der stille Blick lief bei `DOMContentLoaded`, also **mitten im
+  Seitenaufbau**. Gemessen: **5 → 0 Fremd-Abrufe** beim Öffnen, 5 nach Druck auf 📬, Badge
+  aus dem Merker bei 0 Abrufen. `npm test` 59/59, Wurzel == Spiegel.
+- **Sage-Protokol (PR #791, gemergt):** die Postfach-Verjährung (§11.6.1) erstmals außerhalb
+  von Mein-Tresor angewendet. `AUSTAUSCH.md` 653 → 204, `AUSTAUSCH-BookLedgerPro.md`
+  438 → 120. Dabei ein echter Rückstand gefunden: **Sage schuldet BookLedgerPro seit
+  2026-06-21 eigene `capVector`/`needsVector`** — die committete Spore trägt bis heute
+  keine. Steht jetzt als offener Block ganz oben in dem Postfach statt als Nebensatz.
+
+### Eine Falle beim Messen, die fast durchgegangen wäre
+
+Das Zählen der Fremd-Abrufe in Jasons-Tresor meldete mit einem **6-Sekunden-Fenster genau
+einen** Abruf — „fast nichts los". Die fünf Abrufe laufen aber **nacheinander** (`await` in
+einer Schleife), und hinter dem Proxy dieser Maschine dauert jeder rund zwölf Sekunden. Erst
+ein 70-Sekunden-Fenster zeigt alle fünf. Ein zu kurz gewähltes Fenster hätte den Befund
+kleingerechnet und die Änderung als unnötig erscheinen lassen. **Falle 4 aus dem Brief, wieder
+zugeschlagen:** das Messwerkzeug kann das Kaputte sein.
+
+### Offen
+
+1. **Klaus' PageSpeed-Lauf** am Handy — die einzige Zahl, die zählt.
+2. **Klaus' Browser-Lauf an Jasons-Tresor** — wie sich das Badge anfühlt (erster Besuch
+   zeigt keins, bis einmal 📬 gedrückt wurde), sieht nur er.
+3. **Verjährung bei den übrigen Knoten** — SB·KIMTool·Point (573 + 471), Jasons-Tresor (362),
+   BookLedgerPro (630 auf deren Seite). Jeder räumt nur im eigenen Depot.
+4. **Briefkasten-Umbau bei den übrigen Knoten** — erst nach Klaus' Blick auf Jasons-Tresor.
+
 ## Stand: 2026-08-08 (3) — PageSpeed-Beweis da · Bilder je Gerät · beim Öffnen kein Netz mehr
 
 Fortsetzung derselben Sitzung, nach Klaus' Browser-Lauf und **seinem PageSpeed-Lauf am
@@ -815,9 +890,14 @@ ließ sich Schritt (1) wie in Sage über den **vorhandenen** Pfad bauen (keine n
 2. Nächste Runde: weitere überholte Briefe der Kette prüfen (vorher grep auf Quer-Verweise).
 
 ## Aktiver Übergabe-Brief
-→ **`docs/sessions/BRIEF_waechter-auto-issue.md`** (NEU: Auto-Issue-Wächter übernommen + Runde
-quittiert; nächste Runde + Rezeptbuch/Mixarium-Aufbau) +
-**`docs/sessions/BRIEF_briefkasten-vollverbund.md`** (Runde lesen/quittieren + Rückläufe +
-Gesicht-Feinschliff) + `docs/sessions/BRIEF_briefkasten-bauplan.md` (Rundbrief: Briefkasten 1:1
-nachbauen) + `docs/sessions/BRIEF_4-knoten-sync.md` (Brief A/B/C/D) + **Nachträge (8)–(14) oben**
-(+ `docs/SYNC-VEREINBARUNG.md`).
+
+> **Hinweis 2026-08-08:** Dieser Zeiger stammte vom 2026-06-08 und nannte vier Briefe, von
+> denen drei beim Ausmisten der Brief-Kette gelöscht wurden (Git behält sie). Er stand ganz
+> unten in dieser Datei und las sich wie der aktuelle Stand — genau so ein toter Zeiger
+> schickt die nächste Sitzung auf die Suche nach Dateien, die es nicht mehr gibt.
+> **Der oberste PULS-Eintrag ist der Stand; hier steht nur noch, welcher Brief gilt.**
+
+→ **`docs/sessions/BRIEF_verjaehrung-und-netz.md`** (der aktive Brief)
++ `docs/sessions/BRIEF_briefkasten-bauplan.md` (Lebend-Doku, in den `AUSTAUSCH`-Postfächern
+§4 verlinkt — kein Sitzungs-Brief)
++ `docs/SYNC-VEREINBARUNG.md`.
