@@ -53,6 +53,21 @@ sie einmal in die günstige Richtung irrt, ist sie nicht widerlegt.
   Das Badge bleibt also erhalten — es kommt aus dem gemerkten Ergebnis des letzten Blicks
   (localStorage, app-eigener Schlüssel wegen der geteilten github.io-Adresse).
 
+### Nachtrag — Zeichensatz zuerst (PR #96) + PR #238 in family-project geschlossen
+
+- **`<meta charset>` von Byte 1455 auf 939** (Norm: erste 1024). Ursache waren zwei
+  Kommentarblöcke vor `<html>`; der **Copyright-Kasten bleibt unangetastet**, nur der geerbte
+  Beschreibungs-Kommentar wanderte hinter das Meta. **Live war das kein Mangel** — GitHub Pages
+  schickt `charset=utf-8` im HTTP-Kopf, darum stand Gute Praxis schon bei 100. Der Fix macht die
+  Datei davon unabhängig (Fremdnutzer-Brille) und nimmt den falschen Alarm aus künftigen
+  Messreihen. Beim Bauen selbst in die Falle getappt: der Erklär-Kommentar stand zuerst **vor**
+  dem Meta und schob es auf 1387 — nur die Gegenmessung zeigte es.
+- **PR #238 in family-project geschlossen** (andere Sitzung, Entwurf): seine lokalen Zahlen
+  (80/98, Bedienbarkeit 95, Gute Praxis 92) sind durch Klaus' PageSpeed-Lauf abgelöst
+  (83/99, 100, 100); sein Journal-Text trug die widerlegte Kern-Behauptung. **Vor dem Schließen
+  ausgeschlachtet:** der Mangel „Zeichensatz zu spät" war echt und ist jetzt repariert. Im PR
+  steht eine Nachricht, wo jeder seiner drei Teile geblieben ist.
+
 ### Klaus' Entscheidungen (2026-08-08, festgehalten)
 1. **Briefkasten: erst auf Knopfdruck.** Nicht nur wegen der Sekunden — wer die Seite nur
    öffnete, meldete stillschweigend eine Verbindung an GitHub. Für Fremdnutzer über den
