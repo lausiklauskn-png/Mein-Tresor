@@ -1617,6 +1617,10 @@
   };
 
   // === SBKIM-Briefkasten Logik (zero-dependency) ===
+  // App-spezifischer Schluessel: auf der geteilten github.io-Adresse liegen die
+  // Geschwister-Apps im selben localStorage — ein neutraler Name wuerde kollidieren.
+  const SBKIM_MERKER = "sbkim_briefkasten_stand_meintresor";
+
   async function sbkimMailboxFetch(url) {
     try { const r = await fetch(url, { cache: "no-store" }); if (!r.ok) return { error: "HTTP " + r.status }; return await r.json(); }
     catch (e) { return { error: String(e && e.message || e) }; }
@@ -1690,26 +1694,45 @@
          </div>`;
       const foot =
         `<p style="margin:.6em 0 0;text-align:center"><b style="color:#3bbf7a">${connected}/${total} verbunden</b> · ${unread ? `<b style="color:#e0a52b">${unread} ungelesen</b>` : "📭 alles synchron"}</p>
-         <p style="margin:.3em 0 0;font-size:.7rem;color:var(--muted,#9aa);text-align:center">Match jetzt <b>live in deinem Browser</b> nachgerechnet (Cosinus eigener ⟷ Nachbar-Spore). Quittieren via <code>ack</code> in sbkim/SIGNAL.json.</p>`;
+         <p style="margin:.3em 0 0;font-size:.7rem;color:var(--muted,#9aa);text-align:center">Match jetzt <b>live in deinem Browser</b> nachgerechnet (Cosinus eigener ⟷ Nachbar-Spore). Quittieren via <code>ack</code> in sbkim/SIGNAL.json.</p>
+         <p style="margin:.3em 0 0;font-size:.7rem;color:var(--muted,#9aa);text-align:center">Diesen Stand hat <b>dieser Klick</b> geholt. Die Seite fragt beim blossen Öffnen <b>niemanden</b> — sie spricht erst mit GitHub, wenn du 📬 drückst.</p>`;
       body.innerHTML = head + cards.join("") + foot;
     }
 
+    sbkimBadgeSetzen(unread);
+    // Ergebnis merken, damit der naechste Seitenaufruf das Badge OHNE Netz zeigen kann.
+    try { localStorage.setItem(SBKIM_MERKER, JSON.stringify({ unread, ts: Date.now() })); } catch {}
+  }
+
+  // Badge schreiben (drei moegliche Stellen: Kopfzeile, HUD, Raum-Leiste).
+  function sbkimBadgeSetzen(unread) {
     for (const id of ["sbkim-mailbox-badge", "hud-mailbox-badge", "mt-room-mail-badge"]) {
       const badge = document.getElementById(id);
       if (!badge) continue;
       if (unread) { badge.textContent = String(unread); badge.hidden = false; } else { badge.hidden = true; }
     }
   }
-  // Beim Laden still pruefen und Badge setzen (kein Dialog-Popup).
-  // NACH dem Laden, nicht davor: der Blick in die Briefkaesten der Nachbarn geht ueber
-  // das Netz (fuenf Abrufe an raw.githubusercontent.com) und hat vorher mitten im
-  // Seitenaufbau gesteckt — bis zu 1,3 s, in denen die Bilder anstanden. Jetzt laeuft er
-  // in einer Ruhepause nach dem Laden; das Badge kommt ein bis zwei Sekunden spaeter,
-  // die Seite steht dafuer frueher.
-  window.sbkimMailboxAutoCheck = () => {
-    const los = () => { try { sbkimMailboxCheck(true); } catch {} };
-    if (window.requestIdleCallback) requestIdleCallback(los, { timeout: 5000 }); else setTimeout(los, 1200);
-  };
+  // KEIN Netz beim Oeffnen der Seite (Klaus' Entscheidung 2026-08-08).
+  //
+  // Bis hierher hat die Seite beim blossen Aufruf die Briefkaesten der fuenf Nachbarn
+  // abgefragt — zehn Anfragen an raw.githubusercontent.com, laut PageSpeed am Live-Stand
+  // 1,7 bis 4,0 s je Anfrage und damit der laengste Weg im kritischen Pfad, schlimmer als
+  // alle Bilder zusammen. Ein Verschieben ans Ende des Ladens (2026-08-08 frueher) hat das
+  // gelindert, aber nicht behoben.
+  //
+  // Der zweite Grund wiegt schwerer als die Sekunden: wer die Seite nur oeffnet, meldete
+  // damit stillschweigend eine Verbindung an GitHub. Fuer fremde Nutzer ueber den
+  // family-projekt.de-Marktplatz ist das keine Kleinigkeit. Jetzt gilt: die Seite spricht
+  // von sich aus mit niemandem — erst der Druck auf 📬 holt den Stand.
+  //
+  // Das Badge geht dadurch nicht verloren: es kommt aus dem GEMERKTEN Ergebnis des letzten
+  // Blicks (localStorage, kein Netz). Der Dialog sagt dazu, von wann dieser Stand ist.
+  window.sbkimMailboxAutoCheck = () => { try { sbkimBadgeAusMerker(); } catch {} };
+  function sbkimBadgeAusMerker() {
+    let m = null;
+    try { m = JSON.parse(localStorage.getItem(SBKIM_MERKER) || "null"); } catch {}
+    if (m && Number(m.unread) > 0) sbkimBadgeSetzen(Number(m.unread));
+  }
   if (document.readyState === "complete") window.sbkimMailboxAutoCheck();
   else window.addEventListener("load", () => window.sbkimMailboxAutoCheck(), { once: true });
 </script>
@@ -3297,8 +3320,8 @@
   var mail=document.createElement('button'); mail.type='button'; mail.id='mt-room-mail';
   mail.title='SBKIM-Briefkasten & Verbindungen'; mail.innerHTML='📬<span class="mt-blabel">Briefkasten</span><span id="mt-room-mail-badge" hidden></span>';
   bar.insertBefore(mail, bar.firstChild);
-  // Geschlossener Briefkasten: Anzahl neuer/unbearbeiteter Briefe still pruefen + Badge setzen.
-  // Ebenfalls NACH dem Laden (siehe sbkimMailboxAutoCheck) — nicht mitten im Seitenaufbau.
+  // Badge am geschlossenen Briefkasten: kommt aus dem GEMERKTEN Stand des letzten Blicks
+  // (siehe sbkimMailboxAutoCheck) — KEIN Netz-Abruf beim Oeffnen der Seite.
   if(typeof window.sbkimMailboxAutoCheck==='function'){ try{ window.sbkimMailboxAutoCheck(); }catch(e){} }
 
   // SBKIM-Siegel als Auszeichnung DRAUSSEN im Raum (gleiches Wappen/Groesse wie im Dialog).

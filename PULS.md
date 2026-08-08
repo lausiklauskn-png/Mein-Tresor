@@ -3,6 +3,78 @@
 > Kurz-Puls für den nächsten Sitzungsstart: **was getan, was offen, nächste Schritte.**
 > Wahrheitsquelle für den Real-Anteil bleibt `status.json`. Datum `YYYY-MM-DD`.
 
+## Stand: 2026-08-08 (3) — PageSpeed-Beweis da · Bilder je Gerät · beim Öffnen kein Netz mehr
+
+Fortsetzung derselben Sitzung, nach Klaus' Browser-Lauf und **seinem PageSpeed-Lauf am
+Live-Stand** (der Beweis, der dem Vorgänger-Brief fehlte).
+
+### Der Beweis — PageSpeed, 2026-08-08 23:09, live
+
+| | Handy | Computer |
+|---|---|---|
+| Leistung | **83** | **99** |
+| Barrierefreiheit | **100** | **100** |
+| Best Practices | 100 | 100 |
+| SEO | 100 | 100 |
+
+**Barrierefreiheit 84/87 → 100/100.** Die Erwartung aus dem Brief (95 → 100) ist damit
+bestätigt; der `select-name`-Posten mit Gewicht 10 war der letzte. Die lokale Messung
+(80/98) lag diesmal **leicht pessimistisch** — Regel 1b bleibt trotzdem gültig, nur weil
+sie einmal in die günstige Richtung irrt, ist sie nicht widerlegt.
+
+### Getan (nach den Befunden aus Klaus' Bericht)
+- **Bilder je Gerät (PR #93).** Der Bericht rechnete 326 KiB unnötige Übertragung vor:
+  `safe-front` (1254 px) und `drehrad` (768 px) kamen auch dann, wenn die Seite sie viel
+  kleiner zeigt. Gelöst mit `srcset`/`sizes` — **nicht** durch Verkleinern, die großen
+  Dateien bleiben für den Computer. Gemessen, was wirklich kommt:
+
+  | | geholt | Safe-Bilder |
+  |---|---|---|
+  | Handy 412, DPR 2 | `safe-front-828` + `drehrad-384` | 424 → **176 KiB** |
+  | Computer 1350, DPR 1 | `safe-front` + `drehrad-384` | 424 → **305 KiB** |
+
+  Die neuen Fassungen aus den **Original-PNG der Historie** gerechnet (WebP 0,90, Alpha des
+  Rads 53,1 % erhalten). Alt und neu in echter Anzeigegröße nebeneinander angesehen: kein
+  Unterschied. **Falle dabei:** das `preload` im Kopf muss dieselbe Auswahl treffen
+  (`imagesrcset`/`imagesizes`), sonst holt der Browser zwei Dateien.
+
+- **Beim Öffnen spricht die Seite mit niemandem mehr (PR #94, Klaus' Entscheidung).** Der
+  Briefkasten-Blick war der **längste Weg im kritischen Pfad**: zehn Anfragen an
+  `raw.githubusercontent.com`, 1,7–4,0 s je Anfrage — schlimmer als alle Bilder zusammen.
+  (Zehn statt fünf, weil **zwei** Stellen den stillen Blick auslösten: Kopfzeile und
+  Raum-Leiste.) Jetzt holt erst der Druck auf 📬 den Stand. Gemessen, 6 s beobachtet:
+
+  ```
+  beim Öffnen        0 Fremd-Abrufe   (vorher 10)
+  nach Druck auf 📬  5 Fremd-Abrufe   (die fünf Nachbarn, wie gewollt)
+  Badge aus Merker   zeigt "3" ohne einen einzigen Abruf
+  ```
+
+  Das Badge bleibt also erhalten — es kommt aus dem gemerkten Ergebnis des letzten Blicks
+  (localStorage, app-eigener Schlüssel wegen der geteilten github.io-Adresse).
+
+### Klaus' Entscheidungen (2026-08-08, festgehalten)
+1. **Briefkasten: erst auf Knopfdruck.** Nicht nur wegen der Sekunden — wer die Seite nur
+   öffnete, meldete stillschweigend eine Verbindung an GitHub. Für Fremdnutzer über den
+   family-projekt.de-Marktplatz ist das keine Kleinigkeit. **Umgesetzt.**
+2. **Die 20 SBKIM-Module bleiben beim Start geladen.** Später laden würde 245 KiB sparen,
+   aber die Lampen-Leiste käme ein bis zwei Sekunden später. Bei 83/99 ist das kein guter
+   Tausch. **Bewusst nicht gebaut** — erst neu messen, dann bei Bedarf wieder aufgreifen.
+
+### Was aus dem Bericht NICHT geht (ehrlich benannt)
+- **JavaScript minifizieren (112 KiB):** verboten. Die SBKIM-Module sind byte-genaue Kopien
+  aus dem Sage-Kanon, ein Prüfwert wacht darüber. Minifizieren bräche genau die Regel, die
+  sicherstellt, dass netzweit dasselbe Modul läuft.
+- **Cache-Dauer 10 Minuten:** setzt GitHub Pages, dort nicht stellbar (auf Klaus' Hetzner-
+  Caddy wäre es möglich). Nicht bewertet, kostet keine Punkte.
+- **CSS 2,1 KiB · Lampen-Animation (`box-shadow`, Kanon-Modul 17):** vernachlässigbar bzw.
+  nicht bewertet.
+
+### Offen
+1. **Nächster PageSpeed-Lauf** — misst, was Bilder + Briefkasten am Handy wirklich bringen.
+   Erwartung: deutlich über 83. Lokal ist wieder nur ein Hinweis.
+2. **Brief-Kette ausmisten** — Tabelle liegt im aktiven Brief, gelöscht wird erst nach Klaus.
+
 ## Stand: 2026-08-08 (2) — Die drei Auswahlfelder haben einen Namen · und zwei Korrekturen am Brief
 
 Branch `claude/mein-tresor-a11y-rollout-7ffzs7`, frisch auf `origin/main`. Auftrag war Punkt 2
