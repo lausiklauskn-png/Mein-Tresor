@@ -3391,6 +3391,15 @@
 <script src="assets/schutz-init.js"></script>
 <script src="assets/siegel-inhalt.js"></script>
 <script>
+/* Service Worker anmelden — erst dadurch ist die App installierbar und ohne Netz
+   nutzbar (Klaus 2026-08-14). Fail-soft: schlägt es fehl, läuft die App
+   unverändert weiter, nur eben online. Ausserhalb JASONLIB-CORE.
+   Der Vorrat liefert das DOKUMENT nie zuerst — Begründung im Kopf von sw.js. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').catch(function () {});
+  });
+}
 /* Dezenter Hard-Reload — Service-Worker + Caches leeren, dann neu laden (fail-soft, App-Glue, ausserhalb JASONLIB-CORE). */
 function hardReloadApp(){
   const done=()=>{ try{location.reload(true);}catch(_e){try{location.reload();}catch(__e){}} };
