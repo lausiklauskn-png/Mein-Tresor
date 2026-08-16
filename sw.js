@@ -25,7 +25,7 @@
  * Service Worker ab und leert jeden Vorrat (`hardReloadApp` in index.html).
  */
 
-var CACHE = "mein-tresor-v1";
+var CACHE = "mein-tresor-v2";
 
 /* Nur das Gerüst. Alles andere kommt bei Bedarf dazu. */
 var SHELL = [
