@@ -10,5 +10,5 @@
     "demo": "node scripts/generate_spore.mjs",
     "verify": "node scripts/verify_foreign_spore.mjs sbkim/spore.json"
   },
-  "license": "UNLICENSED"
+  "license": "SEE LICENSE IN LICENSE"
 }

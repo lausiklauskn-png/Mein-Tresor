@@ -46,3 +46,11 @@ vorhanden) ist ein Passwort-Tresor (ohne Passwort wertlos). Was echt bewiesen is
 auf Klaus wartet, steht ehrlich in [`status.json`](status.json). Verfassung: [`CLAUDE.md`](CLAUDE.md).
 
 *Privat-Projekt, UNLICENSED. Kein Klon — kopiert aus den getesteten Originalen von Jasons-Tresor.*
+
+---
+
+## Rechte
+
+Rechteinhaber ist Klaus Nitzsche. Welche Lizenz gilt und welche Rolle die
+KI-Werkzeuge hatten, steht in [`RECHTE.md`](RECHTE.md); der Lizenztext in
+[`LICENSE`](LICENSE).
