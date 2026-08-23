@@ -31,7 +31,7 @@ Parteien: jeder angeschlossene SBKIM-Knoten (Sage, SB-KIMTool-Point, Jasons-Tres
    Manipulationsprobe), legt Inbox-Kopie + Offline-Test an, quittiert im Postfach.
    verified-match (Cosine ≥ 0.80) erst mit echtem 384-dim domainVector (Xenova/
    multilingual-e5-small), Spore dafür neu signiert (gleicher Schlüssel → gleiche nodeId).
-8. DIVERGENZ/KONFLIKT. Quelle der Wahrheit ist immer der aktuelle main des betroffenen
+8. DIVERGENZ/KONFLIKT. Quelle ist immer der aktuelle main des betroffenen
    Knotens. Bei Widerspruch gilt die signierte spore.json (kryptografisch) bzw. die
    höhere seq im SIGNAL.json. Spec/Vertrag vor Code: strittige Felder erst im Postfach
    klären, dann signieren. Niemand merged für einen anderen; jeder Knoten entscheidet
