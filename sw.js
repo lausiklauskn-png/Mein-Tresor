@@ -27,6 +27,15 @@
 
 var CACHE = "mein-tresor-v4";
 
+
+/* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
+ * Pfad. Auf lausiklauskn-png.github.io liegen rund zwanzig Apps; ein Filter,
+ * der nur "ist nicht meiner" fragt, laesst ALLE fremden durch und loescht sie.
+ * Gemessen am 2026-09-08 an zwei echten Apps
+ * (Sage-Protokol/tests/vorrat_wirkung.mjs). Praefix ABGELESEN aus der
+ * Vorrat-Konstante, nicht geraten. Muster aus Tomys-Hub/bookledger/sw.js.
+ * Es muss BEIDES tun: fremde stehen lassen UND eigene alte weiter wegraeumen. */
+var VORRAT_PRAEFIX = "mein-tresor-";
 /* Nur das Gerüst. Alles andere kommt bei Bedarf dazu. */
 var SHELL = [
   "./",
@@ -68,7 +77,7 @@ self.addEventListener("activate", function (e) {
   e.waitUntil(
     caches.keys().then(function (ks) {
       return Promise.all(ks.map(function (k) {
-        return k === CACHE ? null : caches.delete(k);
+        return (k.startsWith(VORRAT_PRAEFIX) && k !== CACHE) ? caches.delete(k) : null;
       }));
     }).then(function () { return self.clients.claim(); }).catch(function () {})
   );
