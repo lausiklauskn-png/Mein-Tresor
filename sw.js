@@ -25,7 +25,7 @@
  * Service Worker ab und leert jeden Vorrat (`hardReloadApp` in index.html).
  */
 
-var CACHE = "mein-tresor-v7";
+var CACHE = "mein-tresor-v8";
 
 
 /* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
@@ -42,6 +42,7 @@ var SHELL = [
   "./index.html",
   "./assets/schutz-init.js",
   "./assets/siegel-inhalt.js",
+  "./assets/sbkim-andock-wizard.js",
   "./assets/sbkim-siegel-wappen.svg",
   "./sbkim/01_storage.js",
   "./sbkim/02_spore.js",
