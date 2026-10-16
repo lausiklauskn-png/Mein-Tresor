@@ -25,7 +25,7 @@
  * Service Worker ab und leert jeden Vorrat (`hardReloadApp` in index.html).
  */
 
-var CACHE = "mein-tresor-v33";
+var CACHE = "mein-tresor-v34";
 
 
 /* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
