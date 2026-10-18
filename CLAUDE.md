@@ -142,3 +142,7 @@ Diese und die übrigen netzweiten Regeln — Selbst-Merge-Freibrief, frisch von
 20 Repos. Verträge: **[`INTERFACES.md`](https://github.com/lausiklauskn-png/Sage-Protokol/blob/main/docs/INTERFACES.md)** · die Fallen beim
 Abzweigen und Veröffentlichen: **[`LEHREN.md`](https://github.com/lausiklauskn-png/Sage-Protokol/blob/main/docs/LEHREN.md)** · alte Fassung dieser
 Datei: [`docs/archiv/CLAUDE-2026-08-22.md`](docs/archiv/CLAUDE-2026-08-22.md).
+
+## ⬇ Kein „Websitedaten löschen“ im Installieren-Rat (Klaus 2026-10-18)
+
+`assets/installieren.js` ist wieder byte-1:1 aus Sage (#1151, sha `09c533b3…2193`). Der alte letzte Rat „Websiteeinstellungen → Daten löschen“ hätte auf `lausiklauskn-png.github.io` den gemeinsamen Speicher aller Apps geleert — hier samt der verschlüsselten Schlüssel. Jetzt: App unter Android-Einstellungen deinstallieren, Chrome schließen, neu laden, neu installieren. `installieren.js?v=4`, Cache v37.
