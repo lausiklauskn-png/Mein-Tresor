@@ -25,7 +25,7 @@
  * Service Worker ab und leert jeden Vorrat (`hardReloadApp` in index.html).
  */
 
-var CACHE = "mein-tresor-v37";
+var CACHE = "mein-tresor-v38";
 
 
 /* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
@@ -43,7 +43,7 @@ var SHELL = [
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./assets/installieren.js?v=4",
+  "./assets/installieren.js?v=5",
   "./assets/schutz-init.js",
   "./assets/siegel-inhalt.js",
   "./assets/sbkim-andock-wizard.js",
